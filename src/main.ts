@@ -29,6 +29,7 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter());
 
   app.useGlobalInterceptors(new TransformInterceptor());
+  app.setGlobalPrefix('api/');
 
   const config = new DocumentBuilder()
     .setTitle('Landix API')
