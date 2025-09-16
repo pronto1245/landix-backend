@@ -14,7 +14,7 @@ async function bootstrap() {
   dotenv.config();
 
   app.enableCors({
-    origin: ['http://localhost:5173']
+    origin: ['http://localhost:5173', 'http://45.67.57.148']
   });
 
   app.useGlobalPipes(
