@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=0.9, maximum-scale=0.9, minimum-scale=0.9, viewport-fit=cover">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" data-qmeta="equiv">
+    <meta name="theme-color" content="#FFFFFF">
+    <meta name="google" value="notranslate">
+    <meta name="Description" content="">
+    <title></title>
+    <link rel="apple-touch-icon" sizes="180x180"
+        href="http://localhost:3000/assets/plinkoAztec/img/apple-touch-icon.webp">
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="http://localhost:3000/assets/plinkoAztec/img/favicon-32x32.webp">
+    <link rel="icon" type="image/png" sizes="16x16"
+        href="http://localhost:3000/assets/plinkoAztec/img/favicon-16x16.webp">
+    <link rel="mask-icon" href="http://localhost:3000/assets/plinkoAztec/img/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-title" content="">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link href="http://localhost:3000/assets/plinkoAztec/css/index.css" rel="stylesheet">
+
+    <!-- <link rel="manifest" href="/manifest.json" crossorigin="use-credentials"> -->
+
+
+
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 800;
+        }
+    </style>
+
+    <style>
+        .loader {
+            background: linear-gradient(180deg, #005385 0%, #170E12 97.5%);
+        }
+
+        .loader__logo {
+            max-width: 450px !important;
+            margin-bottom: 25px !important;
+
+            @media (max-width: 767px) {
+                margin-top: -25% !important;
+                max-width: 300px !important;
+            }
+        }
+
+        .loader__progress {
+            background: linear-gradient(to right, #FFBE14, #FF981E);
+        }
+
+        .loader__progress-line {
+            background: linear-gradient(to right, #016477, #00D7FF);
+        }
+    </style>
+    <!-- <script src="/reg-sw.js"></script> -->
+    <!-- JS adapter start -->
+
+
+
+</head>
+
+<body>
+    <style>
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 999;
+            width: 100%;
+            height: 100vh;
+            padding: 15px;
+            display: flex;
+        }
+
+        .loader.is--loaded {
+            display: none;
+        }
+
+        .loader__logo {
+            margin-bottom: 35px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .loader__progress {
+            width: 100%;
+            height: 28px;
+            max-width: 340px;
+            padding: 4px;
+            border-radius: 100px;
+            position: relative;
+        }
+
+        .loader__progress::before {
+            position: absolute;
+            content: '';
+            left: 4px;
+            top: 4px;
+            border-radius: 100px;
+            width: calc(100% - 8px);
+            height: calc(100% - 8px);
+            background-color: #fff;
+        }
+
+        .loader__progress-line {
+            position: relative;
+            z-index: 2;
+            width: 0;
+            height: 100%;
+            border-radius: 100px;
+            transition: width 0.5s ease;
+        }
+
+        @media (max-width: 767px) {
+            .loader__progress {
+                max-width: 220px;
+            }
+        }
+    </style>
+    <div class="loader">
+        <img class="loader__logo" src="http://localhost:3000/assets/plinkoAztec/img/logo.webp" alt="logo">
+        <div class="loader__progress">
+            <div class="loader__progress-line"></div>
+        </div>
+    </div>
+    <script>
+        let progressInterval = null
+        const progressLine = document.querySelector('.loader__progress-line')
+        const loader = document.querySelector('.loader')
+
+        function increaseLoaderProgress() {
+            let width = 0
+            progressInterval = setInterval(() => {
+                if (width >= 99) {
+                    progressLine.style.width = '100%'
+                } else {
+                    width += 2
+                    progressLine.style.width = width + '%'
+                }
+            }, 1000)
+        }
+
+        increaseLoaderProgress()
+
+        function addLoadedClass() {
+            loader.classList.add('is--loaded')
+        }
+
+        function setLoaderProgressTo100() {
+            setTimeout(() => {
+                progressLine.style.width = '100%'
+                clearInterval(progressInterval)
+                setTimeout(() => {
+                    addLoadedClass()
+                }, 800)
+            }, 600)
+        }
+
+        window.addEventListener('load', setLoaderProgressTo100);
+    </script>
+
+
+
+    <div class="body-wrapper">
+        <div class="firefly is--1"></div>
+        <div class="firefly is--2"></div>
+        <div class="firefly is--3"></div>
+        <div class="firefly is--4"></div>
+        <div class="firefly is--5"></div>
+        <div class="firefly is--6"></div>
+        <div class="firefly is--7"></div>
+        <div class="firefly is--8"></div>
+        <div class="firefly is--9"></div>
+
+        <div class="game" id="game" data-spins="1" data-rate="100" data-list="1000,100,10,0.5,0.5,10,100,1000"
+            data-balancemin="200" data-balancemax="200000">
+            <div class="game-logo">
+                <img src="http://localhost:3000/assets/plinkoAztec/img/logo-wide.webp" alt="">
+            </div>
+
+            <div class="game-field" id="game-field">
+                <div class="game-field__container">
+                    <div class="game-field__tower">
+                        <div class="game-field__tower-free"></div>
+                        <div class="game-field__tower-bonus"></div>
+                        <div class="game-field__tower-hand"></div>
+                        <div class="game-field__tower-eyes"></div>
+                        <div class="game-field__tower-fire"></div>
+                        <div class="game-field__tower-progress">
+                            <svg class="game-field__tower-progress-back" xmlns="http://www.w3.org/2000/svg"
+                                version="1.1" width="100%" height="100%" viewBox="0 0 160 160">
+                                <circle cx="80" cy="80" r="70" stroke-linecap="round" id="game-progress-circle-1" />
+                            </svg>
+                            <svg class="game-field__tower-progress-front" xmlns="http://www.w3.org/2000/svg"
+                                version="1.1" width="100%" height="100%" viewBox="0 0 160 160">
+                                <circle cx="80" cy="80" r="70" stroke-linecap="round" id="game-progress-circle-2" />
+                            </svg>
+                        </div>
+                        <div class="firefly is--10"></div>
+                        <div class="firefly is--11"></div>
+                        <div class="firefly is--12"></div>
+                        <div class="firefly is--13"></div>
+                        <div class="firefly is--14"></div>
+                        <div class="firefly is--15"></div>
+                        <div class="firefly is--16"></div>
+                    </div>
+
+                    <div class="game-field__canvas" id="game-canvas-container">
+                        <canvas id="game-canvas"></canvas>
+                    </div>
+
+                    <div class="game-field__slots">
+
+
+                        <div class="game-field__slots-item is--1">
+                            <span>1000</span>
+                        </div>
+
+                        <div class="game-field__slots-item is--2">
+                            <span>100</span>
+                        </div>
+
+                        <div class="game-field__slots-item is--3">
+                            <span>10</span>
+                        </div>
+
+                        <div class="game-field__slots-item is--4">
+                            <span>0.5</span>
+                        </div>
+
+                        <div class="game-field__slots-item is--5">
+                            <span>0.5</span>
+                        </div>
+
+                        <div class="game-field__slots-item is--6">
+                            <span>10</span>
+                        </div>
+
+                        <div class="game-field__slots-item is--7">
+                            <span>100</span>
+                        </div>
+
+                        <div class="game-field__slots-item is--8">
+                            <span>1000</span>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-indicators">
+                <div class="game-indicators__fast">
+                    <span class="game-indicators__fast-label">FAST GAME</span>
+                    <span class="game-indicators__fast-switcher"></span>
+                </div>
+                <div class="game-indicators__free">
+                    <span class="game-indicators__free-label">FREE SPIN</span>
+                    <span class="game-indicators__free-progress">
+                        <span class="game-indicators__free-progress-line" id="game-progress-desktop"></span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="game-controls">
+                <div class="game-controls__bet">
+                    <div class="game-controls__bet-label">
+                        Rate:
+                    </div>
+                    <div class="game-controls__bet-value">
+                        <span class="game-controls__bet-value-count">100</span>
+                        <span class="game-controls__bet-value-currency"></span>
+                    </div>
+                </div>
+                <div class="game-indicators__free">
+                    <span class="game-indicators__free-label">FREE SPIN</span>
+                    <span class="game-indicators__free-progress">
+                        <span class="game-indicators__free-progress-line" id="game-progress-mobile"></span>
+                    </span>
+                </div>
+                <div class="game-controls__win">
+                    <div class="game-controls__win-label">
+                        Balance:
+                    </div>
+                    <div class="game-controls__win-value">
+                        <span class="game-controls__win-value-count" id="game-win-balance">200</span>
+                        <span class="game-controls__win-value-currency"></span>
+                    </div>
+                </div>
+                <div class="game-indicators__fast">
+                    <span class="game-indicators__fast-label">FAST GAME</span>
+                    <span class="game-indicators__fast-switcher"></span>
+                </div>
+                <div class="game-controls__per-ball">
+                    <div class="game-controls__per-ball-label">
+                        BET PER BALL:
+                    </div>
+                    <div class="game-controls__per-ball-value">
+                        <span class="game-controls__per-ball-value-count">1</span>
+                    </div>
+                </div>
+                <div class="game-controls__per-drop">
+                    <div class="game-controls__per-drop-label">
+                        BALL PER DROP:
+                    </div>
+                    <div class="game-controls__per-drop-value">
+                        <span class="game-controls__per-drop-value-count">10</span>
+                    </div>
+                </div>
+
+                <div class="game-controls__btn">
+
+                    <button class="bottom__section-button pulse" id="go-btn" data-spins="1">
+                        <span class="bottom__section-button-default" id="go-btn-default-text"> </span>
+                        <span class="bottom__section-button-next" id="go-btn-next-text">_</span>
+                    </button>
+
+
+                </div>
+            </div>
+
+            <div class="game-gates">
+                <div class="game-gates__left">
+                    <img class="game-gates__leaf is--1"
+                        src="http://localhost:3000/assets/plinkoAztec/img/leaf-left-1.webp" alt="">
+                    <img class="game-gates__leaf is--2"
+                        src="http://localhost:3000/assets/plinkoAztec/img/leaf-left-2.webp" alt="">
+                    <img class="game-gates__leaf is--3"
+                        src="http://localhost:3000/assets/plinkoAztec/img/leaf-left-3.webp" alt="">
+
+                </div>
+                <div class="game-gates__right">
+                    <img class="game-gates__leaf is--4"
+                        src="http://localhost:3000/assets/plinkoAztec/img/leaf-right-1.webp" alt="">
+                    <img class="game-gates__leaf is--5"
+                        src="http://localhost:3000/assets/plinkoAztec/img/leaf-right-2.webp" alt="">
+                    <img class="game-gates__leaf is--6"
+                        src="http://localhost:3000/assets/plinkoAztec/img/leaf-right-3.webp" alt="">
+                </div>
+            </div>
+
+            <div class="modal-free">
+                <div class="modal-free__content">
+                    <div class="modal-free__win">
+                        <img src="http://localhost:3000/assets/plinkoAztec/img/free-spin.webp" alt="">
+                    </div>
+
+                    <div class="modal-free__wheel">
+                        <div class="modal-free__wheel-disc"></div>
+                        <div class="modal-free__wheel-sector"></div>
+                        <div class="modal-free__wheel-arrow"></div>
+                        <div class="modal-free__wheel-effect"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal" id="modal">
+            <div class="modal__wrapper">
+                <div class="modal__logo">
+                    <img src="http://localhost:3000/assets/plinkoAztec/img/logo-wide.webp" alt="">
+                </div>
+
+                <div class="modal__content">
+                    <div class="modal__win">
+                        <img src="http://localhost:3000/assets/plinkoAztec/img/big-win.webp" alt="">
+                    </div>
+
+                    <div class="modal__title">
+                        <span></span>
+                    </div>
+                    <div class="modal__text">
+                        <span></span>
+                    </div>
+
+                    <div class="modal__win-btn">
+
+                        <button type="button" id="win-button-modal" class="bottom__section-button is--link">
+                            <span></span>
+                        </button>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="modal" id="bonusModal">
+            <div class="modal__wrapper">
+                <div class="modal__logo">
+                    <img src="http://localhost:3000/assets/plinkoAztec/img/logo-wide.webp" alt="">
+                </div>
+
+                <div class="modal__content">
+                    <div class="modal__win">
+                        <img src="http://localhost:3000/assets/plinkoAztec/img/big-win.webp" alt="">
+                    </div>
+
+                    <div class="modal__title">
+                        <span></span>
+                    </div>
+                    <div class="modal__text">
+                        <span></span>
+                    </div>
+
+                    <div class="modal__win-btn">
+
+                        <button type="button" id="win-bonus-button-modal" class="bottom__section-button is--link">
+                            <span></span>
+                        </button>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="effects hidden" id="effects">
+            <img loading="lazy" class="effects__image hidden" id="effects-image"
+                src="http://localhost:3000/assets/general/images/desctop_golden_confetti.gif" alt="red_flare">
+        </div>
+    </div>
+
+    <div class="devMode dev-mode" id="devMode">
+        <button class="menu-button" id="toggleMenu">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 20 20" fill="none"
+                class="open">
+                <path fill="currentColor" fill-rule="evenodd"
+                    d="M19 4a1 1 0 01-1 1H2a1 1 0 010-2h16a1 1 0 011 1zm0 6a1 1 0 01-1 1H2a1 1 0 110-2h16a1 1 0 011 1zm-1 7a1 1 0 100-2H2a1 1 0 100 2h16z" />
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="close"
+                viewBox="0 0 384 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                <path
+                    d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
+            </svg>
+        </button>
+        <div class="dev-mode__wrapper" id="settingsWrapper">
+            <form id="settingsForm">
+                <textarea id="settingsTextarea" rows="10" cols="30"></textarea>
+                <br>
+                <button type="button" id="getSettings">Отримати</button>
+                <button type="button" id="submitSettings">Оновити</button>
+            </form>
+        </div>
+    </div>
+    <style>
+        .dev-mode {
+            visibility: hidden;
+            display: none;
+        }
+
+        .dev-mode.is--active {
+            visibility: visible;
+            display: flex;
+        }
+
+        .dev-mode .menu-button {
+            font-size: 20px;
+            color: #fff;
+            background: transparent;
+            box-shadow: none;
+            border: none;
+            position: fixed;
+            right: 10px;
+            top: 10px;
+            z-index: 999;
+            cursor: pointer;
+        }
+
+        .dev-mode .menu-button svg {
+            fill: #fff;
+            width: 30px;
+            height: 30px;
+        }
+
+        .dev-mode .menu-button .close {
+            display: none;
+        }
+
+        .dev-mode .menu-button.is--open .close {
+            display: flex;
+        }
+
+        .dev-mode .menu-button.is--open .open {
+            display: none;
+        }
+
+        .dev-mode {}
+
+        .dev-mode__wrapper {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+            z-index: 998;
+            display: none;
+        }
+
+        .dev-mode__wrapper.is--open {
+            display: flex;
+        }
+
+        .dev-mode__wrapper:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+        }
+
+        .dev-mode__wrapper form {
+            width: 100%;
+            padding: 30px;
+        }
+
+        .dev-mode__wrapper textarea {
+            width: 100%;
+            height: 500px;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .dev-mode__wrapper button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+    </style>
+    <script>
+        function checkDevMode() {
+            const urlParams = new URLSearchParams(window.location.search)
+            const devMode = urlParams.get('devMode')
+            const devModeContainer = document.getElementById('devMode')
+
+            if (devMode === 'true') {
+                devModeContainer.classList.add('is--active')
+            } else if (devMode === 'false') {
+                devModeContainer.classList.remove('is--active')
+            }
+        }
+        document.getElementById('toggleMenu').addEventListener('click', () => {
+            const menuButton = document.getElementById('toggleMenu')
+            const menu = document.getElementById('settingsWrapper')
+            menuButton.classList.toggle('is--open')
+            menu.classList.toggle('is--open')
+        })
+        document.getElementById('getSettings').addEventListener('click', async () => {
+            try {
+                const response = await fetch('/settings')
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`)
+                }
+                const data = await response.json()
+                document.getElementById('settingsTextarea').value = JSON.stringify(data, null, 2)
+            } catch (error) {
+                console.error('Error fetching settings:', error)
+            }
+        })
+        document.getElementById('submitSettings').addEventListener('click', async () => {
+            try {
+                const settings = document.getElementById('settingsTextarea').value
+                const response = await fetch('/settings', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: settings
+                })
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`)
+                }
+                window.location.reload()
+            } catch (error) {
+                console.error('Error:', error)
+            }
+        })
+        window.addEventListener('DOMContentLoaded', checkDevMode);
+    </script>
+
+
+
+
+    <style>
+        .bonuses-wrapper {
+            background-color: rgba(0, 0, 0, .9);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .bonuses-wrapper.is--active {
+            display: flex;
+        }
+
+        .bonuses-wrapper h3 {
+            font-size: 35px;
+            padding: 5px;
+        }
+
+        .bonuses-wrapper img {
+            width: 275px;
+            height: 275px;
+            margin-bottom: 45px;
+        }
+
+        .display-none {
+            display: none;
+        }
+
+        .bonus-inline {
+            border-radius: 50px;
+            height: 60px;
+            min-width: 350px;
+            position: absolute;
+            bottom: 10px;
+            left: -200%;
+            z-index: 999;
+            background: linear-gradient(to right, #FB121B, #49D915);
+            padding: 6px;
+        }
+
+        .bonus-inline.is--active {
+            left: 100%;
+            transform: translate(calc(-100% - 10px), 0);
+            transition: left 1s ease-out
+        }
+
+        .bonus-inline.is--hidden {
+            opacity: 0;
+            overflow: hidden;
+            visibility: hidden;
+        }
+
+        .bonus-inline img {
+            width: 90px;
+            min-width: 90px;
+            height: 90px;
+            position: relative;
+            top: -20px;
+        }
+
+        .bonus-inline p {
+            background: linear-gradient(90deg, #2A9E00 0%, #49D915 100%);
+            white-space: nowrap;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 22px;
+            text-align: center;
+        }
+
+        .bonus-inline .clickable-inline-box-element {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        .bonus-inline__wrapper {
+            background: #fff;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 50px;
+            padding: 0 15px 0 0;
+            height: calc(60px - 12px)
+        }
+
+        .bonus-inline__arrows {
+            width: 36px;
+            min-width: 36px;
+            margin-left: 10px;
+        }
+
+        .bonus-inline__arrows svg {
+            animation: arrow-left 1s infinite;
+            float: left;
+        }
+
+        .bonus-inline__arrows svg:nth-child(1) {
+            animation-delay: -0.2s;
+        }
+
+        .bonus-inline__arrows svg:nth-child(2) {
+            animation-delay: -0.1s;
+        }
+
+        @keyframes arrow-left {
+            0% {
+                opacity: 0;
+                transform: translate(-0px, -0px);
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(0px, 0px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .bonus-inline.is--active {
+                left: 50%;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .bonuses-wrapper img {
+                width: 175px;
+                height: 175px;
+                margin-bottom: 25px;
+            }
+        }
+
+        @media (max-height: 741px) {
+            .bonus-inline {
+                left: unset;
+                right: 65px;
+                bottom: 200%;
+                transform: unset;
+                min-width: 255px;
+            }
+
+            .bonus-inline.is--active {
+                left: unset;
+                right: 65px;
+                transform: rotate(90deg);
+                transform-origin: bottom right;
+                bottom: 10px;
+                transition: bottom 1s ease-out
+            }
+
+            .bonus-inline img {
+                transform: rotate(-90deg);
+                top: 0;
+            }
+
+            .bonuses-wrapper img {
+                width: 190px;
+                height: 190px;
+                margin-bottom: 25px;
+            }
+        }
+    </style>
+
+    <script src="http://localhost:3000/assets/plinkoAztec/js/index.js"></script>
+
+    <script>
+        window.keitaro = false
+    </script>
+
+
+
+
+    <script>
+        window.template = 'plinkoAztec';
+    </script>
+
+
+
+
+
+
+
+
+
+    <script defer src="http://localhost:3000/assets/general/commonBonuses.min.js?v=1.8.0"></script>
+
+
+
+</body>
+
+</html>

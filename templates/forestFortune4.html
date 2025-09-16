@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=0.9, maximum-scale=0.9, minimum-scale=0.9, viewport-fit=cover">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" data-qmeta="equiv">
+    <meta name="theme-color" content="#FFFFFF">
+    <meta name="google" value="notranslate">
+    <meta name="Description" content="Test 4">
+    <title>Test 2</title>
+    <link rel="apple-touch-icon" sizes="180x180"
+        href="http://localhost:3000/assets/forestFortune4/img/apple-touch-icon.webp">
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="http://localhost:3000/assets/forestFortune4/img/favicon-32x32.webp">
+    <link rel="icon" type="image/png" sizes="16x16"
+        href="http://localhost:3000/assets/forestFortune4/img/favicon-16x16.webp">
+    <link rel="mask-icon" href="http://localhost:3000/assets/forestFortune4/img/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-title" content="Test 2">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link href="http://localhost:3000/assets/forestFortune4/css/style.css" rel="stylesheet">
+
+    <link rel="manifest" href="/manifest.json" crossorigin="use-credentials">
+
+
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
+        rel="stylesheet">
+
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+        }
+    </style>
+
+    <style>
+        .loader {
+            background: linear-gradient(168deg, #0F6B7F 42.25%, #ACD926 94.59%);
+        }
+
+        .loader__logo {
+            margin-bottom: 15px !important;
+
+            @media (max-width: 767px) {
+                margin-top: -35% !important;
+                max-width: 275px !important;
+            }
+        }
+
+        .loader__progress {
+            background: #1B332E;
+        }
+
+        .loader__progress::before {
+            background-color: #1B332E !important;
+        }
+
+        .loader__progress-line {
+            background: linear-gradient(90deg, #1BE8FF 0%, #74FF4A 100%);
+        }
+    </style>
+    <script src="/reg-sw.js"></script>
+
+</head>
+
+<body>
+    <style>
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 999;
+            width: 100%;
+            height: 100vh;
+            padding: 15px;
+            display: flex;
+        }
+
+        .loader.is--loaded {
+            display: none;
+        }
+
+        .loader__logo {
+            margin-bottom: 35px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .loader__progress {
+            width: 100%;
+            height: 28px;
+            max-width: 340px;
+            padding: 4px;
+            border-radius: 100px;
+            position: relative;
+        }
+
+        .loader__progress::before {
+            position: absolute;
+            content: '';
+            left: 4px;
+            top: 4px;
+            border-radius: 100px;
+            width: calc(100% - 8px);
+            height: calc(100% - 8px);
+            background-color: #fff;
+        }
+
+        .loader__progress-line {
+            position: relative;
+            z-index: 2;
+            width: 0;
+            height: 100%;
+            border-radius: 100px;
+            transition: width 0.5s ease;
+        }
+
+        @media (max-width: 767px) {
+            .loader__progress {
+                max-width: 220px;
+            }
+        }
+    </style>
+    <div class="loader">
+        <img class="loader__logo" src="http://localhost:3000/assets/forestFortune4/img/logo.webp" alt="logo">
+        <div class="loader__progress">
+            <div class="loader__progress-line"></div>
+        </div>
+    </div>
+    <script>
+        let progressInterval = null
+        const progressLine = document.querySelector('.loader__progress-line')
+        const loader = document.querySelector('.loader')
+
+        function increaseLoaderProgress() {
+            let width = 0
+            progressInterval = setInterval(() => {
+                if (width >= 99) {
+                    progressLine.style.width = '100%'
+                } else {
+                    width += 2
+                    progressLine.style.width = width + '%'
+                }
+            }, 1000)
+        }
+
+        increaseLoaderProgress()
+
+        function addLoadedClass() {
+            loader.classList.add('is--loaded')
+        }
+
+        function setLoaderProgressTo100() {
+            setTimeout(() => {
+                progressLine.style.width = '100%'
+                clearInterval(progressInterval)
+                setTimeout(() => {
+                    addLoadedClass()
+                }, 800)
+            }, 600)
+        }
+
+        window.addEventListener('load', setLoaderProgressTo100);
+    </script>
+
+
+
+    <div class="body-wrapper">
+        <div class="game" id="game" data-rate="100" data-currency="₽">
+            <div class="game-field" id="game-field">
+                <div class="game-field__effect">
+                    <span class="game-field__effect-flare is--1"></span>
+                    <span class="game-field__effect-flare is--2"></span>
+                </div>
+
+                <div class="game-field__target">
+                    <div class="game-field__logo">
+                        <span class="fire is--1"></span>
+                        <span class="fire is--2"></span>
+                        <img src="http://localhost:3000/assets/forestFortune4/img/logo-wide.webp" alt="">
+                    </div>
+
+                    <div class="game-field__multipliers">
+                        <span class="game-field__multipliers-item is--1"><span>X 0.2</span></span>
+                        <span class="game-field__multipliers-item is--2"><span>X 3</span></span>
+                        <span class="game-field__multipliers-item is--3"><span>X 10</span></span>
+                        <span class="game-field__multipliers-item is--4"><span>X 50</span></span>
+                    </div>
+                    <div class="game-field__arrows" id="game-field-arrows"></div>
+                </div>
+            </div>
+
+            <div class="game-stats">
+                <div class="game-stats__list">
+                    <div class="game-stats__list-top">
+                        <span class="game-stats__list-title">LAST WINS</span>
+                        <ul class="game-stats__list-items" id="game-stats-win-list"></ul>
+                    </div>
+                    <div class="game-stats__list-bottom">
+                        <span class="game-stats__list-bottom-label">TOTAL WIN</span>
+                        <span class="game-stats__list-bottom-value">
+                            <span id="game-stats-win-balance">0</span>
+                            <span class="game-stats__list-bottom-value-symbol">₽</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="game-stats__balance">
+                    <div class="game-controls__balance">
+                        <div class="game-controls__balance-inner">
+                            <span class="game-controls__balance-label">BALANCE</span>
+                            <span class="game-controls__balance-value">
+                                <span class="game-controls__balance-value-symbol">₽</span>
+                                <span id="game-stats-balance">0</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="game-controls__balance is--total">
+                        <div class="game-controls__balance-inner">
+                            <span class="game-controls__balance-label">TOTAL BET</span>
+                            <span class="game-controls__balance-value">
+                                <span class="game-controls__balance-value-symbol">₽</span>
+                                <span>100</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-controls">
+                <div class="game-controls__container">
+                    <div class="game-controls__difficult">
+                        <div class="game-controls__difficult-block">
+                            <div class="game-controls__difficult-block-left">
+                                <span class="game-controls__difficult-block-label">DIFFICULTY</span>
+                                <span class="game-controls__difficult-block-value">
+                                    <span>MEDIUM</span>
+                                </span>
+                            </div>
+                            <div class="game-controls__difficult-block-right">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="50" viewBox="0 0 24 50"
+                                    fill="none">
+                                    <path d="M22.5 11.8966L11.8966 2L2 11.8966" stroke="#FBB03B" stroke-width="2.82759"
+                                        stroke-linecap="round" />
+                                    <path d="M22.5 37.9003L11.8966 47.7969L2 37.9003" stroke="#FBB03B"
+                                        stroke-width="2.82759" stroke-linecap="round" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="game-controls__main">
+                        <div class="game-controls__main-block">
+                            <div class="game-controls__main-block-inner">
+                                <div class="game-controls__main-block-left">
+                                    <span class="game-controls__main-block-label">BET</span>
+                                    <span class="game-controls__main-block-value">
+                                        <span class="game-controls__main-block-value-symbol">₽</span>
+                                        <span>100</span>
+                                    </span>
+                                </div>
+                                <div class="game-controls__main-block-right">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="50" viewBox="0 0 24 50"
+                                        fill="none">
+                                        <path d="M22.5 11.8966L11.8966 2L2 11.8966" stroke="#EFB7A1"
+                                            stroke-width="2.82759" stroke-linecap="round" />
+                                        <path d="M22.5 37.9003L11.8966 47.7969L2 37.9003" stroke="#EFB7A1"
+                                            stroke-width="2.82759" stroke-linecap="round" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="game-controls__main-btn">
+
+                            <button class="bottom__section-button pulse" id="go-btn" data-spins="1">
+                                <span class="bottom__section-button-default" id="go-btn-default-text"> Test 5</span>
+                                <span class="bottom__section-button-next" id="go-btn-next-text"> </span>
+                            </button>
+
+
+                        </div>
+                        <div class="game-controls__main-block is--reverse">
+                            <div class="game-controls__main-block-inner">
+                                <div class="game-controls__main-block-right">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="50" viewBox="0 0 24 50"
+                                        fill="none">
+                                        <path d="M22.5 11.8966L11.8966 2L2 11.8966" stroke="#EFB7A1"
+                                            stroke-width="2.82759" stroke-linecap="round" />
+                                        <path d="M22.5 37.9003L11.8966 47.7969L2 37.9003" stroke="#EFB7A1"
+                                            stroke-width="2.82759" stroke-linecap="round" />
+                                    </svg>
+                                </div>
+                                <div class="game-controls__main-block-left">
+                                    <span class="game-controls__main-block-label">ARROWS</span>
+                                    <span class="game-controls__main-block-value">
+                                        <span>1</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="game-controls__balance is--total">
+                        <div class="game-controls__balance-inner">
+                            <span class="game-controls__balance-label">TOTAL BET</span>
+                            <span class="game-controls__balance-value">
+                                <span class="game-controls__balance-value-symbol">₽</span>
+                                <span>100</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="game-controls__balance">
+                        <div class="game-controls__balance-inner">
+                            <span class="game-controls__balance-label">BALANCE</span>
+                            <span class="game-controls__balance-value">
+                                <span class="game-controls__balance-value-symbol">₽</span>
+                                <span id="game-controls-balance">0</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal" id="modal">
+            <div class="modal__effect">
+                <span class="modal__effect-flare is--1"></span>
+                <span class="modal__effect-flare is--2"></span>
+            </div>
+
+            <div class="modal__wrapper">
+                <div class="modal__content">
+                    <div class="modal__win">
+                        <img src="http://localhost:3000/assets/forestFortune4/img/modal-win.webp" alt="">
+                    </div>
+
+                    <div class="modal__balance">
+                        <div class="modal__balance-value">
+                            <span id="modal-balance">1000.00</span> ₽
+                        </div>
+                    </div>
+
+                    <div class="modal__target">
+                        <img class="modal__target-bg" src="assets/forestFortune4/img/modal-target.webp" alt="">
+                        <img class="modal__target-hole" src="assets/forestFortune4/img/arrow-hole.webp" alt="">
+                        <span class="fire is--1"></span>
+                        <img class="modal__target-arrow" src="assets/forestFortune4/img/modal-target-arrow.webp" alt="">
+                        <span class="fire is--2"></span>
+                    </div>
+
+                    <div class="modal__win-btn">
+
+                        <button type="button" id="win-button-modal" class="bottom__section-button is--link">
+                            <span>Test bonus</span>
+                        </button>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="effects hidden" id="effects">
+            <img loading="lazy" class="effects__image hidden" id="effects-image"
+                src="http://localhost:3000/assets/general/images/effects/desctop_golden_confetti.gif" alt="red_flare">
+        </div>
+    </div>
+
+    <div class="devMode dev-mode" id="devMode">
+        <button class="menu-button" id="toggleMenu">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 20 20" fill="none"
+                class="open">
+                <path fill="currentColor" fill-rule="evenodd"
+                    d="M19 4a1 1 0 01-1 1H2a1 1 0 010-2h16a1 1 0 011 1zm0 6a1 1 0 01-1 1H2a1 1 0 110-2h16a1 1 0 011 1zm-1 7a1 1 0 100-2H2a1 1 0 100 2h16z" />
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="close"
+                viewBox="0 0 384 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                <path
+                    d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
+            </svg>
+        </button>
+        <div class="dev-mode__wrapper" id="settingsWrapper">
+            <form id="settingsForm">
+                <textarea id="settingsTextarea" rows="10" cols="30"></textarea>
+                <br>
+                <button type="button" id="getSettings">Отримати</button>
+                <button type="button" id="submitSettings">Оновити</button>
+            </form>
+        </div>
+    </div>
+    <style>
+        .dev-mode {
+            visibility: hidden;
+            display: none;
+        }
+
+        .dev-mode.is--active {
+            visibility: visible;
+            display: flex;
+        }
+
+        .dev-mode .menu-button {
+            font-size: 20px;
+            color: #fff;
+            background: transparent;
+            box-shadow: none;
+            border: none;
+            position: fixed;
+            right: 10px;
+            top: 10px;
+            z-index: 999;
+            cursor: pointer;
+        }
+
+        .dev-mode .menu-button svg {
+            fill: #fff;
+            width: 30px;
+            height: 30px;
+        }
+
+        .dev-mode .menu-button .close {
+            display: none;
+        }
+
+        .dev-mode .menu-button.is--open .close {
+            display: flex;
+        }
+
+        .dev-mode .menu-button.is--open .open {
+            display: none;
+        }
+
+        .dev-mode {}
+
+        .dev-mode__wrapper {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+            z-index: 998;
+            display: none;
+        }
+
+        .dev-mode__wrapper.is--open {
+            display: flex;
+        }
+
+        .dev-mode__wrapper:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+        }
+
+        .dev-mode__wrapper form {
+            width: 100%;
+            padding: 30px;
+        }
+
+        .dev-mode__wrapper textarea {
+            width: 100%;
+            height: 500px;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .dev-mode__wrapper button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+    </style>
+    <script>
+        function checkDevMode() {
+            const urlParams = new URLSearchParams(window.location.search)
+            const devMode = urlParams.get('devMode')
+            const devModeContainer = document.getElementById('devMode')
+
+            if (devMode === 'true') {
+                devModeContainer.classList.add('is--active')
+            } else if (devMode === 'false') {
+                devModeContainer.classList.remove('is--active')
+            }
+        }
+        document.getElementById('toggleMenu').addEventListener('click', () => {
+            const menuButton = document.getElementById('toggleMenu')
+            const menu = document.getElementById('settingsWrapper')
+            menuButton.classList.toggle('is--open')
+            menu.classList.toggle('is--open')
+        })
+        document.getElementById('getSettings').addEventListener('click', async () => {
+            try {
+                const response = await fetch('/settings')
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`)
+                }
+                const data = await response.json()
+                document.getElementById('settingsTextarea').value = JSON.stringify(data, null, 2)
+            } catch (error) {
+                console.error('Error fetching settings:', error)
+            }
+        })
+        document.getElementById('submitSettings').addEventListener('click', async () => {
+            try {
+                const settings = document.getElementById('settingsTextarea').value
+                const response = await fetch('/settings', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: settings
+                })
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`)
+                }
+                window.location.reload()
+            } catch (error) {
+                console.error('Error:', error)
+            }
+        })
+        window.addEventListener('DOMContentLoaded', checkDevMode);
+    </script>
+
+    <script src="http://localhost:3000/assets/forestFortune4/js/app.min.js"></script>
+    <script src="http://localhost:3000/assets/general/common.min.js"></script>
+
+    <script>
+        window.keitaro = false
+    </script>
+
+
+
+
+    <script>
+        window.template = 'forestFortune4';
+    </script>
+
+
+
+
+
+
+
+
+
+    <script defer src="http://localhost:3000/assets/general/commonBonuses.min.js"></script>
+
+
+
+</body>
+
+</html>
