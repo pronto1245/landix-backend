@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
@@ -36,16 +36,18 @@ export class AuthController {
   @ApiOperation({ summary: 'Редирект на Google OAuth (не работает из Swagger)' })
   @ApiResponse({ status: 302, description: 'Редирект на Google' })
   @UseGuards(AuthGuard('google'))
-  async googleAuth() {
-    return { msg: 'redirecting to Google...' };
-  }
+  async googleAuth() {}
 
   @Get('google/callback')
   @ApiOperation({ summary: 'Callback от Google после входа' })
   @ApiResponse({ status: 200, description: 'Токен пользователя после Google авторизации' })
   @UseGuards(AuthGuard('google'))
-  async googleCallback(@Req() req) {
-    return req.user;
+  async googleCallback(@Req() req, @Res() res) {
+    const tokens = req.user;
+
+    return res.redirect(
+      `${process.env.FRONTEND_URL}/?access=${tokens.accessToken}&refresh=${tokens.refreshToken}`
+    );
   }
 
   @Post('refresh')
