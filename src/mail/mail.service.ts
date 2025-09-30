@@ -1,6 +1,8 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
 
+import { passwordRecovery } from './letters/passwordRecovery';
+
 @Injectable()
 export class MailService {
   constructor(private readonly mailerService: MailerService) {}
@@ -10,11 +12,7 @@ export class MailService {
       from: process.env.MAIL_USER,
       to,
       subject: 'Восстановление пароля',
-      html: `
-        <p>Вы запросили восстановление пароля.</p>
-        <p>Ссылка действительна 30 минут:</p>
-        <p><a href="${link}">${link}</a></p>
-      `
+      html: passwordRecovery({ link })
     });
   }
 
