@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
@@ -46,5 +46,15 @@ export class UsersService {
       }
     }
     return null;
+  }
+
+  async updatePassword(userId: string, hashedPassword: string) {
+    const user = await this.usersRepo.findOne({ where: { id: userId } });
+    if (!user) {
+      throw new NotFoundException('Пользователь не найден');
+    }
+
+    user.password = hashedPassword;
+    return this.usersRepo.save(user);
   }
 }

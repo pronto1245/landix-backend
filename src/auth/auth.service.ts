@@ -2,10 +2,14 @@ import {
   ConflictException,
   ForbiddenException,
   Injectable,
+  NotFoundException,
   UnauthorizedException
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import * as crypto from 'node:crypto';
+import { MailService } from 'src/mail/mail.service';
+import { RedisService } from 'src/redis/redis.service';
 import { User } from 'src/users/entities/user.entity';
 
 import { UsersService } from '../users/users.service';
@@ -13,8 +17,10 @@ import { UsersService } from '../users/users.service';
 @Injectable()
 export class AuthService {
   constructor(
+    private readonly redis: RedisService,
     private usersService: UsersService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private mail: MailService
   ) {}
 
   async validateUser(email: string, password: string) {
@@ -108,5 +114,44 @@ export class AuthService {
     }
 
     return this.login(user);
+  }
+
+  async requestPasswordReset(email: string) {
+    const user = await this.usersService.findByEmail(email);
+
+    if (!user) throw new NotFoundException('Пользователь не найден');
+
+    const rawToken = crypto.randomBytes(32).toString('hex');
+
+    const link = `${process.env.FRONTEND_URL}/reset-password?token=${rawToken}`;
+
+    await this.mail.sendPasswordResetEmail(user.email, link);
+
+    const client = this.redis.getClient();
+    await client.setex(`reset:${rawToken}`, 60 * 1, user.id);
+
+    return { message: 'Письмо отправлено' };
+  }
+
+  async confirmPasswordReset(token: string, newPassword: string) {
+    const client = this.redis.getClient();
+    const userId = await client.get(`reset:${token}`);
+
+    if (!userId) {
+      throw new UnauthorizedException('Токен недействителен или истёк');
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await this.usersService.updatePassword(userId, hashedPassword);
+
+    await client.del(`reset:${token}`);
+
+    const user = await this.usersService.findById(userId);
+
+    if (user) {
+      await this.mail.sendPasswordChangedEmail(user.email);
+    }
+
+    return { message: 'Пароль успешно обновлён' };
   }
 }

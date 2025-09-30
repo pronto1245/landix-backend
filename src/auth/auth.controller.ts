@@ -8,6 +8,7 @@ import { LoginDto } from './dto/login.dto';
 import { RefreshResponseDto } from './dto/refresh-response.dto';
 import { RegisterResponseDto } from './dto/register-response.dto';
 import { RegisterDto } from './dto/register.dto';
+import { PasswordResetConfirmDto, PasswordResetRequestDto } from './dto/reset-password.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -20,6 +21,33 @@ export class AuthController {
   @ApiResponse({ status: 409, description: 'Пользователь уже существует' })
   register(@Body() body: RegisterDto) {
     return this.authService.register(body.email, body.password);
+  }
+
+  @Post('password-reset/request')
+  @ApiOperation({ summary: 'Запрос восстановления пароля' })
+  @ApiResponse({
+    status: 200,
+    description:
+      'Если email существует, на него будет отправлено письмо со ссылкой для восстановления.'
+  })
+  @ApiBody({ type: PasswordResetRequestDto })
+  async requestPasswordReset(@Body() dto: PasswordResetRequestDto) {
+    return await this.authService.requestPasswordReset(dto.email);
+  }
+
+  @Post('password-reset/confirm')
+  @ApiOperation({ summary: 'Подтверждение восстановления пароля' })
+  @ApiResponse({
+    status: 200,
+    description: 'Пароль успешно обновлён.'
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Токен недействителен или истёк.'
+  })
+  @ApiBody({ type: PasswordResetConfirmDto })
+  async confirmPasswordReset(@Body() dto: PasswordResetConfirmDto) {
+    return await this.authService.confirmPasswordReset(dto.token, dto.newPassword);
   }
 
   @Post('login')
