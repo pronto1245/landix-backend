@@ -1,6 +1,9 @@
 import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+import { User } from 'src/users/entities/user.entity';
 
 import { AuthService } from './auth.service';
 import { LoginResponseDto } from './dto/login-response.dto';
@@ -93,9 +96,10 @@ export class AuthController {
   }
 
   @Post('logout')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Выход, инвалидирует refresh_token' })
-  @ApiBody({ schema: { example: { userId: 'uuid' } } })
-  logout(@Body() body: { userId: string }) {
-    return this.authService.logout(body.userId);
+  logout(@CurrentUser() user: User) {
+    return this.authService.logout(user.id);
   }
 }
