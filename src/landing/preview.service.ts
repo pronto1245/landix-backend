@@ -1,4 +1,3 @@
-// src/preview/preview.service.ts
 import { Injectable } from '@nestjs/common';
 import * as cheerio from 'cheerio';
 import * as fs from 'node:fs/promises';

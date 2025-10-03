@@ -462,12 +462,12 @@ img {
   width: 120vw;
   height: 120vh;
   background-position: center top;
-  background-image: url(http://localhost:3000/assets/aviatorTwo/img/page-bg.webp);
+  background-image: url(/assets/aviatorTwo/img/page-bg.webp);
   animation: 10s scaleBgEffect ease-in-out infinite;
 }
 @media (max-width: 767px) {
   .body-wrapper::after {
-    background-image: url(http://localhost:3000/assets/aviatorTwo/img/page-bg-mobile.webp);
+    background-image: url(/assets/aviatorTwo/img/page-bg-mobile.webp);
   }
 }
 .body-wrapper::before {
@@ -481,12 +481,12 @@ img {
   background-repeat: no-repeat;
   background-position: center top;
   mix-blend-mode: hard-light;
-  background-image: url(http://localhost:3000/assets/aviatorTwo/img/page-bg-effect.webp);
+  background-image: url(/assets/aviatorTwo/img/page-bg-effect.webp);
   animation: 6s moveBgEffect ease-in-out infinite;
 }
 @media (max-width: 1023px) {
   .body-wrapper::before {
-    background-image: url(http://localhost:3000/assets/aviatorTwo/img/page-bg-mobile-effect.webp);
+    background-image: url(/assets/aviatorTwo/img/page-bg-mobile-effect.webp);
   }
 }
 .container {
@@ -517,7 +517,7 @@ img {
   max-width: 1560px;
   max-height: 820px;
   background-position: center;
-  background-image: url(http://localhost:3000/assets/aviatorTwo/img/frame.webp);
+  background-image: url(/assets/aviatorTwo/img/frame.webp);
   transform: scale(0.9);
 }
 @media (max-width: 1023px) {
@@ -525,7 +525,7 @@ img {
     width: 82em;
     height: 160em;
     max-height: unset;
-    background-image: url(http://localhost:3000/assets/aviatorTwo/img/frame-mob.webp);
+    background-image: url(/assets/aviatorTwo/img/frame-mob.webp);
     transform: none;
   }
 }
@@ -739,7 +739,7 @@ img {
   width: 21em;
   min-height: 70px;
   padding: 0 12em;
-  background-image: url(http://localhost:3000/assets/aviatorTwo/img/button_effect.webp);
+  background-image: url(/assets/aviatorTwo/img/button_effect.webp);
   animation: 3s blink ease-in-out infinite;
 }
 .aviator-game .bottom__section .bottom__section-button {
@@ -752,8 +752,7 @@ img {
   border: 0;
   text-decoration: none;
   white-space: nowrap;
-  background: url(http://localhost:3000/assets/aviatorTwo/img/button_middle.webp) repeat-x center
-    center;
+  background: url(/assets/aviatorTwo/img/button_middle.webp) repeat-x center center;
   background-size: contain;
   cursor: pointer;
 }
@@ -789,12 +788,12 @@ img {
 .aviator-game .bottom__section .bottom__section-button::before {
   left: -2em;
   background-position: left;
-  background-image: url(http://localhost:3000/assets/aviatorTwo/img/button_left.webp);
+  background-image: url(/assets/aviatorTwo/img/button_left.webp);
 }
 .aviator-game .bottom__section .bottom__section-button::after {
   right: -2em;
   background-position: right;
-  background-image: url(http://localhost:3000/assets/aviatorTwo/img/button_right.webp);
+  background-image: url(/assets/aviatorTwo/img/button_right.webp);
 }
 .aviator-game .bottom__section .bottom__section-button span {
   position: relative;
@@ -854,7 +853,7 @@ img {
   height: 82.5em;
   background-size: 155em 82.5em;
   background-repeat: no-repeat;
-  background-image: url(http://localhost:3000/assets/aviatorTwo/img/traectory.webp);
+  background-image: url(/assets/aviatorTwo/img/traectory.webp);
 }
 @media (max-width: 1023px) {
   .aviator-game__traectory {
@@ -862,7 +861,7 @@ img {
     bottom: 5em;
     height: 160em;
     background-size: 80em 155em;
-    background-image: url(http://localhost:3000/assets/aviatorTwo/img/traectory-mob.webp);
+    background-image: url(/assets/aviatorTwo/img/traectory-mob.webp);
   }
 }
 @media (max-width: 389px) {
@@ -886,7 +885,7 @@ img {
   display: block;
   width: 29.5em;
   height: 18em;
-  background-image: url(http://localhost:3000/assets/aviatorTwo/img/airplane.webp);
+  background-image: url(/assets/aviatorTwo/img/airplane.webp);
 }
 @media (max-width: 1023px) {
   .aviator-game__traectory::after,
@@ -906,7 +905,7 @@ img {
   width: 90em;
   height: 70em;
   display: none;
-  background-image: url(http://localhost:3000/assets/aviatorTwo/img/coins.gif);
+  background-image: url(/assets/aviatorTwo/img/coins.gif);
   transform: rotate(10deg) translate(9em, 47em);
 }
 @media (max-width: 1023px) {
