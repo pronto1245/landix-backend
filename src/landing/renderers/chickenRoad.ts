@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
 
 import { PreviewDto } from '../dto/preview.dto';
-import { appendInitScript, applyBonuses, setAttr, setText } from '../utils/utils';
+import { applyBonuses, setAttr, setText } from '../utils/utils';
 
 export function renderChickenRoad($: cheerio.CheerioAPI, payload: PreviewDto) {
   const $$ = cheerio.load($.html());
@@ -98,35 +98,12 @@ export function renderChickenRoad($: cheerio.CheerioAPI, payload: PreviewDto) {
     console.warn(e);
   }
 
-  // ===== "Test bonus" кнопка (win-button-modal) =====
-  // Приоритет: sectors.bonuses.modal.button > effects.modal.button
   {
     const bonusBtnText = s?.bonuses?.modal?.button ?? payload.effects?.modal?.button ?? '';
     if (bonusBtnText) setText($, '#win-button-modal span', bonusBtnText);
   }
 
-  // ===== БОНУСЫ (inline / onPageLeave / gif / тексты) =====
   applyBonuses($, s.bonuses);
-
-  // ===== INIT / безопасный хук =====
-  appendInitScript(
-    $,
-    `
-      (function () {
-        try {
-          // Тема сама читает DOM (#rate[data-multipliers], сектора и т.д.).
-          // Держим тихий лог для отладки превью.
-          window.addEventListener('load', function () {
-            try {
-              console.log('[chickenRoad] preview init OK');
-            } catch (e) {
-              console.warn('[chickenRoad] init error', e);
-            }
-          });
-        } catch (e) {}
-      })();
-    `
-  );
 
   return $;
 }

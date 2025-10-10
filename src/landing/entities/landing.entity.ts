@@ -1,40 +1,52 @@
+import { Team } from 'src/team/entities/team.entity';
+import { User } from 'src/users/entities/user.entity';
 // src/landings/entities/landing.entity.ts
 import {
   Column,
   CreateDateColumn,
   Entity,
   Index,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
 
-@Entity('landing')
+@Entity('landings')
 export class Landing {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  /** 🔹 Кто создал лендинг */
+  @ManyToOne(() => User, { nullable: false })
+  @JoinColumn({ name: 'creatorId' })
   @Index()
-  @Column({ type: 'uuid', nullable: true })
-  memberId: string | null;
+  creator: User;
 
+  /** 🔹 Команда-владелец */
+  @ManyToOne(() => Team, { nullable: false })
+  @JoinColumn({ name: 'teamId' })
   @Index()
+  team: Team;
+
+  /** 🔹 Основные поля */
   @Column({ type: 'varchar', length: 200 })
-  name: string; // внутр. имя для списка
+  name: string;
 
   @Column({ type: 'varchar', length: 200 })
-  title: string; // meta title
+  title: string;
 
   @Column({ type: 'text', nullable: true })
   description: string | null;
 
   @Column({ type: 'varchar', length: 50 })
-  gameType: string; // e.g. 'wheels', 'plinko'...
+  gameType: string;
 
   @Column({ type: 'varchar', length: 120 })
-  template: string; // e.g. '3HotChiliesThree'
+  template: string;
 
   @Column({ type: 'varchar', length: 200 })
-  view: string; // e.g. 'landing-pages/3HotChiliesThree'
+  view: string;
 
   @Column({ type: 'varchar', length: 8, default: 'en' })
   locale: string;
@@ -42,17 +54,25 @@ export class Landing {
   @Column({ type: 'int', default: 1 })
   spins: number;
 
+  /** 🔹 JSON-поля */
   @Column({ type: 'jsonb', default: {} })
-  sectors: any; // структура как в твоём примере (list[8], шрифты, бонусы, и т.д.)
+  sectors: any;
 
   @Column({ type: 'jsonb', default: {} })
-  effects: any; // модалки/эффекты
+  effects: any;
 
+  @Column({ type: 'jsonb', default: {} })
+  bonuses: any;
+
+  @Column({ type: 'jsonb', default: {} })
+  freeBet: any;
+
+  @Column({ type: 'jsonb', default: {} })
+  font: any;
+
+  /** 🔹 Прочее */
   @Column({ type: 'varchar', length: 500, nullable: true })
   redirect: string | null;
-
-  @Column({ type: 'jsonb', default: {} })
-  extra: any; // сюда можно сложить всё остальное: pwaName, currency, freeBet и т.д.
 
   @CreateDateColumn()
   createdAt: Date;

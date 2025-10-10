@@ -1,3 +1,4 @@
+import { Team } from 'src/team/entities/team.entity';
 import { User } from 'src/users/entities/user.entity';
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -6,8 +7,11 @@ export class CryptoPayment {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { nullable: true })
   user: User;
+
+  @ManyToOne(() => Team, { nullable: true, eager: true })
+  team: Team;
 
   @Column()
   currency: string;

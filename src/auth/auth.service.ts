@@ -10,6 +10,7 @@ import * as bcrypt from 'bcrypt';
 import * as crypto from 'node:crypto';
 import { MailService } from 'src/mail/mail.service';
 import { RedisService } from 'src/redis/redis.service';
+import { TeamService } from 'src/team/team.service';
 import { User } from 'src/users/entities/user.entity';
 
 import { UsersService } from '../users/users.service';
@@ -19,6 +20,7 @@ export class AuthService {
   constructor(
     private readonly redis: RedisService,
     private usersService: UsersService,
+    private teamService: TeamService,
     private jwtService: JwtService,
     private mail: MailService
   ) {}
@@ -45,7 +47,7 @@ export class AuthService {
   }
 
   async generateTokens(user: User) {
-    const payload = { sub: user.id, email: user.email, role: user.role };
+    const payload = { sub: user.id, email: user.email };
 
     const accessToken = await this.jwtService.signAsync(payload, {
       secret: process.env.JWT_SECRET,
@@ -66,12 +68,16 @@ export class AuthService {
   }
 
   async login(user: User) {
+    if (!user.activeTeam) {
+      const defaultTeam = await this.teamService.createDefaultTeamForUser(user);
+      user.activeTeam = defaultTeam;
+      await this.usersService.update(user.id, { activeTeam: defaultTeam });
+    }
+
     const tokens = await this.generateTokens(user);
     await this.updateRefreshToken(user.id, tokens.refreshToken);
-    return {
-      ...tokens,
-      user
-    };
+
+    return { ...tokens, user };
   }
 
   async register(email: string, password: string) {

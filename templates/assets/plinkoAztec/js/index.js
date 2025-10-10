@@ -16,11 +16,10 @@ class PlinkoGame {
       (this.winBonusBtn = document.getElementById('win-bonus-button-modal')),
       (this.ctx = this.canvasElement.getContext('2d')),
       (this.canvasEmSize = this.getEmSize(this.canvasElement)),
-      (this.winSoundPath = 'http://localhost:3000/assets/general/sound/plinko-win.mp3'),
-      (this.clickSoundPath = 'http://localhost:3000/assets/general/sound/plinko-click.mp3'),
-      (this.wheelSoundPath = 'http://localhost:3000/assets/general/sound/plinko-wheel.mp3'),
-      (this.ballFallenSoundPath =
-        'http://localhost:3000/assets/general/sound/plinko-ball-fallen.mp3'),
+      (this.winSoundPath = '/assets/general/sound/plinko-win.mp3'),
+      (this.clickSoundPath = '/assets/general/sound/plinko-click.mp3'),
+      (this.wheelSoundPath = '/assets/general/sound/plinko-wheel.mp3'),
+      (this.ballFallenSoundPath = '/assets/general/sound/plinko-ball-fallen.mp3'),
       (this.pegRadius = 0.8 * this.canvasEmSize),
       (this.ballRadius = this.canvasEmSize),
       (this.gravity = 0.4),
@@ -35,10 +34,10 @@ class PlinkoGame {
       (this.initialBallVelocityMultiplier = 2),
       (this.numberOfBallsToDrop = 10),
       (this.numberBonusOfBallsToDrop = 10),
-      (this.spinsCount = parseInt(this.gameElement.dataset.spins)),
+      (this.spinsCount = Number.parseInt(this.gameElement.dataset.spins)),
       (this.scoreValues = this.gameElement.dataset.list.split(',').map(Number)),
-      (this.balanceMin = parseFloat(this.gameElement.dataset.balancemin)),
-      (this.balanceMax = parseFloat(this.gameElement.dataset.balancemax)),
+      (this.balanceMin = Number.parseFloat(this.gameElement.dataset.balancemin)),
+      (this.balanceMax = Number.parseFloat(this.gameElement.dataset.balancemax)),
       (this.balls = []),
       (this.pegs = []),
       (this.slots = []),
@@ -76,7 +75,7 @@ class PlinkoGame {
   initSpin() {
     (this.setGameDisable(),
       this.playSound(this.clickSoundPath),
-      window.isMobile && window.pushPlacement && !window.firstClick && 0 === this.spin
+      window.isMobile && window.pushPlacement && !window.firstClick && this.spin === 0
         ? window.dispatchEvent(
             new CustomEvent('placementFirstClick', { detail: [this.dropBall.bind(this)] })
           )
@@ -94,15 +93,15 @@ class PlinkoGame {
       this.draw());
   }
   populatePegs() {
-    const t = this.canvasEmSize * this.pegStartingYMultiplier,
-      s = this.canvasWidth / (this.numberOfPegRows / 0.8),
-      e = this.canvasHeight / (this.numberOfPegRows / 0.8);
+    const t = this.canvasEmSize * this.pegStartingYMultiplier;
+    const s = this.canvasWidth / (this.numberOfPegRows / 0.8);
+    const e = this.canvasHeight / (this.numberOfPegRows / 0.8);
     for (let i = 0; i < this.numberOfPegRows; i++) {
-      const a = i + this.startRowPegsMultiplier,
-        n = (this.canvasWidth - (a - 1) * s) / 2;
+      const a = i + this.startRowPegsMultiplier;
+      const n = (this.canvasWidth - (a - 1) * s) / 2;
       for (let l = 0; l < a; l++) {
-        const a = n + l * s,
-          h = t + i * e;
+        const a = n + l * s;
+        const h = t + i * e;
         this.pegs.push({ x: a, y: h, radius: this.pegRadius });
       }
     }
@@ -152,13 +151,13 @@ class PlinkoGame {
           : e.x + e.radius > this.canvasWidth &&
             ((e.x = this.canvasWidth - e.radius), (e.vx *= -this.bounceDamping)),
         this.pegs.forEach((t) => {
-          const s = e.x - t.x,
-            i = e.y - t.y,
-            a = Math.sqrt(s * s + i * i);
+          const s = e.x - t.x;
+          const i = e.y - t.y;
+          const a = Math.sqrt(s * s + i * i);
           if (a < e.radius + t.radius) {
-            const n = s / a,
-              l = i / a,
-              h = e.vx * n + e.vy * l;
+            const n = s / a;
+            const l = i / a;
+            const h = e.vx * n + e.vy * l;
             if (h < 0) {
               ((e.vx = (e.vx - 2 * h * n) * this.bounceDamping),
                 (e.vy = (e.vy - 2 * h * l) * this.bounceDamping));
@@ -184,7 +183,7 @@ class PlinkoGame {
           this.updateCircleProgressBar(),
           this.balls.splice(t, 1),
           this.activeBallsCount--,
-          0 === this.activeBallsCount &&
+          this.activeBallsCount === 0 &&
             (this.isBonusBallDropActive
               ? setTimeout(() => {
                   (this.showEffects(0),
@@ -250,10 +249,10 @@ class PlinkoGame {
   }
   updateProgressBar() {
     if (this.spin <= this.spinsCount) {
-      const t = this.spinsCount * this.numberOfBallsToDrop,
-        s =
-          (this.spin - 1) * this.numberOfBallsToDrop +
-          (this.numberOfBallsToDrop - this.activeBallsCount);
+      const t = this.spinsCount * this.numberOfBallsToDrop;
+      const s =
+        (this.spin - 1) * this.numberOfBallsToDrop +
+        (this.numberOfBallsToDrop - this.activeBallsCount);
       ((this.currentProgressBarWidth =
         s <= 0.75 * t ? (s / (0.75 * t)) * 75 : 75 + ((s - 0.75 * t) / (0.25 * t)) * 25),
         (this.currentProgressBarWidth = Math.min(this.currentProgressBarWidth, 100)));
@@ -267,17 +266,17 @@ class PlinkoGame {
       (this.gameProgressElementMobile.style.width = '0%'));
   }
   updateCircleProgressBar() {
-    const t = (this.ballsDroppedCount / this.totalBallsAcrossAllSpins) * 100,
-      s = Math.max(0, Math.min(100, t)),
-      e = this.circleProgressBarMaxOffset - this.circleProgressBarMinOffset,
-      i = this.circleProgressBarMaxOffset - (s / 100) * e;
+    const t = (this.ballsDroppedCount / this.totalBallsAcrossAllSpins) * 100;
+    const s = Math.max(0, Math.min(100, t));
+    const e = this.circleProgressBarMaxOffset - this.circleProgressBarMinOffset;
+    const i = this.circleProgressBarMaxOffset - (s / 100) * e;
     (this.gameProgressРЎircleElement1 &&
       (this.gameProgressРЎircleElement1.style.strokeDashoffset = i.toFixed(2)),
       this.gameProgressРЎircleElement2 &&
         (this.gameProgressРЎircleElement2.style.strokeDashoffset = i.toFixed(2)));
   }
   getEmSize(t) {
-    return parseFloat(window.getComputedStyle(t).fontSize);
+    return Number.parseFloat(window.getComputedStyle(t).fontSize);
   }
   setGameDisable() {
     this.gameElement.classList.add('is--disabled');
@@ -360,12 +359,12 @@ class PlinkoGame {
   }
   calculateButtonScale(t, s = { min: 0.5, max: 1, step: 0.07 }) {
     if (!t) return;
-    const e = t.getBoundingClientRect().width,
-      i = window.innerWidth;
+    const e = t.getBoundingClientRect().width;
+    const i = window.innerWidth;
     if (e <= i) return void (t.style.transform = `scale(${s.max})`);
-    const a = e / i,
-      n = Math.max(s.max - (a - 1) * s.step * 10, s.min),
-      l = t.querySelectorAll('span');
+    const a = e / i;
+    const n = Math.max(s.max - (a - 1) * s.step * 10, s.min);
+    const l = t.querySelectorAll('span');
     (l &&
       l.forEach((t) => {
         t.style.whiteSpace = 'nowrap';

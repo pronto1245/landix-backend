@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { BalanceModule } from 'src/balance/balance.module';
+import { TeamModule } from 'src/team/team.module';
 
 import { CryptoController } from './crypto.controller';
 import { CryptoService } from './crypto.service';
 import { CryptoPayment } from './entities/crypto-payment.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CryptoPayment]), BalanceModule],
+  imports: [TypeOrmModule.forFeature([CryptoPayment]), TeamModule],
   controllers: [CryptoController],
   providers: [CryptoService]
 })

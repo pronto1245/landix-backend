@@ -127,10 +127,7 @@ export function renderCrash($: cheerio.CheerioAPI, payload: PreviewDto) {
 					};
 					if (typeof window.initCrash === 'function') {
 						window.initCrash(cfg);
-					} else {
-						// Тихий лог, чтобы понять, что превью собралось
-						console.log('[crash] preview init OK', cfg);
-					}
+					} 
 				} catch(e){}
 			})();
 		`

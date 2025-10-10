@@ -152,17 +152,5 @@ export function renderBalloon($: cheerio.CheerioAPI, payload: PreviewDto) {
     `
   );
 
-  // Тихий лог, чтобы понимать, что превью подхватилось
-  appendInitScript(
-    $,
-    `
-    (function(){
-      try {
-        console.log('[balloon] preview init OK');
-      } catch(e){}
-    })();
-    `
-  );
-
   return $;
 }

@@ -20,13 +20,11 @@ export class FlowsService {
   ) {}
 
   async createFlow(dto: CreateFlowDto): Promise<Flow> {
-    const user = await this.userRepo.findOneByOrFail({ id: dto.userId });
     const domain = await this.domainRepo.findOneByOrFail({ id: dto.domainId });
     const landing = await this.landingRepo.findOneByOrFail({ id: dto.landingId });
 
     const flow = this.flowRepo.create({
       ...dto,
-      user,
       domain,
       landing
     });

@@ -17,16 +17,28 @@ export class UsersService {
   }
 
   findByEmail(email: string) {
-    return this.usersRepo.findOne({ where: { email } });
+    return this.usersRepo.findOne({
+      where: { email },
+      relations: ['activeTeam', 'activeTeam.balance']
+    });
   }
 
-  findById(id: string) {
-    return this.usersRepo.findOne({ where: { id } });
+  async findById(id: string): Promise<User> {
+    const user = await this.usersRepo.findOne({
+      where: { id },
+      relations: ['activeTeam', 'activeTeam.balance']
+    });
+    if (!user) throw new NotFoundException('User not found');
+    return user;
   }
 
   create(userData: Partial<User>) {
     const user = this.usersRepo.create(userData);
     return this.usersRepo.save(user);
+  }
+
+  update(userId: string, updateData: Partial<User>) {
+    return this.usersRepo.update(userId, updateData);
   }
 
   async updateRefreshToken(userId: string, refreshToken: string) {

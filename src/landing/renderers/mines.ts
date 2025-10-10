@@ -127,9 +127,6 @@ export function renderMines($: cheerio.CheerioAPI, payload: PreviewDto) {
           };
           if (typeof window.initMines === 'function') {
             window.initMines(cfg);
-          } else {
-            // Тихий лог, чтобы понять, что превью собралось
-            console.log('[mines] preview init OK', cfg);
           }
         } catch(e){}
       })();

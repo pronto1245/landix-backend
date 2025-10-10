@@ -1,7 +1,6 @@
 import { Domain } from 'src/domains/entities/domain.entity';
 import { FacebookPixel } from 'src/facebook/entities/facebook-pixel.entity';
 import { Landing } from 'src/landing/entities/landing.entity';
-import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -16,9 +15,6 @@ import {
 export class Flow {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @ManyToOne(() => User, (user) => user.flows)
-  user: User;
 
   @Column()
   name: string;

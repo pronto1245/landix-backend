@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
 
 import { PreviewDto } from '../dto/preview.dto';
-import { appendInitScript, applyBonuses, setAttr, setText } from '../utils/utils';
+import { applyBonuses, setAttr, setText } from '../utils/utils';
 
 export function renderIpl($: cheerio.CheerioAPI, payload: PreviewDto) {
   const $$ = cheerio.load($.html());
@@ -51,26 +51,7 @@ export function renderIpl($: cheerio.CheerioAPI, payload: PreviewDto) {
   setText($, '#modal .modal__text span', payload.effects?.modal?.text ?? '');
   setText($, '#win-button-modal span', payload.effects?.modal?.button ?? '');
 
-  // --- Общие бонусы (inline, onPageLeave, gif, тексты) ---
   applyBonuses($, s.bonuses);
-
-  // --- Безопасный init (легкий лог, тема сама читает DOM) ---
-  appendInitScript(
-    $,
-    `
-      (function(){
-        try {
-          window.addEventListener('load', function(){
-            try {
-              console.log('[iplFreebetGreen] preview init OK');
-            } catch(e){
-              console.warn('[iplFreebetGreen] init error', e);
-            }
-          });
-        } catch(e){}
-      })();
-    `
-  );
 
   return $;
 }

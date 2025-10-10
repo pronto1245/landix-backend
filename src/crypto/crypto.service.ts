@@ -1,5 +1,6 @@
 import {
   ConflictException,
+  ForbiddenException,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -7,7 +8,8 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import axios from 'axios';
-import { BalanceService } from 'src/balance/balance.service';
+import { TeamBalance } from 'src/team/entities/team-balance.entity';
+import { TeamService } from 'src/team/team.service';
 import { User } from 'src/users/entities/user.entity';
 import { DataSource, Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
@@ -26,12 +28,20 @@ export class CryptoService {
   constructor(
     @InjectRepository(CryptoPayment)
     private readonly cryptoRepo: Repository<CryptoPayment>,
-    private readonly balanceService: BalanceService,
-    private readonly dataSource: DataSource
+    private readonly dataSource: DataSource,
+    private readonly teamService: TeamService
   ) {}
 
   async createPayment(user: User, dto: CreateCryptoPaymentDto) {
     try {
+      if (!user.activeTeam) throw new NotFoundException('Команда не выбрана');
+
+      const isMember = await this.teamService.isMember(user.id, user.activeTeam.id);
+
+      if (!isMember) throw new ForbiddenException('Вы не участник этой команды');
+
+      const team = await this.teamService.findById(user.activeTeam.id);
+
       const orderId = `${user.id}-${uuid()}`;
 
       const payload = {
@@ -43,7 +53,7 @@ export class CryptoService {
           available_currencies: [dto.currency],
           cryptocurrency: dto.currency
         },
-        webhook_url: 'https://nn-purchase-organized-propose.trycloudflare.com/crypto/webhook',
+        webhook_url: 'https://platform.landix/crypto/team-webhook',
         success_url: 'https://platform.landix/success',
         fail_url: 'https://platform.landix/fail'
       };
@@ -58,6 +68,7 @@ export class CryptoService {
 
       const payment = this.cryptoRepo.create({
         user,
+        team,
         currency: result.currency.fullcode,
         amountUsd: Number(result.amount_usd),
         orderId,
@@ -77,36 +88,33 @@ export class CryptoService {
     try {
       await this.dataSource.transaction(async (manager) => {
         const paymentRepo = manager.getRepository(CryptoPayment);
+        const balanceRepo = manager.getRepository(TeamBalance);
+
         const payment = await paymentRepo.findOne({
-          where: { orderId: payload.order_id },
-          relations: ['user']
+          where: { orderId: payload.orderId },
+          relations: ['team', 'team.balance']
         });
 
-        if (!payment) {
-          this.logger.warn(`Webhook: Payment not found: ${payload.order_id}`);
-          throw new NotFoundException('Платеж не найден');
-        }
+        if (!payment) throw new NotFoundException('Платеж не найден');
 
-        if (payment.status === 'confirmed') {
-          this.logger.warn(`Webhook: Duplicate webhook for ${payment.orderId}`);
-          throw new ConflictException('Платеж уже подтвержден');
-        }
+        if (payment.status === 'confirmed') throw new ConflictException('Платеж уже подтвержден');
 
         if (payload.status === 'success') {
           payment.status = 'confirmed';
+
           await paymentRepo.save(payment);
 
-          try {
-            await this.balanceService.addDeposit(payment.user, payment.amountUsd, {
-              currency: payment.currency,
-              description: 'Crypto deposit via CryptoCloud'
-            });
+          const teamBalance = await balanceRepo.findOne({
+            where: { team: { id: payment.team.id } },
+            relations: ['team']
+          });
 
-            this.logger.log(`Webhook: Confirmed payment ${payment.orderId} and updated balance`);
-          } catch (err) {
-            this.logger.error(`Webhook: Failed to add deposit for ${payment.orderId}`, err);
-            throw new InternalServerErrorException('Ошибка при зачислении баланса');
-          }
+          if (!teamBalance) throw new NotFoundException('Баланс команды не найден');
+
+          teamBalance.amount = Number(teamBalance.amount) + Number(payment.amountUsd);
+          await balanceRepo.save(teamBalance);
+
+          this.logger.log(`Webhook: Confirmed payment ${payment.orderId} and updated balance`);
         } else {
           this.logger.warn(`Webhook: Unknown status "${payload.status}" for ${payment.orderId}`);
         }

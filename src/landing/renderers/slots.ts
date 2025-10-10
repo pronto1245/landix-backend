@@ -86,9 +86,6 @@ export function renderSlots($: cheerio.CheerioAPI, payload: PreviewDto) {
         };
         if (typeof window.init3HotChiliesSlot === 'function') {
           window.init3HotChiliesSlot(cfg);
-        } else {
-          // Тихий лог, чтобы понимать, что превью инициализировалось
-          console.log('[3HotChiliesSlot] preview init OK', cfg);
         }
       } catch (e) {}
     })();

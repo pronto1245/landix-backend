@@ -5,13 +5,13 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AuthModule } from './auth/auth.module';
-import { BalanceModule } from './balance/balance.module';
 import { CryptoModule } from './crypto/crypto.module';
 import { DomainsModule } from './domains/domains.module';
 import { FacebookModule } from './facebook/facebook.module';
 import { FlowsModule } from './flows/flows.module';
 import { LandingModule } from './landing/landing.module';
 import { RedisModule } from './redis/redis.module';
+import { TeamModule } from './team/team.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -68,8 +68,7 @@ import { UsersModule } from './users/users.module';
     FacebookModule,
     LandingModule,
     CryptoModule,
-
-    BalanceModule
+    TeamModule
   ],
   controllers: [],
   providers: []
