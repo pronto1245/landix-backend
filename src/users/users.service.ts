@@ -19,14 +19,14 @@ export class UsersService {
   findByEmail(email: string) {
     return this.usersRepo.findOne({
       where: { email },
-      relations: ['activeTeam', 'activeTeam.balance']
+      relations: ['activeTeam', 'activeTeam.balance', 'activeTeam.members']
     });
   }
 
   async findById(id: string): Promise<User> {
     const user = await this.usersRepo.findOne({
       where: { id },
-      relations: ['activeTeam', 'activeTeam.balance']
+      relations: ['activeTeam', 'activeTeam.balance', 'activeTeam.members']
     });
     if (!user) throw new NotFoundException('User not found');
     return user;

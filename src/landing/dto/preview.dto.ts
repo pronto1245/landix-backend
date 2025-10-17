@@ -136,11 +136,6 @@ export class FreeBetDto {
   list?: FreeBetListDto;
 }
 
-/**
- * Для wheels: элементы { first, second }.
- * Для plinko: элементы = строковые коэффициенты.
- * Валидацию per-item оставляем мягкой (any), т.к. формат различается по gameType.
- */
 export class SectorsDto {
   @IsOptional()
   @IsArray()
@@ -166,12 +161,10 @@ export class SectorsDto {
   @IsString()
   balanceText?: string;
 
-  // Балансы могут прилетать строкой или числом — мягко преобразуем число-строку в Number
   @IsOptional()
   @Transform(({ value }) =>
     value === '' || value == null ? undefined : Number.isNaN(Number(value)) ? value : Number(value)
   )
-  // оставляем мягкую проверку без жёсткого @IsNumber | @IsNumberString, чтобы не ломать union number|string
   balanceMin?: number | string;
 
   @IsOptional()
@@ -238,9 +231,6 @@ export class SectorsDto {
   freeBet?: FreeBetDto;
 }
 
-/**
- * Корневой DTO предпросмотра. Поля и названия — 1:1 с payload linki.
- */
 export class PreviewDto {
   @IsOptional()
   @IsString()
@@ -286,7 +276,6 @@ export class PreviewDto {
   @IsNumber()
   spins?: number;
 
-  // html-файл в /templates/<template>.html
   @IsString()
   template!: string;
 

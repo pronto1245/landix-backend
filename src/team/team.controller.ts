@@ -29,7 +29,14 @@ export class TeamController {
     return this.teamService.findTeamsForUser(user.id);
   }
 
-  @Post()
+  @Get(':id')
+  @ApiOperation({ summary: 'Получить команду по id' })
+  @ApiResponse({ status: 200, type: TeamResponseDto })
+  async findOne(@Param('id') id: string) {
+    return this.teamService.findById(id);
+  }
+
+  @Post('create')
   @ApiOperation({ summary: 'Создать новую команду' })
   @ApiResponse({ status: 201, type: TeamResponseDto })
   async create(@CurrentUser() user: User, @Body() dto: CreateTeamDto) {

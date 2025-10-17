@@ -1,6 +1,5 @@
 import { Team } from 'src/team/entities/team.entity';
 import { User } from 'src/users/entities/user.entity';
-// src/landings/entities/landing.entity.ts
 import {
   Column,
   CreateDateColumn,
@@ -17,19 +16,19 @@ export class Landing {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  /** 🔹 Кто создал лендинг */
   @ManyToOne(() => User, { nullable: false })
   @JoinColumn({ name: 'creatorId' })
   @Index()
   creator: User;
 
-  /** 🔹 Команда-владелец */
   @ManyToOne(() => Team, { nullable: false })
   @JoinColumn({ name: 'teamId' })
   @Index()
   team: Team;
 
-  /** 🔹 Основные поля */
+  @Column({ type: 'uuid', nullable: true })
+  memberId: string | null;
+
   @Column({ type: 'varchar', length: 200 })
   name: string;
 
@@ -38,6 +37,18 @@ export class Landing {
 
   @Column({ type: 'text', nullable: true })
   description: string | null;
+
+  @Column({ type: 'varchar', length: 100, nullable: true })
+  buttonDefault: string | null;
+
+  @Column({ type: 'varchar', length: 100, nullable: true })
+  buttonNext: string | null;
+
+  @Column({ type: 'varchar', length: 100, nullable: true })
+  buttonWin: string | null;
+
+  @Column({ type: 'varchar', length: 100, nullable: true })
+  pwaName: string | null;
 
   @Column({ type: 'varchar', length: 50 })
   gameType: string;
@@ -54,7 +65,6 @@ export class Landing {
   @Column({ type: 'int', default: 1 })
   spins: number;
 
-  /** 🔹 JSON-поля */
   @Column({ type: 'jsonb', default: {} })
   sectors: any;
 
@@ -70,7 +80,6 @@ export class Landing {
   @Column({ type: 'jsonb', default: {} })
   font: any;
 
-  /** 🔹 Прочее */
   @Column({ type: 'varchar', length: 500, nullable: true })
   redirect: string | null;
 

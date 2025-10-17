@@ -7,7 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 import { TeamBalance } from './entities/team-balance.entity';
 import { TeamMember } from './entities/team-member.entity';
@@ -72,15 +72,30 @@ export class TeamService {
   }
 
   async findTeamsForUser(userId: string) {
-    return this.membersRepo.find({
+    const memberships = await this.membersRepo.find({
       where: { user: { id: userId } },
-      relations: ['team', 'team.owner', 'team.balance']
+      relations: ['team']
+    });
+
+    const teamIds = memberships.map((m) => m.team.id);
+
+    if (teamIds.length === 0) return [];
+
+    return this.teamsRepo.find({
+      where: { id: In(teamIds) },
+      relations: ['owner', 'balance', 'members.user'],
+      order: { createdAt: 'DESC' }
     });
   }
 
   async findById(teamId: string) {
-    const t = await this.teamsRepo.findOne({ where: { id: teamId } });
+    const t = await this.teamsRepo.findOne({
+      where: { id: teamId },
+      relations: ['balance', 'members']
+    });
+
     if (!t) throw new NotFoundException('Команда не найдена');
+
     return t;
   }
 
