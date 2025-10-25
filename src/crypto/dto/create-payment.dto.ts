@@ -1,21 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNumber, Min } from 'class-validator';
+import { IsNumber, IsString, Min } from 'class-validator';
 
 export class CreateCryptoPaymentDto {
   @ApiProperty({
-    enum: ['USDT_TRC20', 'USDT_ERC20', 'BTC', 'ETH', 'TST'],
-    example: 'USDT_TRC20',
-    description: 'Криптовалюта для пополнения'
+    example: 'USD',
+    description: 'Валюта пополнения'
   })
-  @IsEnum(['USDT_TRC20', 'USDT_ERC20', 'BTC', 'ETH'])
-  currency: 'BTC' | 'ETH' | 'USDT_ERC20' | 'USDT_TRC20';
+  @IsString()
+  currency: string;
 
   @ApiProperty({
-    example: 15,
-    minimum: 1,
+    example: 30,
+    minimum: 30,
     description: 'Сумма пополнения в USD'
   })
   @IsNumber()
-  @Min(1)
+  @Min(30)
   amountUsd: number;
 }

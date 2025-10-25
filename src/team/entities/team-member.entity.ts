@@ -15,7 +15,7 @@ export class TeamMember {
   @ManyToOne(() => User, { eager: true, onDelete: 'CASCADE' })
   user: User;
 
-  @Column({ type: 'enum', enum: TeamRole, default: TeamRole.MEMBER })
+  @Column({ type: 'enum', enum: TeamRole, default: TeamRole.FINANCE })
   role: TeamRole;
 
   @CreateDateColumn()

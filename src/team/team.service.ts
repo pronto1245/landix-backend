@@ -99,12 +99,7 @@ export class TeamService {
     return t;
   }
 
-  async inviteMember(
-    teamId: string,
-    inviterId: string,
-    userEmailToInvite: string,
-    role: TeamRole = TeamRole.MEMBER
-  ) {
+  async inviteMember(teamId: string, inviterId: string, userEmailToInvite: string, role: TeamRole) {
     const team = await this.findById(teamId);
 
     if (!team) throw new NotFoundException('Команда не найдена');
@@ -181,5 +176,10 @@ export class TeamService {
     await this.membersRepo.delete(member.id);
 
     return { ok: true };
+  }
+
+  async getTeamBalance(teamId: string) {
+    const team = await this.findById(teamId);
+    return team.balance;
   }
 }

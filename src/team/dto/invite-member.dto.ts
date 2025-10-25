@@ -12,12 +12,12 @@ export class InviteMemberDto {
   email: string;
 
   @ApiProperty({
-    example: TeamRole.MEMBER,
+    example: TeamRole.FINANCE,
     enum: TeamRole,
     description: 'Роль участника в команде (по умолчанию MEMBER)',
     required: false
   })
   @IsOptional()
   @IsEnum(TeamRole)
-  role?: TeamRole = TeamRole.MEMBER;
+  role: TeamRole;
 }

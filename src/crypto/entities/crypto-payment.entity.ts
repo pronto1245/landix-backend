@@ -26,7 +26,10 @@ export class CryptoPayment {
   invoiceUrl?: string;
 
   @Column({ nullable: true })
-  paymentId?: string;
+  invoiceId?: string;
+
+  @Column({ nullable: true })
+  expiresAt: Date;
 
   @Column({
     type: 'enum',

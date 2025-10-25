@@ -11,11 +11,12 @@ import axios from 'axios';
 import { TeamBalance } from 'src/team/entities/team-balance.entity';
 import { TeamService } from 'src/team/team.service';
 import { User } from 'src/users/entities/user.entity';
-import { DataSource, Repository } from 'typeorm';
+import { Between, DataSource, Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
 import { CreateCryptoPaymentDto } from './dto/create-payment.dto';
 import { CryptoPayment } from './entities/crypto-payment.entity';
+import { FinanceTransaction } from './entities/finance-transaction.entity';
 
 @Injectable()
 export class CryptoService {
@@ -28,9 +29,47 @@ export class CryptoService {
   constructor(
     @InjectRepository(CryptoPayment)
     private readonly cryptoRepo: Repository<CryptoPayment>,
+    @InjectRepository(FinanceTransaction)
+    private readonly transactionRepo: Repository<FinanceTransaction>,
     private readonly dataSource: DataSource,
     private readonly teamService: TeamService
   ) {}
+
+  async getPayments(user: User, startDate: string, endDate: string) {
+    if (!user.activeTeam) throw new NotFoundException('Команда не выбрана');
+
+    const start = new Date(startDate);
+    start.setHours(0, 0, 0, 0);
+
+    const end = new Date(endDate);
+    end.setHours(23, 59, 59, 999);
+
+    return this.cryptoRepo.find({
+      where: {
+        team: { id: user.activeTeam.id },
+        createdAt: Between(start, end)
+      },
+      order: { createdAt: 'DESC' }
+    });
+  }
+
+  async getTransactions(user: User, startDate: string, endDate: string) {
+    if (!user.activeTeam) throw new NotFoundException('Команда не выбрана');
+
+    const start = new Date(startDate);
+    start.setHours(0, 0, 0, 0);
+
+    const end = new Date(endDate);
+    end.setHours(23, 59, 59, 999);
+
+    return this.transactionRepo.find({
+      where: {
+        team: { id: user.activeTeam.id },
+        createdAt: Between(start, end)
+      },
+      order: { createdAt: 'DESC' }
+    });
+  }
 
   async createPayment(user: User, dto: CreateCryptoPaymentDto) {
     try {
@@ -47,15 +86,11 @@ export class CryptoService {
       const payload = {
         shop_id: this.shopId,
         amount: dto.amountUsd,
-        currency: 'USD',
         order_id: orderId,
         add_fields: {
-          available_currencies: [dto.currency],
-          cryptocurrency: dto.currency
-        },
-        webhook_url: 'https://platform.landix/crypto/team-webhook',
-        success_url: 'https://platform.landix/success',
-        fail_url: 'https://platform.landix/fail'
+          available_currencies: ['USDT_TRC20'],
+          cryptocurrency: 'USDT_TRC20'
+        }
       };
 
       const res = await axios.post('https://api.cryptocloud.plus/v2/invoice/create', payload, {
@@ -71,13 +106,18 @@ export class CryptoService {
         team,
         currency: result.currency.fullcode,
         amountUsd: Number(result.amount_usd),
+        invoiceId: result.uuid,
         orderId,
-        paymentId: result.uuid,
         invoiceUrl: result.link,
+        expiresAt: result.expiry_date,
         status: 'waiting'
       });
 
-      return await this.cryptoRepo.save(payment);
+      await this.cryptoRepo.save(payment);
+
+      return {
+        invoiceUrl: result.link
+      };
     } catch (err) {
       this.logger.error('Failed to create CryptoCloud invoice', err?.response?.data || err.message);
       throw new InternalServerErrorException('Ошибка создания счета через CryptoCloud');
