@@ -9,6 +9,7 @@ import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { In, Repository } from 'typeorm';
 
+import { CreateTeamDto } from './dto/create-team.dto';
 import { TeamBalance } from './entities/team-balance.entity';
 import { TeamMember } from './entities/team-member.entity';
 import { Team } from './entities/team.entity';
@@ -97,6 +98,10 @@ export class TeamService {
     if (!t) throw new NotFoundException('Команда не найдена');
 
     return t;
+  }
+
+  updateTeam(teamId: string, ownerId: string, dto: CreateTeamDto) {
+    return this.teamsRepo.update(teamId, { ...dto, owner: { id: ownerId } });
   }
 
   async inviteMember(teamId: string, inviterId: string, userEmailToInvite: string, role: TeamRole) {

@@ -1,41 +1,48 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
-import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
-
+import {
+  Body,
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Post,
+  Query,
+  UseGuards
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+import { User } from 'src/users/entities/user.entity';
 import { DomainsService } from './domains.service';
-import { BuyDomainDto } from './dto/buy-domain.dto';
 import { CheckDomainDto } from './dto/check-domain.dto';
-import { CustomDomainDto } from './dto/custom-domain.dto';
-import { SystemDomainDto } from './dto/system-domain.dto';
+import { PurchaseDomainDto } from './dto/purchase-domain.dto';
 
-@ApiTags('Домены')
+@ApiTags('Domains')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('domains')
 export class DomainsController {
-  constructor(private readonly domainService: DomainsService) {}
+  constructor(private readonly service: DomainsService) {}
 
   @Get('check')
-  @ApiOperation({ summary: 'Проверить доступность домена' })
-  @ApiQuery({ name: 'domain', example: 'example.fun' })
-  @ApiResponse({ status: 200, description: 'Результат доступности' })
   async check(@Query() dto: CheckDomainDto) {
-    const available = await this.domainService.checkAvailability(dto.domain);
-    return { available };
+    return this.service.checkDomain(dto);
   }
 
-  @Post('buy')
-  @ApiOperation({ summary: 'Покупка домена и привязка к потоку' })
-  async buy(@Body() dto: BuyDomainDto) {
-    return this.domainService.buyAndAttachToFlow(dto);
+  @Post('purchase')
+  async purchase(@CurrentUser() user: User, @Body() dto: PurchaseDomainDto) {
+    if (!user.activeTeam) throw new NotFoundException('Команда не найдена');
+
+    return this.service.purchaseDomain(user.activeTeam.id, dto);
   }
 
-  @Post('attach-system')
-  @ApiOperation({ summary: 'Привязка системного домена к потоку' })
-  async attachSystem(@Body() dto: SystemDomainDto) {
-    return this.domainService.attachSystemDomain(dto);
+  @Get()
+  async getAll(@CurrentUser() user: User) {
+    if (!user.activeTeam) throw new NotFoundException('Команда не найдена');
+    return this.service.getAll(user.activeTeam.id);
   }
 
-  @Post('attach-custom')
-  @ApiOperation({ summary: 'Подключить свой собственный домен через API' })
-  async attachCustom(@Body() dto: CustomDomainDto) {
-    return this.domainService.attachCustomDomain(dto);
+  @Get(':name/info')
+  async getInfo(@Param('name') name: string) {
+    return this.service.getInfo(name);
   }
 }

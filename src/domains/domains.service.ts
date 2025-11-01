@@ -1,107 +1,56 @@
-import {
-  BadRequestException,
-  ConflictException,
-  Injectable,
-  NotFoundException
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-
-import { CloudflareService } from './cloudflare.service';
-import { BuyDomainDto } from './dto/buy-domain.dto';
-import { CustomDomainDto } from './dto/custom-domain.dto';
-import { SystemDomainDto } from './dto/system-domain.dto';
+import { CheckDomainDto } from './dto/check-domain.dto';
+import { PurchaseDomainDto } from './dto/purchase-domain.dto';
 import { Domain } from './entities/domain.entity';
-import { RegRuService } from './reg-ru.service';
+import { NamecheapClient } from './namecheap/namecheap.client';
 
 @Injectable()
 export class DomainsService {
   constructor(
     @InjectRepository(Domain)
-    private readonly domainRepo: Repository<Domain>,
-    private readonly regRuService: RegRuService,
-    private readonly cloudflare: CloudflareService
+    private readonly repo: Repository<Domain>,
+    private readonly namecheap: NamecheapClient
   ) {}
 
-  async checkAvailability(domain: string) {
-    const existing = await this.domainRepo.findOne({
-      where: { name: domain.toLowerCase() }
-    });
+  async checkDomain(dto: CheckDomainDto) {
+    const result = await this.namecheap.checkDomain(dto.name);
 
-    if (existing) return false;
-
-    return await this.regRuService.checkAvailability(domain);
+    if (result.error) throw new BadRequestException(result.error);
+    return result;
   }
 
-  async buyAndAttachToFlow(dto: BuyDomainDto): Promise<Domain> {
-    const domain = dto.domain.toLowerCase();
+  async purchaseDomain(teamId: string, dto: PurchaseDomainDto) {
+    const existing = await this.repo.findOne({ where: { name: dto.name } });
 
-    const available = await this.checkAvailability(domain);
-    if (!available) {
-      throw new ConflictException('Домен уже занят или не доступен');
-    }
+    if (existing) throw new BadRequestException('Домен уже существует в системе');
 
-    const result = await this.regRuService.registerDomain(domain);
-    if (!result.success) {
-      throw new BadRequestException('Ошибка при покупке домена через REG.RU');
-    }
+    const result = await this.namecheap.checkDomain(dto.name);
 
-    const entity = this.domainRepo.create({
-      name: domain,
-      type: 'purchased',
-      status: 'active',
-      expiresAt: result.expiresAt
+    if (!result.available) throw new BadRequestException('Домен занят');
+
+    const domain = this.repo.create({
+      name: dto.name,
+      zone: dto.name.split('.').pop(),
+      status: 'purchased',
+      provider: 'namecheap',
+      priceUsd: 2.99,
+      team: { id: teamId } as any
     });
 
-    return await this.domainRepo.save(entity);
+    await this.repo.save(domain);
+    return domain;
   }
 
-  async attachSystemDomain(dto: SystemDomainDto): Promise<Domain> {
-    console.log(dto);
-    const systemDomain = await this.domainRepo.findOne({
-      where: { type: 'system', status: 'active' }
+  async getAll(teamId: string) {
+    return this.repo.find({
+      where: { team: { id: teamId } },
+      order: { createdAt: 'DESC' }
     });
-
-    if (!systemDomain) {
-      throw new NotFoundException('Нет доступных системных доменов');
-    }
-
-    return systemDomain;
   }
 
-  async attachCustomDomain(dto: CustomDomainDto): Promise<Domain> {
-    const customDomain = dto.domain.toLowerCase();
-    const exists = await this.domainRepo.findOne({
-      where: { name: customDomain }
-    });
-
-    if (exists) {
-      throw new ConflictException('Такой домен уже добавлен');
-    }
-
-    const domain = this.domainRepo.create({
-      name: customDomain,
-      type: 'custom',
-      status: 'active'
-    });
-
-    return await this.domainRepo.save(domain);
-  }
-
-  async connectCloudflare(domain: Domain): Promise<Domain> {
-    const ip = process.env.CF_SERVER_IP;
-    if (!ip) {
-      throw new NotFoundException('CF_SERVER_IP не найден в .env');
-    }
-
-    const zoneId = await this.cloudflare.createZone(domain.name);
-    const recordOk = await this.cloudflare.addARecord(zoneId, ip);
-
-    if (!recordOk) {
-      throw new BadRequestException('Не удалось добавить A-запись в Cloudflare');
-    }
-
-    domain.cloudflareZoneId = zoneId;
-    return await this.domainRepo.save(domain);
+  async getInfo(name: string) {
+    return this.namecheap.getInfo(name);
   }
 }

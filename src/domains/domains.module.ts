@@ -1,15 +1,16 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { CloudflareService } from './cloudflare.service';
+import { Team } from 'src/team/entities/team.entity';
 import { DomainsController } from './domains.controller';
 import { DomainsService } from './domains.service';
 import { Domain } from './entities/domain.entity';
-import { RegRuService } from './reg-ru.service';
+import { NamecheapClient } from './namecheap/namecheap.client';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Domain])],
+  imports: [TypeOrmModule.forFeature([Domain, Team])],
   controllers: [DomainsController],
-  providers: [DomainsService, RegRuService, CloudflareService]
+  providers: [DomainsService, NamecheapClient],
+  exports: [DomainsService]
 })
 export class DomainsModule {}

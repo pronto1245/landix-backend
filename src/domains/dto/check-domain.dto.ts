@@ -1,9 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsString, Matches } from 'class-validator';
 
 export class CheckDomainDto {
-  @ApiProperty({ example: 'mycasino.fun' })
   @IsString()
-  @IsNotEmpty()
-  domain: string;
+  @Matches(/^(?!-)([a-z0-9-]{1,63}\.)+[a-z]{2,}$/i, { message: 'Неверное доменное имя' })
+  name: string;
 }

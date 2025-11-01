@@ -43,6 +43,14 @@ export class TeamController {
     return this.teamService.createTeam(user.id, dto);
   }
 
+  @Patch(':id')
+  @ApiOperation({ summary: 'Обновить команду' })
+  @ApiParam({ name: 'id', description: 'UUID команды' })
+  @ApiResponse({ status: 200, type: TeamResponseDto })
+  async update(@Param('id') id: string, @CurrentUser() user: User, @Body() dto: CreateTeamDto) {
+    return this.teamService.updateTeam(id, user.id, dto);
+  }
+
   @Get('current')
   @ApiOperation({ summary: 'Получить текущую активную команду пользователя' })
   @ApiResponse({ status: 200, type: TeamResponseDto })
