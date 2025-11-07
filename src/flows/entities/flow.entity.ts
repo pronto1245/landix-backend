@@ -1,6 +1,7 @@
 import { Domain } from 'src/domains/entities/domain.entity';
 import { FacebookPixel } from 'src/facebook/entities/facebook-pixel.entity';
 import { Landing } from 'src/landing/entities/landing.entity';
+import { Team } from 'src/team/entities/team.entity';
 import {
   Column,
   CreateDateColumn,
@@ -19,15 +20,18 @@ export class Flow {
   @Column()
   name: string;
 
-  @ManyToOne(() => Domain)
-  domain: Domain;
-
   @ManyToOne(() => Landing)
   landing: Landing;
 
   @ManyToMany(() => FacebookPixel)
   @JoinTable()
   facebookPixels: FacebookPixel[];
+
+  @ManyToOne(() => Domain, { nullable: true, onDelete: 'SET NULL', eager: true })
+  domain?: Domain;
+
+  @ManyToOne(() => Team, (team) => team.flows, { nullable: false })
+  team: Team;
 
   @Column({ default: false })
   cloakingEnabled: boolean;

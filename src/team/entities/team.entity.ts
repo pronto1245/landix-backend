@@ -1,3 +1,5 @@
+import { Domain } from 'src/domains/entities/domain.entity';
+import { Flow } from 'src/flows/entities/flow.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
   Column,
@@ -11,7 +13,6 @@ import {
   UpdateDateColumn
 } from 'typeorm';
 
-import { Domain } from 'src/domains/entities/domain.entity';
 import { TeamBalance } from './team-balance.entity';
 import { TeamMember } from './team-member.entity';
 
@@ -36,6 +37,9 @@ export class Team {
 
   @OneToMany(() => Domain, (domain) => domain.team)
   domains: Domain[];
+
+  @OneToMany(() => Flow, (flow) => flow.team)
+  flows: Flow[];
 
   @CreateDateColumn()
   createdAt: Date;

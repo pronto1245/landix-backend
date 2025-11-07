@@ -14,13 +14,13 @@ export class FinanceTransaction {
   team: Team;
 
   @Column()
-  type: 'button_click' | 'pwa_install';
+  type: string;
 
   @Column('decimal', { precision: 10, scale: 2 })
   amount: number;
 
-  @Column()
-  description: string;
+  @Column({ nullable: true, default: '' })
+  description?: string;
 
   @Column({ default: 'success' })
   status: 'declined' | 'success';

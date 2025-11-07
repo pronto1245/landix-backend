@@ -2,7 +2,7 @@ import { IsInt, IsString, Max, Min } from 'class-validator';
 
 export class PurchaseDomainDto {
   @IsString()
-  name: string;
+  domainName: string;
 
   @IsInt()
   @Min(1)

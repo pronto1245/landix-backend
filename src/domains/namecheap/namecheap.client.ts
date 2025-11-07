@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { parseStringPromise } from 'xml2js';
@@ -23,7 +23,6 @@ export class NamecheapClient {
     }
   }
 
-  // 🔍 Проверка доступности домена
   async checkDomain(name: string) {
     try {
       const response = await axios.get(this.baseUrl, {
@@ -37,25 +36,89 @@ export class NamecheapClient {
         }
       });
 
-      const parsed = await parseStringPromise(response.data, {
-        explicitArray: false
-      });
+      const parsed = await parseStringPromise(response.data, { explicitArray: false });
 
-      const result = parsed?.ApiResponse?.CommandResponse?.DomainCheckResult?.$ || null;
-      const error =
-        parsed?.ApiResponse?.Errors?.Error?._ || parsed?.ApiResponse?.Errors?.Error || null;
+      const apiStatus = parsed?.ApiResponse?.$.Status;
+      const apiError = parsed?.ApiResponse?.Errors?.Error;
+
+      if (apiStatus !== 'OK') {
+        throw new HttpException(
+          `Namecheap API error: ${apiError?._ || apiError || 'Unknown error'}`,
+          HttpStatus.BAD_GATEWAY
+        );
+      }
+
+      const result = parsed?.ApiResponse?.CommandResponse?.DomainCheckResult?.$;
+      if (!result) {
+        throw new HttpException('Некорректный ответ от Namecheap API', HttpStatus.BAD_GATEWAY);
+      }
 
       return {
-        available: result?.Available === 'true',
-        domain: result?.Domain || name,
-        error
+        domain: result.Domain,
+        available: result.Available === 'true',
+        premium: result.IsPremiumName === 'true',
+        error: null
       };
     } catch (err: any) {
       throw new HttpException(
-        `Ошибка при обращении к API Namecheap: ${err.message}`,
+        `Ошибка при обращении к Namecheap API: ${err.message}`,
         HttpStatus.BAD_GATEWAY
       );
     }
+  }
+
+  async getDomainSuggestions(base: string) {
+    if (!base || base.length < 3) {
+      throw new BadRequestException('Введите корректное имя');
+    }
+
+    const zones = ['shop', 'online', 'space'];
+
+    const TLD_PRICES: Record<string, { register: number; renewal: number }> = {
+      shop: { register: 0.98, renewal: 48.98 },
+      online: { register: 0.98, renewal: 28.98 },
+      space: { register: 0.98, renewal: 25.98 }
+    };
+
+    const domainList = zones.map((zone) => `${base}.${zone}`).join(',');
+
+    const response = await axios.get(this.baseUrl, {
+      params: {
+        ApiUser: this.apiUser,
+        ApiKey: this.apiKey,
+        UserName: this.userName,
+        ClientIp: this.clientIp,
+        Command: 'namecheap.domains.check',
+        DomainList: domainList
+      }
+    });
+
+    const parsed = await parseStringPromise(response.data, { explicitArray: false });
+    const results = parsed?.ApiResponse?.CommandResponse?.DomainCheckResult;
+    const list = Array.isArray(results) ? results : [results];
+
+    const data = list.map((item: any) => {
+      const tld = item.$.Domain.split('.').pop().toLowerCase();
+      const premium = item.$.IsPremiumName === 'true';
+      const price =
+        premium && Number(item.$.PremiumRegistrationPrice) > 0
+          ? Number(item.$.PremiumRegistrationPrice)
+          : (TLD_PRICES[tld]?.register ?? null);
+      const renewalPrice =
+        premium && Number(item.$.PremiumRenewalPrice) > 0
+          ? Number(item.$.PremiumRenewalPrice)
+          : (TLD_PRICES[tld]?.renewal ?? null);
+
+      return {
+        domain: item.$.Domain,
+        available: item.$.Available === 'true',
+        premium,
+        priceUsd: price,
+        renewalUsd: renewalPrice
+      };
+    });
+
+    return data;
   }
 
   // 💳 Покупка домена
@@ -70,13 +133,50 @@ export class NamecheapClient {
           Command: 'namecheap.domains.create',
           DomainName: name,
           Years: years,
+
+          // --- REGISTRANT ---
           RegistrantFirstName: 'Landix',
           RegistrantLastName: 'Team',
-          RegistrantEmailAddress: 'no-reply@landix.group',
-          RegistrantPhone: '+1.2025550112',
           RegistrantAddress1: 'Landix Platform',
           RegistrantCity: 'Moscow',
-          RegistrantCountry: 'RU'
+          RegistrantStateProvince: 'Moscow',
+          RegistrantPostalCode: '101000',
+          RegistrantCountry: 'RU',
+          RegistrantPhone: '+1.2025550112',
+          RegistrantEmailAddress: 'no-reply@landix.group',
+
+          // --- ADMIN ---
+          AdminFirstName: 'Landix',
+          AdminLastName: 'Admin',
+          AdminAddress1: 'Landix Platform',
+          AdminCity: 'Moscow',
+          AdminStateProvince: 'Moscow',
+          AdminPostalCode: '101000',
+          AdminCountry: 'RU',
+          AdminPhone: '+1.2025550112',
+          AdminEmailAddress: 'no-reply@landix.group',
+
+          // --- TECH ---
+          TechFirstName: 'Landix',
+          TechLastName: 'Tech',
+          TechAddress1: 'Landix Platform',
+          TechCity: 'Moscow',
+          TechStateProvince: 'Moscow',
+          TechPostalCode: '101000',
+          TechCountry: 'RU',
+          TechPhone: '+1.2025550112',
+          TechEmailAddress: 'no-reply@landix.group',
+
+          // --- BILLING ---
+          AuxBillingFirstName: 'Landix',
+          AuxBillingLastName: 'Billing',
+          AuxBillingAddress1: 'Landix Platform',
+          AuxBillingCity: 'Moscow',
+          AuxBillingStateProvince: 'Moscow',
+          AuxBillingPostalCode: '101000',
+          AuxBillingCountry: 'RU',
+          AuxBillingPhone: '+1.2025550112',
+          AuxBillingEmailAddress: 'no-reply@landix.group'
         }
       });
 

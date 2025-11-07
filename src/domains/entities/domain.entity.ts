@@ -1,3 +1,4 @@
+import { Flow } from 'src/flows/entities/flow.entity';
 import { Team } from 'src/team/entities/team.entity';
 import {
   Column,
@@ -14,39 +15,32 @@ export class Domain {
   id: string;
 
   @Column({ unique: true })
-  name: string; // example.fun
+  name: string;
 
-  @Column()
-  zone: string; // fun
+  @Column({ type: 'enum', enum: ['namecheap', 'custom', 'system'], default: 'namecheap' })
+  provider: 'custom' | 'namecheap' | 'system';
 
   @Column({
     type: 'enum',
-    enum: ['available', 'purchased', 'attached', 'failed'],
+    enum: ['available', 'purchased', 'attached', 'failed', 'pending'],
     default: 'available'
   })
-  status: 'available' | 'purchased' | 'attached' | 'failed';
+  status: 'attached' | 'available' | 'failed' | 'pending' | 'purchased';
 
-  @Column({
-    type: 'enum',
-    enum: ['namecheap', 'custom'],
-    default: 'namecheap'
-  })
-  provider: 'namecheap' | 'custom';
-
-  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+  @Column('decimal', { precision: 10, scale: 2, nullable: true })
   priceUsd?: number;
-
-  @Column({ nullable: true })
-  expiresAt?: Date;
-
-  @Column({ nullable: true })
-  dnsType?: string;
-
-  @Column({ nullable: true })
-  dnsTarget?: string;
 
   @ManyToOne(() => Team, (team) => team.domains, { nullable: false })
   team: Team;
+
+  @ManyToOne(() => Flow, (flow) => flow.domain, {
+    nullable: true,
+    onDelete: 'SET NULL'
+  })
+  flow?: Flow;
+
+  @Column({ type: 'timestamp', nullable: true })
+  expiresAt?: Date;
 
   @CreateDateColumn()
   createdAt: Date;
