@@ -1,17 +1,16 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Domain } from 'src/domains/entities/domain.entity';
-import { FacebookPixel } from 'src/facebook/entities/facebook-pixel.entity';
-import { Landing } from 'src/landing/entities/landing.entity';
-import { User } from 'src/users/entities/user.entity';
+import { DomainsModule } from 'src/domains/domains.module';
+import { Team } from 'src/team/entities/team.entity';
 
 import { Flow } from './entities/flow.entity';
 import { FlowsController } from './flows.controller';
 import { FlowsService } from './flows.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Flow, Domain, FacebookPixel, Landing])],
+  imports: [TypeOrmModule.forFeature([Flow, Team]), DomainsModule],
   controllers: [FlowsController],
-  providers: [FlowsService]
+  providers: [FlowsService],
+  exports: [FlowsService]
 })
 export class FlowsModule {}

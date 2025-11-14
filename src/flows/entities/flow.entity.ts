@@ -1,16 +1,6 @@
 import { Domain } from 'src/domains/entities/domain.entity';
-import { FacebookPixel } from 'src/facebook/entities/facebook-pixel.entity';
-import { Landing } from 'src/landing/entities/landing.entity';
 import { Team } from 'src/team/entities/team.entity';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
-  PrimaryGeneratedColumn
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('flows')
 export class Flow {
@@ -20,69 +10,14 @@ export class Flow {
   @Column()
   name: string;
 
-  @ManyToOne(() => Landing)
-  landing: Landing;
-
-  @ManyToMany(() => FacebookPixel)
-  @JoinTable()
-  facebookPixels: FacebookPixel[];
-
   @ManyToOne(() => Domain, { nullable: true, onDelete: 'SET NULL', eager: true })
-  domain?: Domain;
+  domain: Domain | null;
 
   @ManyToOne(() => Team, (team) => team.flows, { nullable: false })
   team: Team;
 
-  @Column({ default: false })
-  cloakingEnabled: boolean;
-
-  @Column('jsonb', { nullable: true })
-  cloakSettings: Record<string, any>;
-
-  @Column({ nullable: true })
-  abTestGroupId: string;
-
-  @Column({ default: 'ru' })
-  lang: string;
-
-  @Column({ default: 'Roboto' })
-  font: string;
-
-  @Column({ nullable: true })
-  redirectUrl?: string;
-
-  @Column({ default: true })
-  isActive: boolean;
-
-  @Column('jsonb', { nullable: true })
-  macros?: Record<string, string>;
-
-  @Column({ nullable: true })
-  clientId?: string;
-
-  @Column({ nullable: true })
-  macrosType?: string;
-
-  @Column('text', { array: true, nullable: true })
-  facebookApiTokens?: string[];
-
-  @Column('text', { array: true, nullable: true })
-  trafficbackUrls?: string[];
-
-  @Column('jsonb', { nullable: true })
-  trafficbackRules?: Record<string, any>;
-
-  @Column({ nullable: true })
-  prelanderUrl?: string;
-
-  @Column({ nullable: true })
-  finalLandingUrl?: string;
-
-  @Column({ type: 'int', default: 0 })
-  switchDelay: number;
-
-  @Column({ default: '400' })
-  fontWeight: string;
+  @Column({ type: 'enum', enum: ['draft', 'active', 'archived'], default: 'draft' })
+  status: 'active' | 'archived' | 'draft';
 
   @CreateDateColumn()
   createdAt: Date;

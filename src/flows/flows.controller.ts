@@ -1,59 +1,89 @@
-import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiOperation,
-  ApiParam,
-  ApiQuery,
-  ApiResponse,
-  ApiTags
-} from '@nestjs/swagger';
-import { Roles } from 'src/common/decorators/roles.decorator';
+  Body,
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
+  Post,
+  UseGuards
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
-import { RolesGuard } from 'src/common/guards/roles.guard';
-import { UserRole } from 'src/users/enums/role.enum';
+import { User } from 'src/users/entities/user.entity';
 
-import { CreateFlowDto } from './dto/create-flow.dto';
-import { Flow } from './entities/flow.entity';
+import { CreateFlowWithDomainDto } from './dto/create-flow-with-domain.dto';
 import { FlowsService } from './flows.service';
 
-@ApiTags('Потоки')
+@ApiTags('Flows')
 @ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('flows')
-@UseGuards(JwtAuthGuard, RolesGuard)
 export class FlowsController {
-  constructor(private readonly flowService: FlowsService) {}
+  constructor(private readonly service: FlowsService) {}
 
-  @Post()
-  @Roles(UserRole.USER, UserRole.MANAGER, UserRole.ADMIN)
-  @ApiOperation({ summary: 'Создание нового потока' })
-  @ApiBody({ type: CreateFlowDto })
-  @ApiResponse({ status: 201, description: 'Поток успешно создан', type: Flow })
-  create(@Body() dto: CreateFlowDto) {
-    return this.flowService.createFlow(dto);
+  @Post('create-with-domain')
+  @ApiOperation({
+    summary: 'Создать поток',
+    description: `Этап 1. Создаёт поток в статусе "draft" и привязывает домен (buy/system/user/custom)`
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Поток успешно создан',
+    schema: {
+      example: {
+        success: true,
+        message: 'Поток успешно создан',
+        data: {
+          id: 'uuid',
+          name: 'My Test Flow',
+          status: 'draft',
+          domain: {
+            id: 'uuid',
+            name: 'mybrand.shop',
+            provider: 'namecheap',
+            status: 'attached',
+            nsRecords: ['ns1.cloudflare.com', 'ns2.cloudflare.com']
+          }
+        }
+      }
+    }
+  })
+  async createWithDomain(@CurrentUser() user: User, @Body() dto: CreateFlowWithDomainDto) {
+    if (!user.activeTeam) throw new NotFoundException('Команда не найдена');
+    return this.service.createWithDomain(user.activeTeam.id, dto);
   }
 
   @Get()
-  @Roles(UserRole.USER, UserRole.MANAGER, UserRole.ADMIN)
-  @ApiOperation({ summary: 'Получение списка потоков' })
-  @ApiQuery({ name: 'userId', required: false, description: 'ID пользователя' })
-  @ApiQuery({ name: 'isActive', required: false, description: 'Активен ли поток', type: Boolean })
-  @ApiQuery({ name: 'name', required: false, description: 'Фильтрация по имени' })
-  @ApiResponse({ status: 200, description: 'Список потоков', type: [Flow] })
-  getAll(@Query() query: { userId?: string; isActive?: boolean; name?: string }) {
-    return this.flowService.getFlows(query);
+  @ApiOperation({ summary: 'Получить все потоки команды' })
+  @ApiResponse({
+    status: 200,
+    schema: {
+      example: [
+        {
+          id: 'uuid',
+          name: 'My Flow',
+          status: 'draft',
+          createdAt: '2025-01-02T00:00:00.000Z',
+          domain: { id: 'uuid', name: 'mybrand.shop' }
+        }
+      ]
+    }
+  })
+  async getAll(@CurrentUser() user: User) {
+    if (!user.activeTeam) throw new NotFoundException('Команда не найдена');
+    return this.service.getAll(user.activeTeam.id);
   }
 
   @Delete(':id')
-  @Roles(UserRole.USER, UserRole.MANAGER, UserRole.ADMIN)
-  @ApiOperation({ summary: 'Удаление потока' })
-  @ApiParam({
-    name: 'id',
-    description: 'ID потока',
-    example: 'b55a3c7f-2a3d-4c1f-8a1a-12b0000a0001'
+  @ApiOperation({ summary: 'Удалить поток' })
+  @ApiResponse({
+    status: 200,
+    description: 'Удалено',
+    schema: { example: { success: true } }
   })
-  @ApiResponse({ status: 200, description: 'Поток успешно удалён' })
-  delete(@Param('id') id: string) {
-    return this.flowService.deleteFlow(id);
+  async delete(@Param('id') id: string) {
+    return this.service.delete(id);
   }
 }

@@ -28,19 +28,22 @@ export class Domain {
   status: 'attached' | 'available' | 'failed' | 'pending' | 'purchased';
 
   @Column('decimal', { precision: 10, scale: 2, nullable: true })
-  priceUsd?: number;
+  priceUsd: number | null;
 
-  @ManyToOne(() => Team, (team) => team.domains, { nullable: false })
-  team: Team;
+  @ManyToOne(() => Team, (team) => team.domains, { nullable: true })
+  team: Team | null;
 
   @ManyToOne(() => Flow, (flow) => flow.domain, {
     nullable: true,
     onDelete: 'SET NULL'
   })
-  flow?: Flow;
+  flow: Flow | null;
 
   @Column({ type: 'timestamp', nullable: true })
-  expiresAt?: Date;
+  expiresAt: Date | null;
+
+  @Column({ type: 'jsonb', nullable: true })
+  nsRecords: string[] | null;
 
   @CreateDateColumn()
   createdAt: Date;

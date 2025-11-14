@@ -1,4 +1,4 @@
-import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { parseStringPromise } from 'xml2js';
@@ -10,6 +10,7 @@ export class NamecheapClient {
   private readonly apiKey: string;
   private readonly userName: string;
   private readonly clientIp: string;
+  private readonly logger = new Logger(NamecheapClient.name);
 
   constructor(private readonly config: ConfigService) {
     this.baseUrl = this.config.get<string>('NAMECHEAP_BASE_URL') || '';
@@ -21,6 +22,26 @@ export class NamecheapClient {
     if (!this.baseUrl || !this.apiKey || !this.apiUser || !this.clientIp) {
       throw new Error('❌ Namecheap API credentials are not configured properly');
     }
+  }
+
+  getBaseUrl(): string {
+    return this.baseUrl;
+  }
+
+  getApiUser(): string {
+    return this.apiUser;
+  }
+
+  getApiKey(): string {
+    return this.apiKey;
+  }
+
+  getUserName(): string {
+    return this.userName;
+  }
+
+  getClientIp(): string {
+    return this.clientIp;
   }
 
   async checkDomain(name: string) {
@@ -199,7 +220,6 @@ export class NamecheapClient {
     }
   }
 
-  // 🌐 Настройка DNS (A-запись / CNAME)
   async setHosts(
     domain: string,
     records: { HostName: string; RecordType: string; Address: string; TTL?: number }[]
@@ -239,7 +259,46 @@ export class NamecheapClient {
     }
   }
 
-  // ℹ️ Получение информации о домене
+  async setCustomNameservers(domain: string, nameservers: string[]) {
+    try {
+      const parts = domain.split('.');
+      const SLD = parts.shift();
+      const TLD = parts.join('.');
+
+      const params: Record<string, any> = {
+        ApiUser: this.apiUser,
+        ApiKey: this.apiKey,
+        UserName: this.userName,
+        ClientIp: this.clientIp,
+        Command: 'namecheap.domains.dns.setCustom',
+        SLD,
+        TLD,
+        Nameservers: nameservers.join(',')
+      };
+
+      const res = await axios.get(this.baseUrl, { params });
+      const parsed = await parseStringPromise(res.data, { explicitArray: false });
+
+      const apiStatus = parsed?.ApiResponse?.$.Status;
+      const apiError = parsed?.ApiResponse?.Errors?.Error;
+      const result = parsed?.ApiResponse?.CommandResponse?.DomainDNSSetCustomResult?.$ || null;
+
+      if (apiStatus !== 'OK') {
+        throw new Error(apiError?._ || apiError || 'Unknown API error');
+      }
+
+      if (result?.IsSuccess === 'true' || result?.Updated === 'true') {
+        console.log(`✅ NS успешно установлены в Namecheap для ${domain}`);
+        return { domain };
+      }
+
+      throw new Error('Namecheap не подтвердил установку NS');
+    } catch (err: any) {
+      const message = typeof err.message === 'string' ? err.message : JSON.stringify(err.message);
+      throw new HttpException(`Ошибка при установке NS: ${message}`, HttpStatus.BAD_GATEWAY);
+    }
+  }
+
   async getInfo(name: string) {
     try {
       const response = await axios.get(this.baseUrl, {

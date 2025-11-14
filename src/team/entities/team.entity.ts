@@ -1,3 +1,4 @@
+import { CloudflareAccount } from 'src/domains/entities/cloudflare-account.entity';
 import { Domain } from 'src/domains/entities/domain.entity';
 import { Flow } from 'src/flows/entities/flow.entity';
 import { User } from 'src/users/entities/user.entity';
@@ -40,6 +41,9 @@ export class Team {
 
   @OneToMany(() => Flow, (flow) => flow.team)
   flows: Flow[];
+
+  @OneToMany(() => CloudflareAccount, (account) => account.team)
+  cloudflareAccounts: CloudflareAccount[];
 
   @CreateDateColumn()
   createdAt: Date;

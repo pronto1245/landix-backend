@@ -1,11 +1,20 @@
-import { IsInt, IsString, Max, Min } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class PurchaseDomainDto {
+  @ApiProperty({
+    example: 'mybrand.shop',
+    description: 'Имя домена для покупки'
+  })
   @IsString()
+  @IsNotEmpty()
   domainName: string;
 
-  @IsInt()
-  @Min(1)
-  @Max(3)
-  years: number = 1;
+  @ApiPropertyOptional({
+    example: 1,
+    description: 'Количество лет регистрации'
+  })
+  @IsOptional()
+  @IsNumber()
+  years?: number;
 }
