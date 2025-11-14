@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 
 import { AuthModule } from './auth/auth.module';
 import { CryptoModule } from './crypto/crypto.module';
@@ -20,7 +21,11 @@ import { UsersModule } from './users/users.module';
     AuthModule,
     UsersModule,
     ConfigModule.forRoot({ isGlobal: true }),
-
+    PrometheusModule.register({
+      defaultMetrics: {
+        enabled: true
+      }
+    }),
     MailerModule.forRoot({
       transport: {
         host: process.env.MAIL_HOST,
