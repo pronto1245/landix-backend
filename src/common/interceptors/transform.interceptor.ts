@@ -9,6 +9,13 @@ export class TransformInterceptor<T>
   implements NestInterceptor<T, ApiResponseFailure | ApiResponseSuccess<T>>
 {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    const ctx = context.switchToHttp();
+    const req = ctx.getRequest();
+
+    if (req.url === '/api/metrics') {
+      return next.handle();
+    }
+
     return next.handle().pipe(
       map((result) => {
         if (result && typeof result === 'object' && 'success' in result) {
