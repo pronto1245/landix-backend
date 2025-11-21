@@ -71,8 +71,13 @@ export class DomainsService {
     const parsed = await parseStringPromise(res.data, { explicitArray: false });
 
     const list = parsed?.ApiResponse?.CommandResponse?.DomainGetListResult?.Domain || [];
-
     const domains = Array.isArray(list) ? list : [list];
+
+    const TLD_PRICES: Record<string, { register: number; renewal: number }> = {
+      shop: { register: 0.98, renewal: 48.98 },
+      online: { register: 0.98, renewal: 28.98 },
+      space: { register: 0.98, renewal: 25.98 }
+    };
 
     const added: Domain[] = [];
     const updated: Domain[] = [];
@@ -81,7 +86,21 @@ export class DomainsService {
       const name = d.$.Name;
       const expiresAt = d.$.Expires ? new Date(d.$.Expires) : null;
 
-      let domain: Domain | null = await this.repo.findOne({ where: { name } });
+      const tld = name.split('.').pop()?.toLowerCase();
+      const priceUsd = TLD_PRICES[tld]?.register;
+
+      let domain = await this.repo.findOne({
+        where: { name },
+        relations: ['team']
+      });
+
+      if (domain && domain.provider === 'namecheap') {
+        continue;
+      }
+
+      if (domain && domain.flowId) {
+        continue;
+      }
 
       if (!domain) {
         domain = this.repo.create({
@@ -89,20 +108,24 @@ export class DomainsService {
           provider: 'system',
           status: 'available',
           team: null,
+          priceUsd,
           expiresAt
         });
 
         await this.repo.save(domain);
         added.push(domain);
-      } else {
-        domain.provider = 'system';
-        domain.team = null;
-        domain.status = 'available';
-        domain.expiresAt = expiresAt;
-
-        await this.repo.save(domain);
-        updated.push(domain);
+        continue;
       }
+
+      domain.provider = 'system';
+      domain.team = null;
+      domain.flowId = null;
+      domain.status = 'available';
+      domain.expiresAt = expiresAt;
+      domain.priceUsd = priceUsd;
+
+      await this.repo.save(domain);
+      updated.push(domain);
     }
 
     return {
@@ -203,7 +226,7 @@ export class DomainsService {
     }
   }
 
-  async attachDomainToFlow(teamId: string, flowId: string, dto: CreateFlowWithDomainDto) {
+  async attachDomainToFlow(teamId: string, flow: Flow, dto: CreateFlowWithDomainDto) {
     const team = await this.teamRepo.findOne({
       where: { id: teamId },
       relations: ['balance']
@@ -226,11 +249,12 @@ export class DomainsService {
       });
 
       domain = await this.repo.findOne({ where: { name: dto.domainName } });
+
       if (!domain) throw new BadRequestException('Купленный домен не найден');
 
       domain.status = 'attached';
-      domain.team = { id: teamId } as Team;
-      domain.flow = { id: flowId } as Flow;
+      domain.team = team;
+      domain.flowId = flow.id;
       domain.expiresAt = purchaseRes.data?.expiresAt ?? null;
 
       await this.repo.save(domain);
@@ -280,8 +304,8 @@ export class DomainsService {
 
       // Обновляем домен
       sysDomain.status = 'attached';
-      sysDomain.team = { id: teamId } as Team;
-      sysDomain.flow = { id: flowId } as Flow;
+      sysDomain.team = team;
+      sysDomain.flowId = flow.id;
       sysDomain.nsRecords = nsRecords;
 
       await this.repo.save(sysDomain);
@@ -329,7 +353,7 @@ export class DomainsService {
       if (!userDomain) throw new BadRequestException('Купленный домен недоступен');
 
       userDomain.status = 'attached';
-      userDomain.flow = { id: flowId } as Flow;
+      userDomain.flowId = flow.id;
 
       await this.repo.save(userDomain);
       domain = userDomain;
@@ -360,8 +384,8 @@ export class DomainsService {
         name: dto.domainName,
         provider: 'custom',
         status: 'attached',
-        team: { id: teamId } as Team,
-        flow: { id: flowId } as Flow,
+        team,
+        flowId: flow.id,
         expiresAt: dto.expiresAt ?? null,
         nsRecords: zone.name_servers
       });
@@ -411,7 +435,7 @@ export class DomainsService {
       email: dto.email,
       apiToken: dto.apiToken,
       accountId,
-      team: { id: teamId }
+      team
     });
 
     return this.cloudflareAccountRepo.save(acc);

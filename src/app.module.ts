@@ -1,6 +1,7 @@
 import { MailerModule } from '@nestjs-modules/mailer';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
@@ -22,10 +23,12 @@ import { UsersModule } from './users/users.module';
     UsersModule,
     ConfigModule.forRoot({ isGlobal: true }),
     PrometheusModule.register({
+      path: '/metrics',
       defaultMetrics: {
         enabled: true
       }
     }),
+    ScheduleModule.forRoot(),
     MailerModule.forRoot({
       transport: {
         host: process.env.MAIL_HOST,

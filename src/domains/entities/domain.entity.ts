@@ -1,4 +1,3 @@
-import { Flow } from 'src/flows/entities/flow.entity';
 import { Team } from 'src/team/entities/team.entity';
 import {
   Column,
@@ -33,11 +32,8 @@ export class Domain {
   @ManyToOne(() => Team, (team) => team.domains, { nullable: true })
   team: Team | null;
 
-  @ManyToOne(() => Flow, (flow) => flow.domain, {
-    nullable: true,
-    onDelete: 'SET NULL'
-  })
-  flow: Flow | null;
+  @Column({ type: 'uuid', nullable: true })
+  flowId: string | null;
 
   @Column({ type: 'timestamp', nullable: true })
   expiresAt: Date | null;

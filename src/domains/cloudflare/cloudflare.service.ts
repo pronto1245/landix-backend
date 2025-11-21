@@ -1,4 +1,10 @@
-import { BadRequestException, HttpException, Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  Injectable,
+  Logger,
+  NotFoundException
+} from '@nestjs/common';
 import axios from 'axios';
 
 @Injectable()
@@ -31,11 +37,7 @@ export class CloudflareService {
     }
   }
 
-  async createZone(
-    domain: string,
-    apiToken?: string,
-    accountId?: string
-  ): Promise<{ id: string; name_servers: string[] }> {
+  async createZone(domain: string, apiToken?: string, accountId?: string) {
     try {
       const res = await axios.post(
         `${this.baseUrl}/zones`,
@@ -58,12 +60,29 @@ export class CloudflareService {
       this.logger.log(`✅ Zone created: ${domain} (${result.id})`);
       return { id: result.id, name_servers: result.name_servers };
     } catch (err: any) {
+      // ⚠️ Fix: zone already exists → fallback to get existing zone
+      if (err.response?.data?.errors?.[0]?.code === 1061) {
+        this.logger.warn(`⚠️ Zone already exists, using existing zone: ${domain}`);
+
+        const zoneId = await this.getZoneId(domain, apiToken);
+
+        if (!zoneId) throw new NotFoundException(`Zone not found: ${domain}`);
+
+        const info = await this.getZoneInfo(zoneId, apiToken);
+
+        return {
+          id: zoneId,
+          name_servers: info.name_servers
+        };
+      }
+
       if (err.response?.data) {
         this.logger.error(
           '❌ Cloudflare API response:',
           JSON.stringify(err.response.data, null, 2)
         );
       }
+
       throw new HttpException(`Ошибка при создании зоны: ${err.message}`, 502);
     }
   }

@@ -52,7 +52,7 @@ export class FlowsController {
   })
   async createWithDomain(@CurrentUser() user: User, @Body() dto: CreateFlowWithDomainDto) {
     if (!user.activeTeam) throw new NotFoundException('Команда не найдена');
-    return this.service.createWithDomain(user.activeTeam.id, dto);
+    return this.service.createWithDomain(user, dto);
   }
 
   @Get()

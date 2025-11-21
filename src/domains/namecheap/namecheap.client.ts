@@ -119,20 +119,20 @@ export class NamecheapClient {
     const list = Array.isArray(results) ? results : [results];
 
     const data = list.map((item: any) => {
-      const tld = item.$.Domain.split('.').pop().toLowerCase();
-      const premium = item.$.IsPremiumName === 'true';
+      const tld = item.$?.Domain.split('.').pop().toLowerCase();
+      const premium = item.$?.IsPremiumName === 'true';
       const price =
-        premium && Number(item.$.PremiumRegistrationPrice) > 0
-          ? Number(item.$.PremiumRegistrationPrice)
+        premium && Number(item.$?.PremiumRegistrationPrice) > 0
+          ? Number(item.$?.PremiumRegistrationPrice)
           : (TLD_PRICES[tld]?.register ?? null);
       const renewalPrice =
-        premium && Number(item.$.PremiumRenewalPrice) > 0
-          ? Number(item.$.PremiumRenewalPrice)
+        premium && Number(item.$?.PremiumRenewalPrice) > 0
+          ? Number(item.$?.PremiumRenewalPrice)
           : (TLD_PRICES[tld]?.renewal ?? null);
 
       return {
-        domain: item.$.Domain,
-        available: item.$.Available === 'true',
+        domain: item.$?.Domain,
+        available: item.$?.Available === 'true',
         premium,
         priceUsd: price,
         renewalUsd: renewalPrice
@@ -142,7 +142,6 @@ export class NamecheapClient {
     return data;
   }
 
-  // 💳 Покупка домена
   async purchaseDomain(name: string, years = 1) {
     try {
       const response = await axios.get(this.baseUrl, {
