@@ -41,7 +41,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
 
-  app.use('/assets/', express.static(join(process.cwd(), '/templates/assets/')));
+  app.use('/asset/', express.static(join(process.cwd(), '/templates/asset/')));
 
   await app.listen(process.env.PORT ?? 3000);
 }

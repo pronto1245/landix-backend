@@ -1,0 +1,1443 @@
+@keyframes rotation-loader {
+  0% {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes spinTo1 {
+  0% {
+    -webkit-transform: rotate(-44deg);
+    transform: rotate(-44deg);
+  }
+  to {
+    transform: rotate(1080deg);
+  }
+}
+@-webkit-keyframes spinTo2 {
+  0% {
+    transform: rotate(-4deg);
+  }
+  to {
+    transform: rotate(1396deg);
+  }
+}
+@-webkit-keyframes spinTo3 {
+  0% {
+    transform: rotate(-4deg);
+  }
+  to {
+    transform: rotate(1351deg);
+  }
+}
+@-webkit-keyframes spinTo4 {
+  0% {
+    transform: rotate(-4deg);
+  }
+  to {
+    transform: rotate(1305deg);
+  }
+}
+@-webkit-keyframes spinTo5 {
+  0% {
+    transform: rotate(-4deg);
+  }
+  to {
+    transform: rotate(1261deg);
+  }
+}
+@-webkit-keyframes spinTo6 {
+  0% {
+    transform: rotate(-4deg);
+  }
+  to {
+    transform: rotate(1217deg);
+  }
+}
+@-webkit-keyframes spinTo7 {
+  0% {
+    transform: rotate(-4deg);
+  }
+  to {
+    transform: rotate(1531deg);
+  }
+}
+@-webkit-keyframes spinTo8 {
+  0% {
+    transform: rotate(-4deg);
+  }
+  to {
+    transform: rotate(1485deg);
+  }
+}
+@-webkit-keyframes spinner-win {
+  0%,
+  to {
+    transform: rotate(1080deg);
+  }
+  50% {
+    transform: rotate(1085deg);
+  }
+}
+@keyframes rotateLogo {
+  0%,
+  to {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+}
+@keyframes showHole {
+  0%,
+  18%,
+  to {
+    opacity: 0;
+  }
+  20%,
+  70% {
+    opacity: 1;
+  }
+}
+@keyframes showArrow1 {
+  0% {
+    opacity: 0;
+    transform: translate(-50em, 100vh);
+  }
+  15%,
+  19%,
+  50% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  17% {
+    opacity: 1;
+    transform: translate(-1em, 1em);
+  }
+  to {
+    opacity: 0;
+    transform: translate(0, 50vh);
+  }
+}
+@keyframes moveArrow1 {
+  0%,
+  50% {
+    transform: rotate(180deg);
+  }
+  to {
+    transform: rotate(120deg);
+  }
+}
+@keyframes showArrow2 {
+  0% {
+    opacity: 0;
+    transform: translate(50em, 100vh);
+  }
+  15%,
+  19%,
+  50% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  17% {
+    opacity: 1;
+    transform: translate(1em, 1em);
+  }
+  to {
+    opacity: 0;
+    transform: translate(0, 50vh);
+  }
+}
+@keyframes moveArrow2 {
+  0%,
+  50% {
+    transform: rotate(111deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+@keyframes showArrow3 {
+  0% {
+    opacity: 0;
+    transform: translate(50em, 100vh);
+  }
+  15%,
+  19%,
+  50% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  17% {
+    opacity: 1;
+    transform: translate(1em, 1em);
+  }
+  to {
+    opacity: 0;
+    transform: translate(0, 50vh);
+  }
+}
+@keyframes moveArrow3 {
+  0%,
+  50% {
+    transform: rotate(124deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+@keyframes showArrow4 {
+  0% {
+    opacity: 0;
+    transform: translate(10em, 100vh);
+  }
+  15%,
+  19%,
+  50% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  17% {
+    opacity: 1;
+    transform: translate(0, 1em);
+  }
+  to {
+    opacity: 0;
+    transform: translate(0, 50vh);
+  }
+}
+@keyframes moveArrow4 {
+  0%,
+  50% {
+    transform: rotate(152deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+@keyframes showFlare1 {
+  0%,
+  to {
+    transform: scale(1.3);
+  }
+  50% {
+    transform: scale(1);
+  }
+}
+@keyframes showFlare2 {
+  0%,
+  to {
+    opacity: 1;
+    transform: rotate(0deg) scale(1.3);
+  }
+  50% {
+    opacity: 0.3;
+    transform: rotate(5deg) scale(1);
+  }
+}
+@keyframes moveGlass {
+  0%,
+  to {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(60em);
+  }
+}
+@keyframes moveTarget {
+  0%,
+  to {
+    transform: translateY(-2.5em);
+  }
+  50% {
+    transform: translateY(0);
+  }
+}
+* {
+  margin: 0;
+  padding: 0;
+}
+*,
+::after,
+::before {
+  box-sizing: border-box;
+}
+ol[role='list'],
+ul[role='list'] {
+  list-style: none;
+}
+html:focus-within {
+  scroll-behavior: smooth;
+}
+a {
+  text-decoration: none !important;
+}
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+canvas,
+img,
+picture,
+svg,
+video {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+  font-style: italic;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+  *,
+  ::after,
+  ::before {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+    transition: none;
+  }
+}
+body,
+html {
+  height: 100%;
+  scroll-behavior: smooth;
+}
+.hidden {
+  display: none !important;
+}
+.visible {
+  display: flex !important;
+}
+body {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-size: min(4.5px + 5.5 * (100vw - 375px)/1545, 10px);
+  font-style: normal;
+  font-size: 80%;
+}
+.bottom__section-button {
+  min-width: 50px;
+  align-items: center;
+}
+.bottom__section-button span {
+  height: auto;
+}
+.bottom__section-button .button-loader {
+  display: none;
+}
+.bottom__section-button.is--link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bottom__section-button.is--disabled {
+  pointer-events: none;
+}
+.bottom__section-button.is--disabled span {
+  opacity: 0.2;
+}
+.bottom__section-button.is--disabled .button-loader {
+  display: flex;
+}
+.button-loader {
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+.button-loader span {
+  width: 30px !important;
+  height: 30px !important;
+  border: 4px solid #fff;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation-loader 1s linear infinite;
+  opacity: 1 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.wheel__spinner_win_1 {
+  animation: 3s spinTo1 ease-in-out forwards !important;
+}
+.wheel__spinner_win_2 {
+  animation: 3s spinTo2 ease-in-out forwards;
+}
+.wheel__spinner_win_3 {
+  animation: 3s spinTo3 ease-in-out forwards;
+}
+.wheel__spinner_win_4 {
+  animation: 3s spinTo4 ease-in-out forwards;
+}
+.wheel__spinner_win_5 {
+  animation: 3s spinTo5 ease-in-out forwards;
+}
+.wheel__spinner_win_6 {
+  animation: 3s spinTo6 ease-in-out forwards;
+}
+.wheel__spinner_win_7 {
+  animation: 3s spinTo7 ease-in-out forwards;
+}
+.wheel__spinner_win_8 {
+  animation: 3s spinTo8 ease-in-out forwards;
+}
+.wheel__texts-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-right: 1em !important;
+  padding-left: 2em !important;
+}
+.wheel__texts-block p {
+  transform: rotate(-7deg);
+}
+.wheel__texts-block p:only-child {
+  transform: rotate(0deg);
+}
+.wheel__texts-block p + p {
+  margin-top: 10px;
+  transform: rotate(7deg);
+}
+.effects,
+.effects__block {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+.effects {
+  position: absolute;
+  z-index: 997;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  mix-blend-mode: screen;
+}
+.effects__block {
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  background-size: cover;
+  background-position: center;
+  position: fixed;
+}
+.wheel__texts-1,
+.wheel__texts-2 {
+  transform: rotate(-137deg);
+  position: absolute;
+  left: 11%;
+  top: 23%;
+}
+.wheel__texts-2 {
+  transform: rotate(-93deg);
+  left: 32%;
+  top: 14%;
+}
+.wheel__texts-3,
+.wheel__texts-4 {
+  transform: rotate(-45deg);
+  position: absolute;
+  left: 54%;
+  top: 23%;
+}
+.wheel__texts-4 {
+  transform: rotate(-2deg);
+  left: 63%;
+  top: 44%;
+}
+.wheel__texts-5,
+.wheel__texts-6 {
+  transform: rotate(43deg);
+  position: absolute;
+  left: 54%;
+  top: 65%;
+}
+.wheel__texts-6 {
+  transform: rotate(87deg);
+  left: 33%;
+  top: 74%;
+}
+.wheel__texts-7,
+.wheel__texts-8 {
+  transform: rotate(133deg);
+  position: absolute;
+  left: 11%;
+  top: 66%;
+}
+.wheel__texts-8 {
+  transform: rotate(177deg);
+  left: 2%;
+  top: 45%;
+}
+.win-animation-svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: rotate(45deg);
+  opacity: 0;
+  width: 100%;
+}
+.win-animation-svg.is--active {
+  opacity: 1;
+}
+.is--win-spinner {
+  animation: 2s spinner-win ease-in-out infinite !important;
+}
+body.is--winner .bottom__section {
+  opacity: 0;
+}
+html {
+  background: #0f6b7f;
+  font-size: min(4.5px + 5.5 * (100vw - 375px)/1545, 10px);
+}
+@media (max-width: 1440px) {
+  body {
+    font-size: 80%;
+  }
+}
+@media (max-width: 1024px) {
+  body {
+    font-size: 100%;
+  }
+}
+img {
+  width: 100%;
+}
+.body-wrapper {
+  display: flex;
+  position: relative;
+  width: 100%;
+  min-height: 100dvh;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-image: url(https://landix.group/asset/forestFortune4/img/page-bg.webp);
+}
+@media (max-width: 767px) {
+  .body-wrapper {
+    background-position: top center;
+    background-image: url(https://landix.group/asset/forestFortune4/img/page-bg-mobile.webp);
+  }
+}
+.fire,
+.fire::before {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+.fire::before {
+  content: '';
+  left: 20%;
+  top: 20%;
+  width: 60%;
+  height: 60%;
+  filter: blur(3.2em);
+  background: rgba(255, 225, 31, 0.72);
+}
+.fire::after {
+  content: '';
+  top: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url(https://landix.group/asset/forestFortune4/img/fire.gif);
+}
+.fire::after,
+.game {
+  display: block;
+}
+.fire::after,
+.game,
+.game-field {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.game,
+.game-field {
+  bottom: 0;
+}
+@media (max-width: 1023px) {
+  .game-field {
+    bottom: 3em;
+  }
+}
+@media (max-width: 768px) and (max-height: 741px) {
+  .game-field {
+    font-size: 85%;
+  }
+}
+.game-field__effect {
+  position: absolute;
+  bottom: -12em;
+  left: calc(50% - 75em);
+  width: 150em;
+  height: 150em;
+}
+.game-field__effect-flare {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  mix-blend-mode: plus-lighter;
+  background-image: url(https://landix.group/asset/forestFortune4/img/effect-flare.webp);
+}
+.game-field__effect-flare.is--1 {
+  animation: showFlare1 2s ease-in-out infinite;
+}
+.game-field__effect-flare.is--2 {
+  font-size: 80%;
+  animation: showFlare2 2s ease-in-out infinite;
+}
+.game-field__logo {
+  width: 50em;
+  height: 50em;
+  position: absolute;
+  top: -37em;
+  left: calc(50% - 25em);
+  animation: rotateLogo 2s ease-in-out infinite;
+}
+.game-field__logo img {
+  position: relative;
+  z-index: 2;
+}
+.game-field__logo .fire.is--1 {
+  left: calc(50% - 12em);
+  top: calc(50% - 22em);
+  width: 32em;
+  height: 32em;
+  font-size: 60%;
+}
+.game-field__logo .fire.is--2 {
+  left: calc(50% - 5em);
+  top: calc(50% - 12em);
+  width: 18em;
+  height: 18em;
+  font-size: 60%;
+}
+.game-field__target {
+  position: absolute;
+  left: calc(50% - 37.5em);
+  bottom: -5em;
+  width: 75em;
+  height: 112em;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url(https://landix.group/asset/forestFortune4/img/target.webp);
+}
+.game-field__multipliers {
+  position: absolute;
+  left: 50%;
+  top: 12em;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-50%);
+}
+.game-field__multipliers-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  text-shadow:
+    0 0.1em 0.22em rgba(0, 0, 0, 0.25),
+    0 0.1em 0 rgba(0, 0, 0, 0.54);
+}
+.game-field__multipliers-item.is--1,
+.game-field__multipliers-item.is--2 {
+  height: 9em;
+}
+.game-field__multipliers-item.is--1 span {
+  font-size: 3.5em;
+  color: #fff;
+  line-height: 1 !important;
+}
+.game-field__multipliers-item.is--2 span {
+  font-size: 4em;
+  color: #d74b4b;
+  line-height: 1 !important;
+}
+.game-field__multipliers-item.is--3 {
+  height: 10em;
+}
+.game-field__multipliers-item.is--3 span {
+  font-size: 4em;
+  color: #00806f;
+  line-height: 1 !important;
+}
+.game-field__multipliers-item.is--4 {
+  height: 17em;
+}
+.game-field__multipliers-item.is--4 span {
+  font-size: 5em;
+  color: #fcee21;
+  line-height: 1 !important;
+}
+.game-field__arrows {
+  position: absolute;
+  top: 12.5em;
+  left: 2%;
+  width: 96%;
+  aspect-ratio: 1;
+}
+.game-field__arrows-item {
+  position: absolute;
+}
+.game-field__arrows-item-arrow::before,
+.game-field__arrows-item-hole {
+  display: block;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.game-field__arrows-item-hole {
+  opacity: 0;
+  width: 4em;
+  aspect-ratio: 1;
+  background-image: url(https://landix.group/asset/forestFortune4/img/arrow-hole.webp);
+  animation: showHole 2s ease-in-out;
+}
+.game-field__arrows-item-arrow {
+  opacity: 0;
+  position: absolute;
+  display: block;
+  width: 11.9em;
+  height: 19.7em;
+}
+.game-field__arrows-item-arrow::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+.game-field__arrows-item-multiplier {
+  opacity: 0;
+  position: absolute;
+  left: 100%;
+  top: -1em;
+  color: #e9ef2b;
+  text-shadow: 3px 3px 0 #484400;
+  font-size: 4.6em;
+  white-space: nowrap;
+  animation: showHole 2s ease-in-out;
+}
+.game-field__arrows-item.is--1 {
+  top: 50%;
+  left: calc(50% - 24em);
+}
+.game-field__arrows-item.is--1 .game-field__arrows-item-arrow {
+  right: 2em;
+  top: 2em;
+  animation: showArrow1 2s ease-in-out;
+}
+.game-field__arrows-item.is--1 .game-field__arrows-item-arrow::before {
+  transform: rotate(180deg);
+  background-image: url(https://landix.group/asset/forestFortune4/img/arrow-1.webp);
+  animation: moveArrow1 2s ease-in-out;
+}
+.game-field__arrows-item.is--2 {
+  top: calc(50% + 8em);
+  right: calc(50% - 14em);
+}
+.game-field__arrows-item.is--2 .game-field__arrows-item-arrow {
+  right: -11em;
+  top: 1em;
+  animation: showArrow2 2s ease-in-out;
+}
+.game-field__arrows-item.is--2 .game-field__arrows-item-arrow::before {
+  transform: rotate(111deg);
+  background-image: url(https://landix.group/asset/forestFortune4/img/arrow-2.webp);
+  animation: moveArrow2 2s ease-in-out;
+}
+.game-field__arrows-item.is--3 {
+  top: calc(50% - 31em);
+  right: calc(50% - 11em);
+}
+.game-field__arrows-item.is--3 .game-field__arrows-item-arrow {
+  right: -9em;
+  top: 2em;
+  animation: showArrow3 2s ease-in-out;
+}
+.game-field__arrows-item.is--3 .game-field__arrows-item-arrow::before {
+  transform: rotate(124deg);
+  background-image: url(https://landix.group/asset/forestFortune4/img/arrow-3.webp);
+  animation: moveArrow3 2s ease-in-out;
+}
+.game-field__arrows-item.is--4 {
+  top: calc(50% + 5em);
+  right: calc(50% - 6em);
+}
+.game-field__arrows-item.is--4 .game-field__arrows-item-arrow {
+  right: -3.5em;
+  top: 3em;
+  animation: showArrow4 2s ease-in-out;
+}
+.game-field__arrows-item.is--4 .game-field__arrows-item-arrow::before {
+  transform: rotate(152deg);
+  background-image: url(https://landix.group/asset/forestFortune4/img/arrow-4.webp);
+  animation: moveArrow4 2s ease-in-out;
+}
+.game-controls {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  bottom: 2em;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@media (max-width: 1023px) {
+  .game-controls {
+    bottom: 3em;
+  }
+}
+@media (max-width: 768px) and (max-height: 741px) {
+  .game-controls {
+    bottom: 0;
+  }
+}
+.game-controls__container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+  width: 100%;
+  max-width: 171em;
+  min-height: 18.7em;
+  padding: 0.5em 4.5em 1em;
+  overflow: hidden;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url(https://landix.group/asset/forestFortune4/img/control-panel.webp);
+}
+@media (max-width: 1023px) {
+  .game-controls__container {
+    font-size: 120%;
+    background: 0 0;
+    border: 0;
+    backdrop-filter: none;
+  }
+}
+.game-controls__difficult {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 51.6em;
+  min-height: 9.1em;
+  padding: 0 3em;
+  border-radius: 1.6em;
+  border: 2px solid #bb8552;
+  background: linear-gradient(180deg, #4c1800 0, #692709 97.8%);
+  transform: skew(15deg);
+}
+@media (max-width: 1023px) {
+  .game-controls__difficult {
+    display: none;
+  }
+}
+.game-controls__difficult-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-width: 31.5em;
+  transform: skew(-15deg);
+}
+.game-controls__difficult-block-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+.game-controls__difficult-block-label {
+  color: #fefe2c;
+  font-size: 2em;
+}
+.game-controls__difficult-block-value {
+  color: #fff;
+  font-size: 2em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+@media (max-width: 768px) {
+  .game-controls__difficult-block-value {
+    gap: 4px;
+    font-size: 2.5em;
+  }
+}
+.game-controls__difficult-block-right {
+  display: flex;
+  flex-direction: column;
+}
+.game-controls__difficult-block-right svg,
+.game-controls__main-block-right svg,
+.game-stats__list-item img {
+  width: 2em;
+}
+.game-controls__main {
+  grid-area: main;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 69em;
+  height: 17.5em;
+}
+.game-controls__main-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 24.8em;
+  min-height: 9.1em;
+  padding: 0 5em 0 3em;
+  margin-right: -3em;
+  border-radius: 1.6em;
+  border: 2px solid #bb8552;
+  background: linear-gradient(180deg, #4c1800 0, #692709 97.8%);
+  transform: skew(15deg);
+}
+@media (max-width: 1023px) {
+  .game-controls__main-block {
+    font-size: 110%;
+    margin-right: -4em;
+  }
+}
+.game-controls__main-block-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  transform: skew(-15deg);
+}
+.game-controls__main-block-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+.game-controls__main-block-label {
+  color: #fefe2c;
+  font-size: 2em;
+}
+.game-controls__main-block-value {
+  color: #fff;
+  font-size: 2em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+@media (max-width: 768px) {
+  .game-controls__main-block-value {
+    gap: 4px;
+    font-size: 2.5em;
+  }
+}
+.game-controls__main-block-value-symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4c1800;
+  font-size: 0.7em;
+  line-height: 1;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 100%;
+  background-color: #fff;
+}
+@media (max-width: 768px) {
+  .game-controls__main-block-value-symbol {
+    font-size: 0.6em;
+  }
+}
+.game-controls__main-block-right {
+  display: flex;
+  flex-direction: column;
+}
+.game-controls__main-block.is--reverse {
+  text-align: right;
+  padding: 0 3em 0 5em;
+  margin-left: -3em;
+  margin-right: 0;
+  transform: skew(-15deg);
+}
+@media (max-width: 1023px) {
+  .game-controls__main-block.is--reverse {
+    font-size: 110%;
+    margin-right: 0;
+    margin-left: -4em;
+  }
+}
+.game-controls__main-block.is--reverse .game-controls__main-block-inner {
+  transform: skew(15deg);
+}
+.game-controls__main-block.is--reverse .game-controls__main-block-value {
+  justify-content: flex-end;
+}
+.game-controls__main-btn {
+  position: relative;
+  z-index: 2;
+}
+.game-controls__main-btn .bottom__section-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 17.1em;
+  height: 17.1em;
+  border: 0;
+  background-color: transparent;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url(https://landix.group/asset/forestFortune4/img/control-panel-btn.webp);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s ease-in-out;
+}
+.game-controls__main-btn .bottom__section-button:hover {
+  transform: scale(1.02);
+}
+.game-controls__main-btn .bottom__section-button span {
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 0.1em 0.2em rgba(0, 0, 0, 0.5);
+  font-size: 2.4em;
+}
+.game-controls__main-btn .bottom__section-button-next,
+.game-stats__balance .game-controls__balance {
+  display: none;
+}
+.game-controls__balance {
+  grid-area: balance;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1em;
+  width: 24.6em;
+  min-height: 9.1em;
+  padding: 0 3em;
+  border-radius: 1.6em;
+  border: 2px solid #bb8552;
+  background: linear-gradient(180deg, #4c1800 0, #692709 97.8%);
+  transform: skew(-15deg);
+}
+@media (max-width: 1023px) {
+  .game-controls__balance {
+    display: none;
+  }
+}
+.game-controls__balance-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  transform: skew(15deg);
+}
+.game-controls__balance-label {
+  color: #fefe2c;
+  font-size: 2em;
+}
+.game-controls__balance-value {
+  color: #fff;
+  font-size: 2em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.game-controls__balance-value-symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4c1800;
+  font-size: 0.7em;
+  line-height: 1;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 100%;
+  background-color: #fff;
+}
+.game-stats {
+  position: absolute;
+  left: calc(50% - 87em);
+  bottom: 40em;
+}
+@media (max-width: 1023px) {
+  .game-stats {
+    display: flex;
+    gap: 6em;
+    left: 50%;
+    top: 4%;
+    transform: translateX(-50%);
+  }
+}
+@media (max-width: 768px) and (max-height: 741px) {
+  .game-stats {
+    top: 2%;
+  }
+}
+.game-stats__list {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  width: 45em;
+  height: 41em;
+  padding: 1.2em 3.4em 3.4em;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url(https://landix.group/asset/forestFortune4/img/stats-panel.webp);
+}
+.game-stats__list-title {
+  display: block;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 3em;
+  color: #621400;
+}
+.game-stats__list-items {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex: 1 1 auto;
+  gap: 1em;
+  margin-top: 1em;
+}
+.game-stats__list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 2em;
+  min-height: 5.5em;
+  border-radius: 1.2em;
+  border: 1px solid #bb8552;
+  background: linear-gradient(180deg, #4c1800 0, #692709 97.8%);
+}
+.game-stats__list-item-value {
+  color: #fbb03b;
+  font-size: 2em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.game-stats__list-item-value-symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #401c19;
+  font-size: 0.7em;
+  line-height: 1;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 100%;
+  background-color: #fce436;
+}
+.game-stats__list-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 2em;
+  min-height: 5.5em;
+  border-radius: 1.2em;
+  border: 1px solid #bb8552;
+  background: linear-gradient(180deg, #4c1800 0, #692709 97.8%);
+}
+.game-stats__list-bottom-label {
+  color: #fff;
+  font-size: 2.5em;
+}
+.game-stats__list-bottom-value {
+  color: #fff;
+  font-size: 2em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.game-stats__list-bottom-value-symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4c1800;
+  font-size: 0.7em;
+  line-height: 1;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 100%;
+  background-color: #fff;
+}
+@media (max-width: 1023px) {
+  .game-stats__balance .game-controls__balance {
+    display: flex;
+    margin-bottom: 1.5em;
+  }
+}
+.modal {
+  opacity: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  visibility: hidden;
+}
+@media (max-width: 768px) {
+  .modal {
+    font-size: 110%;
+  }
+}
+.modal__effect {
+  position: absolute;
+  top: -15em;
+  left: calc(50% - 50em);
+  width: 100em;
+  height: 100em;
+}
+.modal__effect::before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: calc(50% - 20em);
+  top: calc(50% - 20em);
+  width: 40em;
+  height: 40em;
+  border-radius: 100%;
+  background: #49d2ff;
+  mix-blend-mode: plus-lighter;
+  filter: blur(6.6em);
+}
+.modal__balance::after,
+.modal__effect-flare,
+.modal__win::before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.modal__effect-flare {
+  width: 100%;
+  mix-blend-mode: plus-lighter;
+  background-image: url(https://landix.group/asset/forestFortune4/img/effect-flare.webp);
+}
+.modal__effect-flare.is--1 {
+  animation: showFlare1 2s ease-in-out infinite;
+}
+.modal__effect-flare.is--2 {
+  font-size: 80%;
+  animation: showFlare2 2s ease-in-out infinite;
+}
+.modal__wrapper {
+  position: relative;
+  top: 5%;
+}
+@media (max-width: 768px) {
+  .modal__wrapper {
+    top: 10%;
+  }
+}
+.modal__content,
+.modal__win-btn .bottom__section-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal__content {
+  flex-direction: column;
+  width: 77em;
+  min-height: 47em;
+  padding: 5em;
+}
+.modal__balance,
+.modal__win {
+  position: relative;
+  width: 70em;
+}
+.modal__balance::after,
+.modal__win::before {
+  content: '';
+  display: block;
+}
+.modal__win::before {
+  width: 12em;
+  opacity: 0.3;
+  background-image: url(https://landix.group/asset/forestFortune4/img/effect-glass.webp);
+  animation: moveGlass 1.5s ease-in-out infinite;
+}
+.modal__balance {
+  margin-top: 2em;
+  width: 60em;
+  height: 13em;
+}
+.modal__balance::after {
+  width: 100%;
+  background-image: url(https://landix.group/asset/forestFortune4/img/modal-frame.webp);
+}
+.modal__balance-value {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+  color: #ffee83;
+  text-shadow: 0 0 0.5em #ffe11f;
+  font-size: 6.2em;
+  margin-top: 0;
+}
+.modal__win-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-width: 1px;
+  width: 100%;
+  margin-top: 10em;
+}
+.modal__win-btn .bottom__section-button {
+  height: 13.8em;
+  min-width: 30px;
+  background-color: transparent;
+  background-repeat: repeat-x;
+  background-size: contain;
+  background-position: center;
+  background-image: url(https://landix.group/asset/forestFortune4/img/button_middle.webp);
+  outline: 0;
+  border: 0;
+  cursor: pointer;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  animation: pulseStartButton 1.5s ease-in-out infinite;
+}
+@media (max-width: 767px) {
+  .modal__win-btn .bottom__section-button {
+    font-size: 110%;
+  }
+}
+.modal__win-btn .bottom__section-button:after,
+.modal__win-btn .bottom__section-button:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 17em;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.modal__win-btn .bottom__section-button:before {
+  left: calc(-17em + 1px);
+  background-position: right center;
+  background-image: url(https://landix.group/asset/forestFortune4/img/button_left.webp);
+}
+.modal__win-btn .bottom__section-button:after {
+  right: calc(-17em + 1px);
+  background-position: left center;
+  background-image: url(https://landix.group/asset/forestFortune4/img/button_right.webp);
+}
+.modal__win-btn .bottom__section-button span {
+  position: relative;
+  z-index: 3;
+  padding: 0 5px;
+  margin-left: -2em;
+  margin-right: -2em;
+  margin-bottom: 0.1em;
+  font-size: 5em;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #622307;
+}
+.modal__win-btn .bottom__section-button-next {
+  display: none;
+}
+.modal__win-btn .bottom__section-button .button-loader span {
+  padding: 0 !important;
+}
+.modal__target {
+  position: relative;
+  display: block;
+  width: 50em;
+  height: 50em;
+  margin-top: 7em;
+  animation: moveTarget 5s ease-in-out infinite;
+}
+.modal__target-arrow,
+.modal__target-hole {
+  position: absolute;
+  display: block;
+  width: 9.7em;
+  left: calc(50% - 9em);
+  bottom: calc(50% - 9em);
+}
+.modal__target-arrow {
+  left: calc(50% - 36em);
+  bottom: calc(50% - 3em);
+  width: 35.5em;
+}
+.modal__target .fire.is--1 {
+  display: block;
+  top: unset;
+  left: calc(50% - 14em);
+  bottom: calc(50% - 9em);
+  width: 23.6em;
+  height: 23.6em;
+}
+.modal__target .fire.is--2 {
+  display: block;
+  top: unset;
+  left: calc(50% - 10em);
+  bottom: calc(50% - 7em);
+  width: 15.2em;
+  height: 15.2em;
+}
+.modal.is--active {
+  opacity: 1;
+  visibility: visible;
+}
+.is--disabled .game-controls__main-btn {
+  pointer-events: none;
+}
+.is--modal-open .game,
+.is--modal-open .start {
+  display: none;
+}
