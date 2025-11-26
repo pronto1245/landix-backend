@@ -1,4 +1,5 @@
 import { Domain } from 'src/domains/entities/domain.entity';
+import { Landing } from 'src/landing/entities/landing.entity';
 import { Team } from 'src/team/entities/team.entity';
 import { User } from 'src/users/entities/user.entity';
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
@@ -16,6 +17,9 @@ export class Flow {
 
   @ManyToOne(() => Team, (team) => team.flows, { nullable: false })
   team: Team;
+
+  @ManyToOne(() => Landing, { nullable: true, onDelete: 'SET NULL', eager: true })
+  landing: Landing | null;
 
   @Column({
     type: 'enum',

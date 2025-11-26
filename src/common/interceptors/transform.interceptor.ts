@@ -12,6 +12,10 @@ export class TransformInterceptor<T>
     const ctx = context.switchToHttp();
     const req = ctx.getRequest();
 
+    const skip =
+      context.getHandler() && Reflect.getMetadata('SKIP_TRANSFORM', context.getHandler());
+    if (skip) return next.handle();
+
     if (req.url === '/api/metrics') {
       return next.handle();
     }

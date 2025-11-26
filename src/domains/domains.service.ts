@@ -366,6 +366,7 @@ export class DomainsService {
     // ===========================================================
     if (dto.domainType === 'custom') {
       if (!dto.domainName) throw new BadRequestException('Не указано имя домена');
+
       if (!dto.cloudflareAccountId) throw new BadRequestException('Не выбран Cloudflare аккаунт');
 
       const account = await this.cloudflareAccountRepo.findOne({

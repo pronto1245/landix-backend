@@ -1,6 +1,7 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DomainsService } from 'src/domains/domains.service';
+import { Landing } from 'src/landing/entities/landing.entity';
 import { Team } from 'src/team/entities/team.entity';
 import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -16,6 +17,9 @@ export class FlowsService {
 
     @InjectRepository(Team)
     private readonly teamRepo: Repository<Team>,
+
+    @InjectRepository(Landing)
+    private readonly landingRepo: Repository<Landing>,
 
     private readonly domainsService: DomainsService
   ) {}
@@ -53,6 +57,46 @@ export class FlowsService {
       where: { team: { id: teamId } },
       order: { createdAt: 'DESC' }
     });
+  }
+
+  async updateLanding(flowId: string, landingId: string) {
+    const flow = await this.flowRepo.findOne({
+      where: {
+        id: flowId
+      }
+    });
+
+    if (!flow) throw new NotFoundException('Flow not found');
+
+    const landing = await this.landingRepo.findOne({
+      where: { id: landingId }
+    });
+
+    if (!landing) throw new NotFoundException('Landing not found');
+
+    flow.landing = landing;
+
+    return this.flowRepo.save(flow);
+  }
+
+  async getFlowByDomain(domain: string) {
+    const flow = await this.flowRepo.findOne({
+      where: {
+        domain: {
+          name: domain
+        }
+      }
+    });
+
+    if (!flow) throw new NotFoundException('Flow not found');
+
+    if (!flow.landing) throw new NotFoundException('Landing not found');
+
+    const landing = await this.landingRepo.findOne({ where: { id: flow.landing.id } });
+
+    if (!landing) throw new NotFoundException('Landing not found');
+
+    return landing;
   }
 
   async delete(flowId: string) {

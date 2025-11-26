@@ -1,3 +1,4 @@
+import { Flow } from 'src/flows/entities/flow.entity';
 import { Team } from 'src/team/entities/team.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
@@ -7,6 +8,7 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
@@ -25,6 +27,9 @@ export class Landing {
   @JoinColumn({ name: 'teamId' })
   @Index()
   team: Team;
+
+  @OneToMany(() => Flow, (flow) => flow.landing)
+  flows: Flow[];
 
   @Column({ type: 'uuid', nullable: true })
   memberId: string | null;

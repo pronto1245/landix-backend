@@ -3,26 +3,34 @@ import {
   Controller,
   Delete,
   Get,
+  Header,
   NotFoundException,
   Param,
   Post,
+  Query,
   UseGuards
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { Public } from 'src/common/decorators/public.decorator';
+import { SkipTransform } from 'src/common/decorators/skip-transform.decorator';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+import { PreviewService } from 'src/landing/preview.service';
 import { User } from 'src/users/entities/user.entity';
 
 import { CreateFlowWithDomainDto } from './dto/create-flow-with-domain.dto';
 import { FlowsService } from './flows.service';
 
 @ApiTags('Flows')
-@ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
 @Controller('flows')
 export class FlowsController {
-  constructor(private readonly service: FlowsService) {}
+  constructor(
+    private readonly service: FlowsService,
+    private readonly previewService: PreviewService
+  ) {}
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Post('create-with-domain')
   @ApiOperation({
     summary: 'Создать поток',
@@ -55,6 +63,8 @@ export class FlowsController {
     return this.service.createWithDomain(user, dto);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Get()
   @ApiOperation({ summary: 'Получить все потоки команды' })
   @ApiResponse({
@@ -76,6 +86,39 @@ export class FlowsController {
     return this.service.getAll(user.activeTeam.id);
   }
 
+  @Public()
+  @SkipTransform()
+  @Header('Content-Type', 'text/html; charset=utf-8')
+  @Get('render')
+  async getFlowByDomain(@Query('domain') domain: string) {
+    if (!domain) throw new NotFoundException('No domain');
+
+    const landing = await this.service.getFlowByDomain(domain);
+
+    if (!landing) throw new NotFoundException('Flow not found');
+
+    const html = this.previewService.render(landing as any);
+
+    return html;
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/landing')
+  @ApiOperation({ summary: 'Обновить лендинг' })
+  @ApiParam({ name: 'id', type: 'string', description: 'ID потока' })
+  async updateLanding(
+    @Param('id') id: string,
+    @Body()
+    dto: {
+      landingId: string;
+    }
+  ) {
+    return this.service.updateLanding(id, dto.landingId);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @ApiOperation({ summary: 'Удалить поток' })
   @ApiResponse({
