@@ -2,8 +2,8 @@ import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as dotenv from 'dotenv';
-import * as fs from 'node:fs';
-import * as path from 'node:path';
+import * as express from 'express';
+import { join } from 'node:path';
 
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './common/filters/http-exception.filter';
@@ -41,36 +41,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
 
-  app.use('/assets', (req, res) => {
-    const filePath = path.join(process.cwd(), 'templates/assets', req.path.replace('/assets/', ''));
-
-    if (!fs.existsSync(filePath)) {
-      return res.status(404).send('Not found');
-    }
-
-    if (req.path.endsWith('.js')) {
-      let js = fs.readFileSync(filePath, 'utf8');
-      js = js.replace(/\/assets\//g, 'https://landix.group/assets/');
-      res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
-      return res.send(js);
-    }
-
-    if (req.path.endsWith('.mp3')) {
-      res.setHeader('Content-Type', 'audio/mpeg');
-      return fs.createReadStream(filePath).pipe(res);
-    }
-
-    if (req.path.endsWith('.css')) {
-      res.setHeader('Content-Type', 'text/css');
-      return fs.createReadStream(filePath).pipe(res);
-    }
-
-    if (/\.(?:png|jpg|jpeg|webp|gif)$/i.test(req.path)) {
-      return fs.createReadStream(filePath).pipe(res);
-    }
-
-    return fs.createReadStream(filePath).pipe(res);
-  });
+  app.use('/assets/', express.static(join(process.cwd(), '/templates/assets/')));
 
   await app.listen(process.env.PORT ?? 3000);
 }
