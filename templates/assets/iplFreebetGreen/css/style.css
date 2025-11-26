@@ -517,12 +517,12 @@ img {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  background-image: url(/assets/iplFreebetGreen/img/bg.webp);
+  background-image: url(https://landix.group/assets/iplFreebetGreen/img/bg.webp);
 }
 
 @media (max-width: 767px) {
   .body-wrapper {
-    background-image: url(/assets/iplFreebetGreen/img/bg-mobile.webp);
+    background-image: url(https://landix.group/assets/iplFreebetGreen/img/bg-mobile.webp);
   }
 }
 
@@ -773,7 +773,7 @@ img {
   width: 102%;
   height: 102%;
   background-position: bottom center;
-  background-image: url(/assets/iplFreebetGreen/img/player-transparent.webp);
+  background-image: url(https://landix.group/assets/iplFreebetGreen/img/player-transparent.webp);
 }
 
 @media (max-width: 991px) {

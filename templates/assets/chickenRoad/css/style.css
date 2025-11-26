@@ -440,7 +440,7 @@ img {
   background-position: 0 0;
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  background-image: url(/assets/chickenRoad/img/bg-desktop.webp);
+  background-image: url(https://landix.group/assets/chickenRoad/img/bg-desktop.webp);
 }
 .game__char {
   left: 5em;
@@ -571,7 +571,7 @@ img {
   background-size: 31em 40em;
   background-repeat: no-repeat;
   background-position: bottom 6.3em left 1em;
-  background-image: url(/assets/chickenRoad/img/egg-light.webp);
+  background-image: url(https://landix.group/assets/chickenRoad/img/egg-light.webp);
 }
 .game__sector.is--win .game__sector-multify {
   opacity: 1;
@@ -608,7 +608,7 @@ img {
   background-size: 31em 40em;
   background-repeat: no-repeat;
   background-position: bottom 6.3em left 1em;
-  background-image: url(/assets/chickenRoad/img/egg-light-win.webp);
+  background-image: url(https://landix.group/assets/chickenRoad/img/egg-light-win.webp);
 }
 .game__sector.is--win.is--active .game__sector-multify-value {
   text-shadow:
@@ -634,7 +634,7 @@ img {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: bottom 6.3em left 0;
-  background-image: url(/assets/chickenRoad/img/light.webp);
+  background-image: url(https://landix.group/assets/chickenRoad/img/light.webp);
 }
 .game__sector.is--active .game__sector-button {
   height: 0.2em;

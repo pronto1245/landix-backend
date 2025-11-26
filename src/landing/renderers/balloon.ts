@@ -81,7 +81,9 @@ export function renderBalloon($: cheerio.CheerioAPI, payload: PreviewDto) {
 
   // Проставим гиф/текст для inline бокса
   if (bonusesCfg) {
-    const gifUrl = bonusesCfg.gif ? `/assets/general/images/bonus/${bonusesCfg.gif}` : '';
+    const gifUrl = bonusesCfg.gif
+      ? `https://landix.group/assets/general/images/bonus/${bonusesCfg.gif}`
+      : '';
     if (gifUrl) $('#bonus-inline-gif').attr('src', gifUrl);
     setText($, '#bonus-inline-text', bonusesCfg.inlineBoxText ?? '');
   }
@@ -100,7 +102,9 @@ export function renderBalloon($: cheerio.CheerioAPI, payload: PreviewDto) {
 
   // Проставим гиф/текст для leave-модалки
   if (bonusesCfg) {
-    const gifUrl = bonusesCfg.gif ? `/assets/general/images/bonus/${bonusesCfg.gif}` : '';
+    const gifUrl = bonusesCfg.gif
+      ? `https://landix.group/assets/general/images/bonus/${bonusesCfg.gif}`
+      : '';
     if (gifUrl) $('#bonus-leave-gif').attr('src', gifUrl);
     setText($, '#bonus-leave-text', bonusesCfg.activeOnPageLeaveText ?? '');
   }

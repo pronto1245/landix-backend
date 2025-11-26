@@ -401,7 +401,7 @@ html {
   display: flex !important;
 }
 .plinko-game-traff-body {
-  background-image: url(/assets/plinkoMax/img/bg.webp);
+  background-image: url(https://landix.group/assets/plinkoMax/img/bg.webp);
   background-repeat: no-repeat;
   background-position: center bottom;
   background-size: cover;
@@ -472,7 +472,7 @@ html {
   color: #000;
   text-align: center;
   font-size: 12px;
-  background-image: url(/assets/plinkoMax/img/subtract.webp);
+  background-image: url(https://landix.group/assets/plinkoMax/img/subtract.webp);
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -480,23 +480,23 @@ html {
   width: 5em;
 }
 .plinko-game-traff__multipliers-row-item:nth-child(2) {
-  background-image: url(/assets/plinkoMax/img/subtract-1.webp);
+  background-image: url(https://landix.group/assets/plinkoMax/img/subtract-1.webp);
 }
 .plinko-game-traff__multipliers-row-item:nth-child(3) {
-  background-image: url(/assets/plinkoMax/img/subtract-2.webp);
+  background-image: url(https://landix.group/assets/plinkoMax/img/subtract-2.webp);
 }
 .plinko-game-traff__multipliers-row-item:nth-child(4),
 .plinko-game-traff__multipliers-row-item:nth-child(5) {
-  background-image: url(/assets/plinkoMax/img/subtract-3.webp);
+  background-image: url(https://landix.group/assets/plinkoMax/img/subtract-3.webp);
 }
 .plinko-game-traff__multipliers-row-item:nth-child(6) {
-  background-image: url(/assets/plinkoMax/img/subtract-2.webp);
+  background-image: url(https://landix.group/assets/plinkoMax/img/subtract-2.webp);
 }
 .plinko-game-traff__multipliers-row-item:nth-child(7) {
-  background-image: url(/assets/plinkoMax/img/subtract-1.webp);
+  background-image: url(https://landix.group/assets/plinkoMax/img/subtract-1.webp);
 }
 .plinko-game-traff__multipliers-row-item:nth-child(8) {
-  background-image: url(/assets/plinkoMax/img/subtract.webp);
+  background-image: url(https://landix.group/assets/plinkoMax/img/subtract.webp);
   width: 5em;
 }
 .plinko-game-traff__multipliers-row-item span {
@@ -543,7 +543,7 @@ html {
   position: absolute;
   background-color: #009db8;
   border-radius: 100%;
-  background-image: url(/assets/plinkoMax/img/ball.webp);
+  background-image: url(https://landix.group/assets/plinkoMax/img/ball.webp);
   background-repeat: no-repeat;
   margin-top: 10px;
 }
@@ -581,7 +581,7 @@ html {
   left: 0;
   width: 100%;
   height: 200px;
-  background-image: url(/assets/plinkoMax/img/coins.webp);
+  background-image: url(https://landix.group/assets/plinkoMax/img/coins.webp);
   background-repeat: no-repeat;
   background-size: cover;
   z-index: 0;
@@ -654,7 +654,7 @@ html {
   animation-delay: 3.2s;
 }
 .plinko-game-traff__pin:before {
-  background-image: url(/assets/plinkoMax/img/light-png_80_90.webp);
+  background-image: url(https://landix.group/assets/plinkoMax/img/light-png_80_90.webp);
   background-size: 100%;
   width: 50px;
   height: 50px;
@@ -890,7 +890,7 @@ body.is--modal-open .plinko-game-traff__first-section {
   outline: 0;
 }
 .plinko-game-traff__second-section-item .image {
-  background-image: url(/assets/plinkoMax/img/1.webp);
+  background-image: url(https://landix.group/assets/plinkoMax/img/1.webp);
   width: 100%;
   height: 100%;
   background-repeat: no-repeat;
