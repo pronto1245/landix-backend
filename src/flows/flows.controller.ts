@@ -19,6 +19,7 @@ import { PreviewService } from 'src/landing/preview.service';
 import { User } from 'src/users/entities/user.entity';
 
 import { CreateFlowWithDomainDto } from './dto/create-flow-with-domain.dto';
+import { UpdateLandingDto } from './dto/update-landing.dto';
 import { FlowsService } from './flows.service';
 
 @ApiTags('Flows')
@@ -107,13 +108,7 @@ export class FlowsController {
   @Post(':id/landing')
   @ApiOperation({ summary: 'Обновить лендинг' })
   @ApiParam({ name: 'id', type: 'string', description: 'ID потока' })
-  async updateLanding(
-    @Param('id') id: string,
-    @Body()
-    dto: {
-      landingId: string;
-    }
-  ) {
+  async updateLanding(@Param('id') id: string, @Body() dto: UpdateLandingDto) {
     return this.service.updateLanding(id, dto.landingId);
   }
 
