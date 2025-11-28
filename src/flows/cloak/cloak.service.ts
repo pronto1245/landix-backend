@@ -5,7 +5,7 @@ import { Flow } from '../entities/flow.entity';
 
 @Injectable()
 export class CloakService {
-  constructor(private readonly logger: Logger) {}
+  constructor(private readonly logger = new Logger(CloakService.name)) {}
 
   private botRegex = [
     /bot/i,
