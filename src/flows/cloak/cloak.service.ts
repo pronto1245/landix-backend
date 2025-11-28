@@ -69,17 +69,6 @@ export class CloakService {
       }
     }
 
-    if (cloak.bannedCountries?.length && country) {
-      if (cloak.bannedCountries.includes(country)) {
-        return {
-          passed: false,
-          reason: `banned_geo: ${country}`,
-          country,
-          ip
-        };
-      }
-    }
-
     return { passed: true, country, ip };
   }
 }
