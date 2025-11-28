@@ -1,13 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import fetch from 'node-fetch';
 import { RedisService } from 'src/redis/redis.service';
 
 @Injectable()
-export class GeoService {
+export class GeoService implements OnModuleInit {
+  private readonly logger = new Logger(GeoService.name);
   private redis;
 
-  constructor(private readonly redisService: RedisService) {
+  constructor(private readonly redisService: RedisService) {}
+
+  onModuleInit() {
     this.redis = this.redisService.getClient();
+    this.logger.log('GeoService initialized (Redis connected)');
   }
 
   private services = [
@@ -33,9 +37,15 @@ export class GeoService {
 
     const redisKey = `geo:${ip}`;
 
+    if (!this.redis) {
+      this.logger.error('Redis not initialized yet in GeoService!');
+      return undefined;
+    }
+
     const cached = await this.redis.get(redisKey);
     if (cached) {
-      return cached;
+      this.logger.log(`GEO CACHE HIT [${ip}] = ${cached}`);
+      return cached === 'UNKNOWN' ? undefined : cached;
     }
 
     for (const buildUrl of this.services) {
@@ -48,10 +58,11 @@ export class GeoService {
 
         if (country) {
           await this.redis.set(redisKey, country, 'EX', 86400);
+          this.logger.log(`GEO SUCCESS [${ip}] = ${country} via ${url}`);
           return country;
         }
       } catch {
-        continue;
+        this.logger.warn(`GEO FAIL via ${url}`);
       }
     }
 
