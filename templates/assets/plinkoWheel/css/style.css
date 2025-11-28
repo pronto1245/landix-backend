@@ -459,7 +459,7 @@ img {
   position: relative;
   min-height: 100vh;
   overflow: hidden;
-  background-image: url(https://landix.group/assets/plinkoWheel/img/page-bg.webp);
+  background-image: url(https://api.landix.group/assets/plinkoWheel/img/page-bg.webp);
 }
 @media (max-width: 991px) {
   .body-wrapper {
@@ -468,7 +468,7 @@ img {
 }
 @media (max-width: 767px) {
   .body-wrapper {
-    background-image: url(https://landix.group/assets/plinkoWheel/img/page-bg-mobile.webp);
+    background-image: url(https://api.landix.group/assets/plinkoWheel/img/page-bg-mobile.webp);
   }
 }
 .container {
@@ -529,7 +529,7 @@ img {
   width: 200%;
   height: 200%;
   background-size: 90%;
-  background-image: url(https://landix.group/assets/plinkoWheel/img/wheel-bg-back-2.webp);
+  background-image: url(https://api.landix.group/assets/plinkoWheel/img/wheel-bg-back-2.webp);
   animation: 4s spinWheelBackground2 ease-in-out infinite;
   mix-blend-mode: lighten;
 }
@@ -539,7 +539,7 @@ img {
   width: 140%;
   height: 140%;
   background-size: 138%;
-  background-image: url(https://landix.group/assets/plinkoWheel/img/wheel-bg-back.webp);
+  background-image: url(https://api.landix.group/assets/plinkoWheel/img/wheel-bg-back.webp);
   animation: 4s spinWheelBackground1 ease-in-out infinite;
   mix-blend-mode: normal;
 }
@@ -563,7 +563,7 @@ img {
   z-index: 5;
   width: 73em;
   height: 73em;
-  background-image: url(https://landix.group/assets/plinkoWheel/img/wheel-around.webp);
+  background-image: url(https://api.landix.group/assets/plinkoWheel/img/wheel-around.webp);
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -574,7 +574,7 @@ img {
   width: 20em;
   height: 20em;
   border-radius: 50%;
-  background: url(https://landix.group/assets/plinkoWheel/img/btn.webp) 50% 0;
+  background: url(https://api.landix.group/assets/plinkoWheel/img/btn.webp) 50% 0;
   background-size: 100%;
   border: 0;
   outline: 0;
@@ -652,7 +652,7 @@ img {
   border: 0;
   cursor: pointer;
   font-size: 110%;
-  background-image: url(https://landix.group/assets/plinkoWheel/img/button_middle.webp);
+  background-image: url(https://api.landix.group/assets/plinkoWheel/img/button_middle.webp);
   background-repeat: repeat-x;
   background-size: contain;
   background-position: center;
@@ -679,12 +679,12 @@ img {
 .bottom__section-button:before {
   left: calc(-17em + 1px);
   background-position: right center;
-  background-image: url(https://landix.group/assets/plinkoWheel/img/button_left.webp);
+  background-image: url(https://api.landix.group/assets/plinkoWheel/img/button_left.webp);
 }
 .bottom__section-button:after {
   right: calc(-17em + 1px);
   background-position: left center;
-  background-image: url(https://landix.group/assets/plinkoWheel/img/button_right.webp);
+  background-image: url(https://api.landix.group/assets/plinkoWheel/img/button_right.webp);
 }
 .bottom__section-button span {
   position: relative;
@@ -886,7 +886,7 @@ img {
   left: calc(50% - 87em);
   width: 168em;
   height: 142em;
-  background-image: url(https://landix.group/assets/plinkoWheel/img/modal-bg.webp);
+  background-image: url(https://api.landix.group/assets/plinkoWheel/img/modal-bg.webp);
   background-position: center center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -906,7 +906,7 @@ img {
   left: calc(50% - 100em);
   width: 200em;
   height: 160em;
-  background-image: url(https://landix.group/assets/plinkoWheel/img/modal-effect.webp);
+  background-image: url(https://api.landix.group/assets/plinkoWheel/img/modal-effect.webp);
   background-position: center center;
   background-repeat: no-repeat;
   background-size: contain;

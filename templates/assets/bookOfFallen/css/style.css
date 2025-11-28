@@ -406,7 +406,7 @@ body.is--winner .bottom__section {
   background-position: center;
 }
 .body-wrapper {
-  background-image: url(https://landix.group/assets/bookOfFallen/img/page-bg.webp);
+  background-image: url(https://api.landix.group/assets/bookOfFallen/img/page-bg.webp);
   background-size: cover;
   position: relative;
   min-height: 100%;
@@ -419,7 +419,7 @@ body.is--winner .bottom__section {
 }
 @media (max-width: 767px) {
   .body-wrapper {
-    background-image: url(https://landix.group/assets/bookOfFallen/img/page-bg-mobile.webp);
+    background-image: url(https://api.landix.group/assets/bookOfFallen/img/page-bg-mobile.webp);
   }
 }
 .effects {
@@ -439,7 +439,7 @@ body.is--winner .bottom__section {
   top: -44%;
   width: 250%;
   height: 250%;
-  background-image: url(https://landix.group/assets/bookOfFallen/img/wheel-bg-back.webp);
+  background-image: url(https://api.landix.group/assets/bookOfFallen/img/wheel-bg-back.webp);
   background-size: 100%;
   z-index: 2;
   opacity: 1;
@@ -512,7 +512,7 @@ body.is--winner .bottom__section {
   width: 77em;
   height: 77em;
   top: 48%;
-  background: url(https://landix.group/assets/bookOfFallen/img/wheel-around.webp) 50% 50%;
+  background: url(https://api.landix.group/assets/bookOfFallen/img/wheel-around.webp) 50% 50%;
   background-size: 100% 100%;
   pointer-events: none;
 }
@@ -520,7 +520,7 @@ body.is--winner .bottom__section {
   width: 19em;
   height: 19em;
   border-radius: 50%;
-  background: url(https://landix.group/assets/bookOfFallen/img/btn.webp) 50% 0;
+  background: url(https://api.landix.group/assets/bookOfFallen/img/btn.webp) 50% 0;
   background-size: 100%;
   border: 0;
   outline: 0;
@@ -635,8 +635,8 @@ body.is--winner .bottom__section {
 }
 .bottom__section-button {
   background:
-    url(https://landix.group/assets/bookOfFallen/img/button_middle.webp) no-repeat bottom,
-    repeat-x bottom url(https://landix.group/assets/bookOfFallen/img/button_background.webp);
+    url(https://api.landix.group/assets/bookOfFallen/img/button_middle.webp) no-repeat bottom,
+    repeat-x bottom url(https://api.landix.group/assets/bookOfFallen/img/button_background.webp);
   background-size:
     100px,
     1px 80px;
@@ -733,12 +733,12 @@ body.is--winner .bottom__section {
 .bottom__section-button:before {
   left: -50px;
   background: no-repeat bottom/contain
-    url(https://landix.group/assets/bookOfFallen/img/button_left.webp);
+    url(https://api.landix.group/assets/bookOfFallen/img/button_left.webp);
 }
 .bottom__section-button:after {
   right: -50px;
   background: no-repeat bottom/contain
-    url(https://landix.group/assets/bookOfFallen/img/button_right.webp);
+    url(https://api.landix.group/assets/bookOfFallen/img/button_right.webp);
 }
 .bottom__section-button:focus {
   animation: 0.5s scaleButton ease-in-out forwards;
@@ -1375,7 +1375,7 @@ img {
 .modal__container {
   width: 100%;
   height: 80vh;
-  background-image: url(https://landix.group/assets/bookOfFallen/img/modal-background.webp);
+  background-image: url(https://api.landix.group/assets/bookOfFallen/img/modal-background.webp);
   background-position: center center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -1394,7 +1394,7 @@ img {
 }
 @media (max-width: 767px) {
   .modal__container {
-    background-image: url(https://landix.group/assets/bookOfFallen/img/modal-background-mobile.webp);
+    background-image: url(https://api.landix.group/assets/bookOfFallen/img/modal-background-mobile.webp);
   }
 }
 .modal__logo {

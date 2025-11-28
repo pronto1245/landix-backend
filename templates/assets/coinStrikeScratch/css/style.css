@@ -579,11 +579,11 @@ img {
   position: relative;
   min-height: 100vh;
   overflow: hidden;
-  background-image: url(https://landix.group/assets/coinStrikeScratch/img/page-bg.webp);
+  background-image: url(https://api.landix.group/assets/coinStrikeScratch/img/page-bg.webp);
 }
 @media (max-width: 767px) {
   .body-wrapper {
-    background-image: url(https://landix.group/assets/coinStrikeScratch/img/page-bg-mobile.webp);
+    background-image: url(https://api.landix.group/assets/coinStrikeScratch/img/page-bg-mobile.webp);
   }
 }
 .body-wrapper::before {
@@ -594,7 +594,7 @@ img {
   left: 0;
   width: 100%;
   height: 200%;
-  background-image: url(https://landix.group/assets/coinStrikeScratch/img/lightning.gif);
+  background-image: url(https://api.landix.group/assets/coinStrikeScratch/img/lightning.gif);
   mix-blend-mode: plus-lighter;
 }
 .container {
@@ -652,7 +652,7 @@ img {
   width: 100%;
   height: 100%;
   background-position: center;
-  background-image: url(https://landix.group/assets/coinStrikeScratch/img/logo-effect.gif);
+  background-image: url(https://api.landix.group/assets/coinStrikeScratch/img/logo-effect.gif);
   mix-blend-mode: lighten;
 }
 .footer {
@@ -857,7 +857,7 @@ img {
   border: 0;
   cursor: pointer;
   font-size: 110%;
-  background-image: url(https://landix.group/assets/coinStrikeScratch/img/button_middle.webp);
+  background-image: url(https://api.landix.group/assets/coinStrikeScratch/img/button_middle.webp);
   background-repeat: repeat-x;
   background-size: contain;
   background-position: center;
@@ -878,7 +878,7 @@ img {
 .bottom__section-button:before {
   left: -21em;
   background-position: right center;
-  background-image: url(https://landix.group/assets/coinStrikeScratch/img/button_left.webp);
+  background-image: url(https://api.landix.group/assets/coinStrikeScratch/img/button_left.webp);
 }
 @media (max-width: 1024px) {
   .bottom__section-button:before {
@@ -888,7 +888,7 @@ img {
 .bottom__section-button:after {
   right: -21em;
   background-position: left center;
-  background-image: url(https://landix.group/assets/coinStrikeScratch/img/button_right.webp);
+  background-image: url(https://api.landix.group/assets/coinStrikeScratch/img/button_right.webp);
 }
 @media (max-width: 1024px) {
   .bottom__section-button:after {
@@ -970,7 +970,7 @@ img {
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url(https://landix.group/assets/coinStrikeScratch/img/left-person-effect.webp);
+  background-image: url(https://api.landix.group/assets/coinStrikeScratch/img/left-person-effect.webp);
   mix-blend-mode: lighten;
   transform: rotate(17deg);
   animation: 5s lighting ease-in-out infinite;
@@ -1045,7 +1045,7 @@ img {
   left: calc(50% - 48em);
   width: 70em;
   height: 100em;
-  background-image: url(https://landix.group/assets/coinStrikeScratch/img/lightning-up.webp);
+  background-image: url(https://api.landix.group/assets/coinStrikeScratch/img/lightning-up.webp);
   transform: rotate(-7deg);
 }
 .animation-images__item.is--1 .animation-images__item-lightning::after {
@@ -1053,7 +1053,7 @@ img {
   left: calc(50% - 36em);
   width: 90em;
   height: 130em;
-  background-image: url(https://landix.group/assets/coinStrikeScratch/img/lightning-down.webp);
+  background-image: url(https://api.landix.group/assets/coinStrikeScratch/img/lightning-down.webp);
   transform: rotate(-4deg);
 }
 .animation-images__item.is--1 .animation-images__item-img {
@@ -1220,7 +1220,7 @@ img {
   height: 100%;
   background-size: contain;
   background-position: center;
-  background-image: url(https://landix.group/assets/coinStrikeScratch/img/logo-effect.gif);
+  background-image: url(https://api.landix.group/assets/coinStrikeScratch/img/logo-effect.gif);
   mix-blend-mode: lighten;
 }
 .modal__title {
@@ -1370,7 +1370,7 @@ img {
   left: calc(50% - 100em);
   width: 200em;
   height: 200em;
-  background-image: url(https://landix.group/assets/coinStrikeScratch/img/flare-3.webp);
+  background-image: url(https://api.landix.group/assets/coinStrikeScratch/img/flare-3.webp);
   background-position: center center;
   background-size: cover;
   animation: 10s spinModalBg ease-in-out infinite;

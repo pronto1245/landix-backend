@@ -564,7 +564,7 @@ html {
   height: 53.3em;
   top: 30em;
   left: -20em;
-  background-image: url(https://landix.group/assets/mines/img/star.svg);
+  background-image: url(https://api.landix.group/assets/mines/img/star.svg);
   animation: 15s rotateStar ease-in-out infinite;
 }
 
@@ -580,7 +580,7 @@ html {
   height: 63em;
   top: 25em;
   right: -20em;
-  background-image: url(https://landix.group/assets/mines/img/bomb.svg);
+  background-image: url(https://api.landix.group/assets/mines/img/bomb.svg);
   animation: 15s rotateBomb ease-in-out infinite;
 }
 
@@ -629,7 +629,7 @@ html {
 }
 
 .game.is--ready .game-field__item::before {
-  background-image: url(https://landix.group/assets/mines/img/card-ready.svg);
+  background-image: url(https://api.landix.group/assets/mines/img/card-ready.svg);
 }
 
 .game.is--started .game-controls__buttons-cash {
@@ -765,7 +765,7 @@ html {
   transform: translateY(-50%);
   width: 0.92em;
   height: 0.6em;
-  background-image: url(https://landix.group/assets/mines/img/arrow-down.svg);
+  background-image: url(https://api.landix.group/assets/mines/img/arrow-down.svg);
 }
 
 .game-progress__multiplier {
@@ -854,12 +854,12 @@ html {
 
 .game-field__item::before {
   transform: rotateY(0deg);
-  background-image: url(https://landix.group/assets/mines/img/card-default.svg);
+  background-image: url(https://api.landix.group/assets/mines/img/card-default.svg);
 }
 
 .game-field__item::after {
   transform: rotateY(180deg);
-  background-image: url(https://landix.group/assets/mines/img/card-star.svg);
+  background-image: url(https://api.landix.group/assets/mines/img/card-star.svg);
 }
 
 .game-field__item.is--active {
@@ -875,11 +875,11 @@ html {
 }
 
 .game-field__item.is--win::after {
-  background-image: url(https://landix.group/assets/mines/img/card-win.svg);
+  background-image: url(https://api.landix.group/assets/mines/img/card-win.svg);
 }
 
 .game-field__item.is--lose::after {
-  background-image: url(https://landix.group/assets/mines/img/card-bomb.svg);
+  background-image: url(https://api.landix.group/assets/mines/img/card-bomb.svg);
 }
 
 .game-auto {
@@ -973,7 +973,7 @@ html {
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url(https://landix.group/assets/mines/img/icon-auto-2.svg);
+  background-image: url(https://api.landix.group/assets/mines/img/icon-auto-2.svg);
 }
 
 .game-controls {
@@ -1183,7 +1183,7 @@ html {
   left: 3.3em;
   top: 50%;
   transform: translateY(-50%);
-  background-image: url(https://landix.group/assets/mines/img/icon-play.svg);
+  background-image: url(https://api.landix.group/assets/mines/img/icon-play.svg);
 }
 
 @media (min-width: 991px) {
@@ -1268,7 +1268,7 @@ html {
   height: 150em;
   top: calc(50% - 75em);
   left: calc(50% - 75em);
-  background-image: url(https://landix.group/assets/mines/img/modal-bg.webp);
+  background-image: url(https://api.landix.group/assets/mines/img/modal-bg.webp);
   opacity: 0.5;
   animation: 10s rotateModalBg ease-in-out infinite;
 }
@@ -1292,7 +1292,7 @@ html {
   width: 30.4em;
   height: 1em;
   top: -0.3em;
-  background-image: url(https://landix.group/assets/mines/img/flare-2.webp);
+  background-image: url(https://api.landix.group/assets/mines/img/flare-2.webp);
   mix-blend-mode: plus-lighter;
 }
 
@@ -1336,7 +1336,7 @@ html {
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
-  background-image: url(https://landix.group/assets/mines/img/flare.webp);
+  background-image: url(https://api.landix.group/assets/mines/img/flare.webp);
   left: 7.4em;
   top: 3em;
   animation: 2s showFlare ease-in-out infinite;

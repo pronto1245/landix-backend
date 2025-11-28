@@ -161,7 +161,7 @@ html {
   display: flex !important;
 }
 .aviator-game-traff-body {
-  background-image: url(https://landix.group/assets/aviatorRed/img/bg.webp);
+  background-image: url(https://api.landix.group/assets/aviatorRed/img/bg.webp);
   background-repeat: no-repeat;
   background-position: center bottom;
   background-size: cover;
@@ -246,7 +246,7 @@ html {
   left: 0;
   width: 100%;
   height: 200px;
-  background-image: url(https://landix.group/assets/aviatorRed/img/coins.webp);
+  background-image: url(https://api.landix.group/assets/aviatorRed/img/coins.webp);
   background-repeat: no-repeat;
   background-size: cover;
   z-index: 0;
@@ -354,7 +354,7 @@ body.is--modal-open .aviator-game-traff__game {
   opacity: 0;
 }
 .aviator-game-traff__first-section .bottom__section-button {
-  background: url(https://landix.group/assets/aviatorRed/img/button_middle.png) repeat-x center
+  background: url(https://api.landix.group/assets/aviatorRed/img/button_middle.png) repeat-x center
     center;
   background-size: contain;
   padding: 0;
@@ -408,7 +408,7 @@ body.is--modal-open .aviator-game-traff__game {
 }
 .aviator-game-traff__first-section .bottom__section-button:before {
   left: -128px;
-  background-image: url(https://landix.group/assets/aviatorRed/img/button_left.png);
+  background-image: url(https://api.landix.group/assets/aviatorRed/img/button_left.png);
   background-position: right center;
 }
 @media (max-width: 640px) {
@@ -418,7 +418,7 @@ body.is--modal-open .aviator-game-traff__game {
 }
 .aviator-game-traff__first-section .bottom__section-button:after {
   right: -128px;
-  background-image: url(https://landix.group/assets/aviatorRed/img/button_right.png);
+  background-image: url(https://api.landix.group/assets/aviatorRed/img/button_right.png);
   background-position: left center;
 }
 @media (max-width: 640px) {
@@ -708,7 +708,7 @@ body.is--modal-open .aviator-game-traff__game {
   left: 2%;
   bottom: 8%;
   height: 100%;
-  background-image: url(https://landix.group/assets/aviatorRed/img/line-2.svg);
+  background-image: url(https://api.landix.group/assets/aviatorRed/img/line-2.svg);
   background-position: left;
   background-size: cover;
   background-repeat: no-repeat;
@@ -716,7 +716,7 @@ body.is--modal-open .aviator-game-traff__game {
 }
 @media (max-width: 640px) {
   .aviator-game-traff__game-airplane {
-    background-image: url(https://landix.group/assets/aviatorRed/img/line-2-mobile.svg);
+    background-image: url(https://api.landix.group/assets/aviatorRed/img/line-2-mobile.svg);
     left: 20px;
     bottom: 20px;
   }
@@ -805,7 +805,7 @@ body.is--modal-open .aviator-game-traff__game {
   }
 }
 .aviator-game-traff__game-ellipse {
-  background-image: url(https://landix.group/assets/aviatorRed/img/ellipse.webp);
+  background-image: url(https://api.landix.group/assets/aviatorRed/img/ellipse.webp);
   position: absolute;
   left: -225%;
   background-position: left;

@@ -430,7 +430,7 @@ img {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-image: url(https://landix.group/assets/3HotChilies/img/page-bg.webp);
+  background-image: url(https://api.landix.group/assets/3HotChilies/img/page-bg.webp);
   background-size: cover;
   min-height: 100vh;
 }
@@ -441,7 +441,7 @@ img {
 }
 @media (max-width: 767px) {
   .body-wrapper {
-    background-image: url(https://landix.group/assets/3HotChilies/img/page-bg-mobile.webp);
+    background-image: url(https://api.landix.group/assets/3HotChilies/img/page-bg-mobile.webp);
   }
 }
 .container {
@@ -478,7 +478,7 @@ img {
   top: -50%;
   width: 200%;
   height: 200%;
-  background-image: url(https://landix.group/assets/3HotChilies/img/wheel-bg-back.webp);
+  background-image: url(https://api.landix.group/assets/3HotChilies/img/wheel-bg-back.webp);
   background-size: 180%;
   z-index: 2;
   opacity: 1;
@@ -507,7 +507,7 @@ img {
   height: 79em;
   max-width: 658px;
   max-height: 658px;
-  background: url(https://landix.group/assets/3HotChilies/img/wheel-around.webp) 50% 50%;
+  background: url(https://api.landix.group/assets/3HotChilies/img/wheel-around.webp) 50% 50%;
   background-size: 100% 100%;
   pointer-events: none;
 }
@@ -518,7 +518,7 @@ img {
   max-width: 136px;
   max-height: 136px;
   border-radius: 50%;
-  background: url(https://landix.group/assets/3HotChilies/img/btn.webp) 50% 0;
+  background: url(https://api.landix.group/assets/3HotChilies/img/btn.webp) 50% 0;
   background-size: 100%;
   border: 0;
   outline: 0;
@@ -624,7 +624,7 @@ img {
   border: 0;
   cursor: pointer;
   font-size: 110%;
-  background-image: url(https://landix.group/assets/3HotChilies/img/button_middle.webp);
+  background-image: url(https://api.landix.group/assets/3HotChilies/img/button_middle.webp);
   background-repeat: repeat-x;
   background-size: contain;
   background-position: center;
@@ -648,12 +648,12 @@ img {
 .bottom__section-button::before {
   left: -9.5em;
   background-position: left;
-  background-image: url(https://landix.group/assets/3HotChilies/img/button_left.webp);
+  background-image: url(https://api.landix.group/assets/3HotChilies/img/button_left.webp);
 }
 .bottom__section-button::after {
   right: -9.5em;
   background-position: right;
-  background-image: url(https://landix.group/assets/3HotChilies/img/button_right.webp);
+  background-image: url(https://api.landix.group/assets/3HotChilies/img/button_right.webp);
 }
 .bottom__section-button:focus {
   animation: 0.5s scaleButton ease-in-out forwards;
@@ -1030,7 +1030,7 @@ img {
   width: 80vw;
   height: 80vw;
   opacity: 0.4;
-  background-image: url(https://landix.group/assets/3HotChilies/img/modal-background.webp);
+  background-image: url(https://api.landix.group/assets/3HotChilies/img/modal-background.webp);
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;

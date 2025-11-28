@@ -552,7 +552,7 @@ img {
   left: calc(50% - 70vh);
   width: 140vh;
   height: 140vh;
-  background-image: url(https://landix.group/assets/balloon/img/modal-background.webp);
+  background-image: url(https://api.landix.group/assets/balloon/img/modal-background.webp);
   background-size: 100% 100%;
   background-position: center;
   opacity: 0.5;
@@ -623,7 +623,7 @@ img {
   background-position: 0 0;
   background-repeat: no-repeat;
   background-size: 3225em 20em;
-  background-image: url(https://landix.group/assets/balloon/img/balloon.svg);
+  background-image: url(https://api.landix.group/assets/balloon/img/balloon.svg);
   transform: translate(-143%, -50%) scale(7);
   animation: play 4s steps(128);
   animation-play-state: paused;
@@ -802,7 +802,7 @@ img {
   left: 0;
   height: 100%;
   width: 100%;
-  background-image: url(https://landix.group/assets/balloon/img/btn.webp);
+  background-image: url(https://api.landix.group/assets/balloon/img/btn.webp);
   background-size: contain;
   transition: all 0.3s ease-in-out;
   animation: 0.5s scale ease-in-out infinite;
@@ -815,7 +815,7 @@ img {
   height: 11em;
   width: 8em;
   background-size: cover;
-  background-image: url(https://landix.group/assets/balloon/img/tube.webp);
+  background-image: url(https://api.landix.group/assets/balloon/img/tube.webp);
   transform: rotate(-110deg);
 }
 
@@ -838,7 +838,7 @@ img {
 
 .push-button:active::before {
   animation: none;
-  background-image: url(https://landix.group/assets/balloon/img/btn-active.webp);
+  background-image: url(https://api.landix.group/assets/balloon/img/btn-active.webp);
 }
 
 .bottom__section {
@@ -867,7 +867,8 @@ img {
   text-transform: uppercase;
   text-decoration: none;
   white-space: nowrap;
-  background: url(https://landix.group/assets/balloon/img/button_middle.webp) repeat-x center center;
+  background: url(https://api.landix.group/assets/balloon/img/button_middle.webp) repeat-x center
+    center;
   background-size: contain;
   cursor: pointer;
 }
@@ -896,13 +897,13 @@ img {
 .bottom__section-button::before {
   left: -7.5em;
   background-position: left;
-  background-image: url(https://landix.group/assets/balloon/img/button_left.webp);
+  background-image: url(https://api.landix.group/assets/balloon/img/button_left.webp);
 }
 
 .bottom__section-button::after {
   right: -7.5em;
   background-position: right;
-  background-image: url(https://landix.group/assets/balloon/img/button_right.webp);
+  background-image: url(https://api.landix.group/assets/balloon/img/button_right.webp);
 }
 
 .bottom__section-button span {
@@ -1047,7 +1048,7 @@ img {
   top: calc((100vh - 108vw) / 2);
   height: 100vw;
   opacity: 0.4;
-  background-image: url(https://landix.group/assets/balloon/img/modal-background.webp);
+  background-image: url(https://api.landix.group/assets/balloon/img/modal-background.webp);
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
