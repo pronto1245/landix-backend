@@ -31,6 +31,15 @@ export class Flow {
   @ManyToOne(() => User, { eager: true, onDelete: 'SET NULL', nullable: true })
   creator: User | null;
 
+  @Column({ type: 'jsonb', default: null, nullable: true })
+  cloak: {
+    enabled: boolean;
+    bannedCountries?: string[];
+    allowedCountries?: string[];
+    blockBots?: boolean;
+    whitePageHtml?: string;
+  };
+
   @CreateDateColumn()
   createdAt: Date;
 }

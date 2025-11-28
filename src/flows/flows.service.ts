@@ -2,11 +2,14 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { DomainsService } from 'src/domains/domains.service';
 import { Landing } from 'src/landing/entities/landing.entity';
+import { PreviewService } from 'src/landing/preview.service';
 import { Team } from 'src/team/entities/team.entity';
 import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 
+import { CloakService } from './cloak';
 import { CreateFlowWithDomainDto } from './dto/create-flow-with-domain.dto';
+import { UpdateCloakDto } from './dto/update-cloak.dto';
 import { Flow } from './entities/flow.entity';
 
 @Injectable()
@@ -21,7 +24,9 @@ export class FlowsService {
     @InjectRepository(Landing)
     private readonly landingRepo: Repository<Landing>,
 
-    private readonly domainsService: DomainsService
+    private readonly domainsService: DomainsService,
+    private readonly previewService: PreviewService,
+    private readonly cloak: CloakService
   ) {}
 
   async createWithDomain(user: User, dto: CreateFlowWithDomainDto) {
@@ -96,7 +101,58 @@ export class FlowsService {
 
     if (!landing) throw new NotFoundException('Landing not found');
 
-    return landing;
+    return {
+      flow,
+      landing
+    };
+  }
+
+  async renderFlow(domain: string, req: any) {
+    if (!domain) throw new NotFoundException('No domain');
+
+    const { flow, landing } = await this.getFlowByDomain(domain);
+
+    const cloakResult = await this.cloak.check(req, flow.cloak);
+
+    if (!cloakResult.passed) {
+      return (
+        flow.cloak?.whitePageHtml ||
+        `
+      <!DOCTYPE html>
+      <html>
+        <head><meta charset="UTF-8"><title>Access Denied</title></head>
+        <body>
+          <h2>Access Denied</h2>
+          <p>${cloakResult.reason}</p>
+        </body>
+      </html>
+    `
+      );
+    }
+
+    const html = this.previewService.render(landing as any);
+
+    return html;
+  }
+
+  async updateCloak(flowId: string, dto: UpdateCloakDto) {
+    const flow = await this.flowRepo.findOne({
+      where: { id: flowId }
+    });
+
+    if (!flow) throw new NotFoundException('Flow not found');
+
+    flow.cloak = {
+      ...flow.cloak,
+      ...dto
+    };
+
+    await this.flowRepo.save(flow);
+
+    return {
+      message: 'Cloak settings updated successfully',
+      cloak: flow.cloak
+    };
   }
 
   async delete(flowId: string) {

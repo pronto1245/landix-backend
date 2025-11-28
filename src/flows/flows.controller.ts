@@ -6,29 +6,35 @@ import {
   Header,
   NotFoundException,
   Param,
+  Patch,
   Post,
   Query,
+  Req,
   UseGuards
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags
+} from '@nestjs/swagger';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { Public } from 'src/common/decorators/public.decorator';
 import { SkipTransform } from 'src/common/decorators/skip-transform.decorator';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
-import { PreviewService } from 'src/landing/preview.service';
 import { User } from 'src/users/entities/user.entity';
 
 import { CreateFlowWithDomainDto } from './dto/create-flow-with-domain.dto';
+import { UpdateCloakDto } from './dto/update-cloak.dto';
 import { UpdateLandingDto } from './dto/update-landing.dto';
 import { FlowsService } from './flows.service';
 
 @ApiTags('Flows')
 @Controller('flows')
 export class FlowsController {
-  constructor(
-    private readonly service: FlowsService,
-    private readonly previewService: PreviewService
-  ) {}
+  constructor(private readonly service: FlowsService) {}
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
@@ -91,16 +97,15 @@ export class FlowsController {
   @SkipTransform()
   @Header('Content-Type', 'text/html; charset=utf-8')
   @Get('render')
-  async getFlowByDomain(@Query('domain') domain: string) {
-    if (!domain) throw new NotFoundException('No domain');
+  async getFlowByDomain(@Req() req, @Query('domain') domain: string) {
+    return this.service.renderFlow(domain, req);
+  }
 
-    const landing = await this.service.getFlowByDomain(domain);
-
-    if (!landing) throw new NotFoundException('Flow not found');
-
-    const html = this.previewService.render(landing as any);
-
-    return html;
+  @Patch(':flowId/cloak')
+  @ApiOperation({ summary: 'Обновить настройки клоаки у потока' })
+  @ApiOkResponse({ description: 'Настройки клоаки обновлены успешно' })
+  async updateCloak(@Param('flowId') flowId: string, @Body() dto: UpdateCloakDto) {
+    return this.service.updateCloak(flowId, dto);
   }
 
   @ApiBearerAuth()
