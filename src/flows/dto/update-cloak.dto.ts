@@ -9,12 +9,11 @@ export class UpdateCloakDto {
 
   @ApiPropertyOptional({
     description: 'Разрешенные GEO (только эти страны)',
-    example: ['US', 'CA']
+    example: 'CA'
   })
   @IsOptional()
-  @IsArray()
   @IsString({ each: true })
-  allowedCountries?: string[];
+  allowedCountry?: string;
 
   @ApiPropertyOptional({
     description: 'Запрещенные GEO',

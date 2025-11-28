@@ -34,8 +34,7 @@ export class Flow {
   @Column({ type: 'jsonb', default: null, nullable: true })
   cloak: {
     enabled: boolean;
-    bannedCountries?: string[];
-    allowedCountries?: string[];
+    allowedCountry?: string;
     blockBots?: boolean;
     whitePageHtml?: string;
   };

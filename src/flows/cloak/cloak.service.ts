@@ -1,11 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Request } from 'express';
 
 import { Flow } from '../entities/flow.entity';
-import { CloakResult } from './cloak.types';
 
 @Injectable()
 export class CloakService {
+  constructor(private readonly logger: Logger) {}
+
   private botRegex = [
     /bot/i,
     /spider/i,
@@ -36,39 +37,53 @@ export class CloakService {
     }
   }
 
-  async check(req: Request, cloak?: Flow['cloak']): Promise<CloakResult> {
-    if (!cloak?.enabled) {
-      return { passed: true };
-    }
-
-    const ua = (req.headers['user-agent'] as string) || '';
-
-    if (cloak.blockBots && !ua) {
-      return { passed: false, reason: 'empty-user-agent' };
-    }
-
-    if (cloak.blockBots && this.botRegex.some((r) => r.test(ua))) {
-      return { passed: false, reason: 'bot-matched' };
-    }
-
+  async check(req: Request, cloak?: Flow['cloak']) {
     const ip = this.getClientIp(req);
-    const country = (await this.getGeo(ip))?.toUpperCase();
+    const ua = (req.headers['user-agent'] as string) || '';
+    const country = await this.getGeo(ip);
 
-    if (cloak.allowedCountries?.length) {
+    this.logger.log({
+      step: 'incoming',
+      ip,
+      ua,
+      country,
+      cloak
+    });
+
+    if (!cloak?.enabled) {
+      this.logger.log({ step: 'disabled -> pass' });
+      return { passed: true, ip, country };
+    }
+
+    // BOT
+    if (cloak.blockBots && (!ua || this.botRegex.some((r) => r.test(ua)))) {
+      this.logger.log({ step: 'bot-detected', reason: 'bot', ip, ua });
+      return { passed: false, reason: 'bot', ip, country };
+    }
+
+    // GEO
+    if (cloak.allowedCountry) {
       if (!country) {
+        this.logger.log({ step: 'geo-fail', reason: 'geo_unavailable', ip });
         return { passed: false, reason: 'geo_unavailable', ip };
       }
 
-      if (!cloak.allowedCountries.includes(country)) {
+      if (country !== cloak.allowedCountry.toUpperCase()) {
+        this.logger.log({
+          step: 'geo_not_allowed',
+          expected: cloak.allowedCountry,
+          actual: country
+        });
         return {
           passed: false,
           reason: `geo_not_allowed: ${country}`,
-          country,
-          ip
+          ip,
+          country
         };
       }
     }
 
-    return { passed: true, country, ip };
+    this.logger.log({ step: 'passed', ip, country });
+    return { passed: true, ip, country };
   }
 }
