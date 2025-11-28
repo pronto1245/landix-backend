@@ -1,17 +1,9 @@
-import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import fetch from 'node-fetch';
-import { RedisService } from 'src/redis/redis.service';
 
 @Injectable()
-export class GeoService implements OnModuleInit {
+export class GeoService {
   private readonly logger = new Logger(GeoService.name);
-  private redis;
-
-  constructor(private readonly redisService: RedisService) {}
-
-  onModuleInit() {
-    this.redis = this.redisService.getClient();
-  }
 
   private services = [
     (ip: string) => `http://ipwho.is/${ip}`,
@@ -31,15 +23,6 @@ export class GeoService implements OnModuleInit {
 
   async getCountry(ip?: string): Promise<string | undefined> {
     if (!ip) return undefined;
-    if (!this.redis) return undefined;
-
-    const redisKey = `geo:${ip}`;
-
-    const cached = await this.redis.get(redisKey);
-    if (cached) {
-      this.logger.log(`GEO CACHE HIT [${ip}] = ${cached}`);
-      return cached === 'UNKNOWN' ? undefined : cached;
-    }
 
     for (const buildUrl of this.services) {
       const url = buildUrl(ip);
@@ -50,7 +33,6 @@ export class GeoService implements OnModuleInit {
         const country = this.extractCountry(data);
 
         if (country) {
-          await this.redis.set(redisKey, country, 'EX', 86400);
           this.logger.log(`GEO OK [${ip}] = ${country} via ${url}`);
           return country;
         }
@@ -59,7 +41,6 @@ export class GeoService implements OnModuleInit {
       }
     }
 
-    await this.redis.set(redisKey, 'UNKNOWN', 'EX', 300);
     return undefined;
   }
 }
