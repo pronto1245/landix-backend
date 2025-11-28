@@ -43,31 +43,40 @@ export class CloakService {
 
     const ua = (req.headers['user-agent'] as string) || '';
 
-    if (cloak.blockBots && (!ua || ua.length < 20)) {
-      return { passed: false, reason: 'invalid or empty user-agent' };
+    if (cloak.blockBots && !ua) {
+      return { passed: false, reason: 'empty-user-agent' };
     }
 
     if (cloak.blockBots && this.botRegex.some((r) => r.test(ua))) {
-      return { passed: false, reason: 'bot detected' };
+      return { passed: false, reason: 'bot-matched' };
     }
 
     const ip = this.getClientIp(req);
-    const country = await this.getGeo(ip);
+    const country = (await this.getGeo(ip))?.toUpperCase();
 
-    // Allowed countries
     if (cloak.allowedCountries?.length) {
       if (!country) {
-        return { passed: false, reason: 'geo lookup failed', ip };
+        return { passed: false, reason: 'geo_unavailable', ip };
       }
 
       if (!cloak.allowedCountries.includes(country)) {
-        return { passed: false, reason: `geo not allowed: ${country}`, country, ip };
+        return {
+          passed: false,
+          reason: `geo_not_allowed: ${country}`,
+          country,
+          ip
+        };
       }
     }
 
-    if (cloak.bannedCountries?.length) {
-      if (country && cloak.bannedCountries.includes(country)) {
-        return { passed: false, reason: `banned geo: ${country}`, country, ip };
+    if (cloak.bannedCountries?.length && country) {
+      if (cloak.bannedCountries.includes(country)) {
+        return {
+          passed: false,
+          reason: `banned_geo: ${country}`,
+          country,
+          ip
+        };
       }
     }
 

@@ -101,6 +101,8 @@ export class FlowsController {
     return this.service.renderFlow(domain, req);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Patch(':flowId/cloak')
   @ApiOperation({ summary: 'Обновить настройки клоаки у потока' })
   @ApiOkResponse({ description: 'Настройки клоаки обновлены успешно' })
