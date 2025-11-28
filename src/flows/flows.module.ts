@@ -7,6 +7,7 @@ import { PreviewService } from 'src/landing/preview.service';
 import { Team } from 'src/team/entities/team.entity';
 
 import { CloakService } from './cloak';
+import { GeoService } from './cloak/geo.service';
 import { FlowDomainCheckCron } from './cron/flow-domain-check.cron';
 import { Flow } from './entities/flow.entity';
 import { FlowsController } from './flows.controller';
@@ -15,7 +16,14 @@ import { FlowsService } from './flows.service';
 @Module({
   imports: [TypeOrmModule.forFeature([Flow, Team, Landing]), DomainsModule],
   controllers: [FlowsController],
-  providers: [FlowsService, PreviewService, CloudflareService, FlowDomainCheckCron, CloakService],
+  providers: [
+    FlowsService,
+    PreviewService,
+    CloudflareService,
+    FlowDomainCheckCron,
+    CloakService,
+    GeoService
+  ],
   exports: [FlowsService]
 })
 export class FlowsModule {}
