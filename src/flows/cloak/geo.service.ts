@@ -11,36 +11,29 @@ export class GeoService implements OnModuleInit {
 
   onModuleInit() {
     this.redis = this.redisService.getClient();
-    this.logger.log('GeoService initialized (Redis connected)');
   }
 
   private services = [
     (ip: string) => `http://ipwho.is/${ip}`,
     (ip: string) => `https://api.ip.sb/geoip/${ip}`,
-    (ip: string) => `https://ipapi.is/${ip}`,
-    (ip: string) => `https://get.geojs.io/v1/ip/country.json?ip=${ip}`,
     (ip: string) => `https://api.db-ip.com/v2/free/${ip}`
   ];
 
   private extractCountry(data: any): string | undefined {
-    return (
-      data?.country?.toUpperCase() ||
-      data?.country_code?.toUpperCase() ||
-      data?.countryCode?.toUpperCase() ||
-      data?.location?.country_code?.toUpperCase() ||
-      data?.country_code2?.toUpperCase()
-    );
+    if (!data) return undefined;
+
+    if (data.country_code) return data.country_code.toUpperCase();
+
+    if (data.countryCode) return data.countryCode.toUpperCase();
+
+    return undefined;
   }
 
   async getCountry(ip?: string): Promise<string | undefined> {
     if (!ip) return undefined;
+    if (!this.redis) return undefined;
 
     const redisKey = `geo:${ip}`;
-
-    if (!this.redis) {
-      this.logger.error('Redis not initialized yet in GeoService!');
-      return undefined;
-    }
 
     const cached = await this.redis.get(redisKey);
     if (cached) {
@@ -58,7 +51,7 @@ export class GeoService implements OnModuleInit {
 
         if (country) {
           await this.redis.set(redisKey, country, 'EX', 86400);
-          this.logger.log(`GEO SUCCESS [${ip}] = ${country} via ${url}`);
+          this.logger.log(`GEO OK [${ip}] = ${country} via ${url}`);
           return country;
         }
       } catch {
