@@ -32,6 +32,13 @@ export class CloakService {
     const ip = this.getClientIp(req);
     const ua = req.headers['user-agent'] || null;
 
+    this.logger.log({
+      ip: req.ip,
+      cf: req.headers['cf-connecting-ip'],
+      real: req.headers['x-real-ip'],
+      fwd: req.headers['x-forwarded-for']
+    });
+
     const country = await this.geo.getCountry(ip);
 
     this.logger.log({
