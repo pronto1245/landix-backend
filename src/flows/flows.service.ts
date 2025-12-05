@@ -3,17 +3,20 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DomainsService } from 'src/domains/domains.service';
 import { Landing } from 'src/landing/entities/landing.entity';
 import { PreviewService } from 'src/landing/preview.service';
+import { RedisService } from 'src/redis/redis.service';
 import { Team } from 'src/team/entities/team.entity';
 import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 
 import { CloakService } from './cloak';
 import { CreateFlowWithDomainDto } from './dto/create-flow-with-domain.dto';
-import { UpdateCloakDto } from './dto/update-cloak.dto';
+import { UpdateFlowDto } from './dto/update-flow.dto';
 import { Flow } from './entities/flow.entity';
 
 @Injectable()
 export class FlowsService {
+  private redis;
+
   constructor(
     @InjectRepository(Flow)
     private readonly flowRepo: Repository<Flow>,
@@ -26,8 +29,22 @@ export class FlowsService {
 
     private readonly domainsService: DomainsService,
     private readonly previewService: PreviewService,
+    private readonly redisService: RedisService,
     private readonly cloak: CloakService
-  ) {}
+  ) {
+    this.redis = this.redisService.getClient();
+  }
+
+  async getAll(teamId: string) {
+    return this.flowRepo.find({
+      where: { team: { id: teamId } },
+      order: { createdAt: 'DESC' }
+    });
+  }
+
+  async getById(id: string) {
+    return this.flowRepo.findOneBy({ id });
+  }
 
   async createWithDomain(user: User, dto: CreateFlowWithDomainDto) {
     if (!user.activeTeam) throw new BadRequestException('Команда не найдена');
@@ -55,13 +72,6 @@ export class FlowsService {
       message: 'Поток успешно создан',
       data: flow
     };
-  }
-
-  async getAll(teamId: string) {
-    return this.flowRepo.find({
-      where: { team: { id: teamId } },
-      order: { createdAt: 'DESC' }
-    });
   }
 
   async updateLanding(flowId: string, landingId: string) {
@@ -130,28 +140,110 @@ export class FlowsService {
       );
     }
 
-    const html = this.previewService.render(landing as any);
+    let finalLanding = landing;
+
+    if (flow.splitTest?.enabled) {
+      const ip = cloakResult.ip;
+
+      const variantLandingId = await this.getSplitVariant(flow, ip);
+
+      if (variantLandingId) {
+        const alt = await this.landingRepo.findOne({
+          where: { id: variantLandingId }
+        });
+
+        if (alt) finalLanding = alt;
+      }
+    }
+
+    const html = this.previewService.render(finalLanding as any);
 
     return html;
   }
 
-  async updateCloak(flowId: string, dto: UpdateCloakDto) {
+  private async getSplitVariant(flow: Flow, ip?: string): Promise<string | null> {
+    if (!flow.splitTest?.enabled || !flow.splitTest.variants?.length) return null;
+
+    const key = `split:${flow.id}:${ip}`;
+
+    const cached = await this.redis.get(key);
+    if (cached) return cached;
+
+    const variants = flow.splitTest.variants;
+    const total = variants.reduce((s, v) => s + v.weight, 0);
+
+    let rnd = Math.random() * total;
+
+    for (const v of variants) {
+      if (rnd < v.weight) {
+        await this.redis.set(key, v.landingId, 'EX', 30 * 24 * 3600);
+        return v.landingId;
+      }
+      rnd -= v.weight;
+    }
+
+    return null;
+  }
+
+  async updateFlow(flowId: string, dto: UpdateFlowDto) {
     const flow = await this.flowRepo.findOne({
-      where: { id: flowId }
+      where: { id: flowId },
+      relations: ['landing']
     });
 
     if (!flow) throw new NotFoundException('Flow not found');
 
-    flow.cloak = {
-      ...flow.cloak,
-      ...dto
-    };
+    if (dto.landingId) {
+      const landing = await this.landingRepo.findOne({
+        where: { id: dto.landingId }
+      });
+
+      if (!landing) throw new NotFoundException('Landing not found');
+      flow.landing = landing;
+    }
+
+    if (dto.cloak) {
+      flow.cloak = {
+        ...(flow.cloak || {}),
+        ...dto.cloak
+      };
+
+      Object.keys(flow.cloak).forEach((key) => {
+        if (flow.cloak[key] === undefined) delete flow.cloak[key];
+      });
+    }
+
+    if (dto.splitTest) {
+      const total = dto.splitTest.variants?.reduce((s, v) => s + v.weight, 0) ?? 0;
+
+      if (total > 100) {
+        throw new BadRequestException('Total weight cannot exceed 100');
+      }
+
+      if (!dto.splitTest.enabled) {
+        flow.splitTest = {
+          enabled: false,
+          variants: []
+        };
+      } else {
+        flow.splitTest = dto.splitTest;
+      }
+    }
+
+    if (dto.name) {
+      flow.name = dto.name;
+    }
 
     await this.flowRepo.save(flow);
 
+    const updated = await this.flowRepo.findOne({
+      where: { id: flow.id },
+      relations: ['landing']
+    });
+
     return {
-      message: 'Cloak settings updated successfully',
-      cloak: flow.cloak
+      message: 'Flow updated',
+      data: updated
     };
   }
 

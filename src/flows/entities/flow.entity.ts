@@ -39,6 +39,12 @@ export class Flow {
     whitePageHtml?: string;
   };
 
+  @Column({ type: 'jsonb', nullable: true })
+  splitTest: {
+    enabled: boolean;
+    variants: { landingId: string; weight: number }[];
+  };
+
   @CreateDateColumn()
   createdAt: Date;
 }

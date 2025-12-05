@@ -37,6 +37,26 @@ export class CloudflareService {
     }
   }
 
+  async setSslFlexible(zoneId: string, apiToken?: string) {
+    try {
+      const res = await axios.patch(
+        `${this.baseUrl}/zones/${zoneId}/settings/ssl`,
+        { value: 'flexible' },
+        { headers: this.getHeaders(apiToken) }
+      );
+
+      if (!res.data.success) {
+        throw new Error(res.data.errors?.[0]?.message || 'Unknown error');
+      }
+
+      this.logger.log(`🔐 SSL mode set to FLEXIBLE for zone ${zoneId}`);
+      return res.data.result;
+    } catch (err: any) {
+      this.logger.error(`❌ Failed to set SSL Flexible: ${err.message}`);
+      throw new HttpException(`Ошибка при установке SSL Flexible: ${err.message}`, 502);
+    }
+  }
+
   async createZone(domain: string, apiToken?: string, accountId?: string) {
     try {
       const res = await axios.post(
@@ -58,6 +78,9 @@ export class CloudflareService {
 
       const result = res.data.result;
       this.logger.log(`✅ Zone created: ${domain} (${result.id})`);
+
+      await this.setSslFlexible(result.id, apiToken);
+
       return { id: result.id, name_servers: result.name_servers };
     } catch (err: any) {
       // ⚠️ Fix: zone already exists → fallback to get existing zone

@@ -14,6 +14,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
@@ -27,14 +28,45 @@ import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { User } from 'src/users/entities/user.entity';
 
 import { CreateFlowWithDomainDto } from './dto/create-flow-with-domain.dto';
-import { UpdateCloakDto } from './dto/update-cloak.dto';
-import { UpdateLandingDto } from './dto/update-landing.dto';
+import { UpdateFlowDto } from './dto/update-flow.dto';
 import { FlowsService } from './flows.service';
 
 @ApiTags('Flows')
 @Controller('flows')
 export class FlowsController {
   constructor(private readonly service: FlowsService) {}
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  @ApiOperation({ summary: 'Получить все потоки команды' })
+  @ApiResponse({
+    status: 200,
+    schema: {
+      example: [
+        {
+          id: 'uuid',
+          name: 'My Flow',
+          status: 'draft',
+          createdAt: '2025-01-02T00:00:00.000Z',
+          domain: { id: 'uuid', name: 'mybrand.shop' }
+        }
+      ]
+    }
+  })
+  async getAll(@CurrentUser() user: User) {
+    if (!user.activeTeam) throw new NotFoundException('Команда не найдена');
+    return this.service.getAll(user.activeTeam.id);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get(':flowId')
+  @ApiParam({ name: 'flowId', type: 'string' })
+  @ApiOperation({ summary: 'Получить поток' })
+  async getOne(@Param('flowId') flowId: string) {
+    return this.service.getById(flowId);
+  }
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
@@ -70,29 +102,6 @@ export class FlowsController {
     return this.service.createWithDomain(user, dto);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  @Get()
-  @ApiOperation({ summary: 'Получить все потоки команды' })
-  @ApiResponse({
-    status: 200,
-    schema: {
-      example: [
-        {
-          id: 'uuid',
-          name: 'My Flow',
-          status: 'draft',
-          createdAt: '2025-01-02T00:00:00.000Z',
-          domain: { id: 'uuid', name: 'mybrand.shop' }
-        }
-      ]
-    }
-  })
-  async getAll(@CurrentUser() user: User) {
-    if (!user.activeTeam) throw new NotFoundException('Команда не найдена');
-    return this.service.getAll(user.activeTeam.id);
-  }
-
   @Public()
   @SkipTransform()
   @Header('Content-Type', 'text/html; charset=utf-8')
@@ -103,20 +112,42 @@ export class FlowsController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Patch(':flowId/cloak')
-  @ApiOperation({ summary: 'Обновить настройки клоаки у потока' })
-  @ApiOkResponse({ description: 'Настройки клоаки обновлены успешно' })
-  async updateCloak(@Param('flowId') flowId: string, @Body() dto: UpdateCloakDto) {
-    return this.service.updateCloak(flowId, dto);
-  }
-
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  @Post(':id/landing')
-  @ApiOperation({ summary: 'Обновить лендинг' })
-  @ApiParam({ name: 'id', type: 'string', description: 'ID потока' })
-  async updateLanding(@Param('id') id: string, @Body() dto: UpdateLandingDto) {
-    return this.service.updateLanding(id, dto.landingId);
+  @Patch(':flowId')
+  @ApiOperation({ summary: 'Обновить настройки потока' })
+  @ApiOkResponse({ description: 'Поток обновлён' })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        name: { type: 'string', example: 'My Flow' },
+        landingId: { type: 'string', example: 'uuid-landing-id' },
+        cloak: {
+          type: 'object',
+          properties: {
+            enabled: { type: 'boolean', example: true },
+            blockBots: { type: 'boolean', example: false },
+            allowedCountry: { type: 'string', example: 'US' },
+            whitePageHtml: { type: 'string', example: '<h1>Blocked</h1>' }
+          }
+        },
+        splitTest: {
+          type: 'object',
+          properties: {
+            enabled: { type: 'boolean', example: true },
+            variants: {
+              type: 'array',
+              example: [
+                { landingId: 'idA', weight: 70 },
+                { landingId: 'idB', weight: 30 }
+              ]
+            }
+          }
+        }
+      }
+    }
+  })
+  async updateFlow(@Param('flowId') flowId: string, @Body() dto: UpdateFlowDto) {
+    return this.service.updateFlow(flowId, dto);
   }
 
   @ApiBearerAuth()
