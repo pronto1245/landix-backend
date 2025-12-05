@@ -36,6 +36,14 @@ import { FlowsService } from './flows.service';
 export class FlowsController {
   constructor(private readonly service: FlowsService) {}
 
+  @Public()
+  @SkipTransform()
+  @Header('Content-Type', 'text/html; charset=utf-8')
+  @Get('render')
+  async getFlowByDomain(@Req() req, @Query('domain') domain: string) {
+    return this.service.renderFlow(domain, req);
+  }
+
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get()
@@ -100,14 +108,6 @@ export class FlowsController {
   async createWithDomain(@CurrentUser() user: User, @Body() dto: CreateFlowWithDomainDto) {
     if (!user.activeTeam) throw new NotFoundException('Команда не найдена');
     return this.service.createWithDomain(user, dto);
-  }
-
-  @Public()
-  @SkipTransform()
-  @Header('Content-Type', 'text/html; charset=utf-8')
-  @Get('render')
-  async getFlowByDomain(@Req() req, @Query('domain') domain: string) {
-    return this.service.renderFlow(domain, req);
   }
 
   @ApiBearerAuth()
