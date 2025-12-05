@@ -93,6 +93,8 @@ export class CloudflareService {
 
         const info = await this.getZoneInfo(zoneId, apiToken);
 
+        await this.setSslFlexible(zoneId, apiToken);
+
         return {
           id: zoneId,
           name_servers: info.name_servers
