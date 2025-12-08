@@ -12,6 +12,7 @@ import { CloakService } from './cloak';
 import { CreateFlowWithDomainDto } from './dto/create-flow-with-domain.dto';
 import { UpdateFlowDto } from './dto/update-flow.dto';
 import { Flow } from './entities/flow.entity';
+import { SplitTestService } from './split-test/split-test.service';
 
 @Injectable()
 export class FlowsService {
@@ -30,7 +31,8 @@ export class FlowsService {
     private readonly domainsService: DomainsService,
     private readonly previewService: PreviewService,
     private readonly redisService: RedisService,
-    private readonly cloak: CloakService
+    private readonly cloak: CloakService,
+    private readonly splitTestService: SplitTestService
   ) {
     this.redis = this.redisService.getClient();
   }
@@ -145,44 +147,15 @@ export class FlowsService {
     if (flow.splitTest?.enabled) {
       const ip = cloakResult.ip;
 
-      const variantLandingId = await this.getSplitVariant(flow, ip);
+      const splitLanding = await this.splitTestService.pickLandingForFlow(flow, ip);
 
-      if (variantLandingId) {
-        const alt = await this.landingRepo.findOne({
-          where: { id: variantLandingId }
-        });
-
-        if (alt) finalLanding = alt;
+      if (splitLanding) {
+        finalLanding = splitLanding;
       }
     }
 
     const html = this.previewService.render(finalLanding as any);
-
     return html;
-  }
-
-  private async getSplitVariant(flow: Flow, ip?: string): Promise<string | null> {
-    if (!flow.splitTest?.enabled || !flow.splitTest.variants?.length) return null;
-
-    const key = `split:${flow.id}:${ip}`;
-
-    const cached = await this.redis.get(key);
-    if (cached) return cached;
-
-    const variants = flow.splitTest.variants;
-    const total = variants.reduce((s, v) => s + v.weight, 0);
-
-    let rnd = Math.random() * total;
-
-    for (const v of variants) {
-      if (rnd < v.weight) {
-        await this.redis.set(key, v.landingId, 'EX', 30 * 24 * 3600);
-        return v.landingId;
-      }
-      rnd -= v.weight;
-    }
-
-    return null;
   }
 
   async updateFlow(flowId: string, dto: UpdateFlowDto) {
@@ -214,7 +187,7 @@ export class FlowsService {
     }
 
     if (dto.splitTest) {
-      const total = dto.splitTest.variants?.reduce((s, v) => s + v.weight, 0) ?? 0;
+      const total = dto.splitTest.variants?.reduce((s, v) => s + Number(v.weight || 0), 0) ?? 0;
 
       if (total > 100) {
         throw new BadRequestException('Total weight cannot exceed 100');
@@ -226,7 +199,13 @@ export class FlowsService {
           variants: []
         };
       } else {
-        flow.splitTest = dto.splitTest;
+        flow.splitTest = {
+          enabled: true,
+          variants: dto.splitTest.variants.map((v) => ({
+            landingId: v.landingId,
+            weight: Number(v.weight)
+          }))
+        };
       }
     }
 

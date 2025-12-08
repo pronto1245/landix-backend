@@ -12,6 +12,7 @@ import { FlowDomainCheckCron } from './cron/flow-domain-check.cron';
 import { Flow } from './entities/flow.entity';
 import { FlowsController } from './flows.controller';
 import { FlowsService } from './flows.service';
+import { SplitTestService } from './split-test/split-test.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Flow, Team, Landing]), DomainsModule],
@@ -22,7 +23,8 @@ import { FlowsService } from './flows.service';
     CloudflareService,
     FlowDomainCheckCron,
     CloakService,
-    GeoService
+    GeoService,
+    SplitTestService
   ],
   exports: [FlowsService]
 })
