@@ -4,6 +4,7 @@ import { CloudflareService } from 'src/domains/cloudflare/cloudflare.service';
 import { DomainsModule } from 'src/domains/domains.module';
 import { Landing } from 'src/landing/entities/landing.entity';
 import { PreviewService } from 'src/landing/preview.service';
+import { RedisModule } from 'src/redis/redis.module';
 import { Team } from 'src/team/entities/team.entity';
 
 import { CloakService } from './cloak';
@@ -15,7 +16,7 @@ import { FlowsService } from './flows.service';
 import { SplitTestService } from './split-test/split-test.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Flow, Team, Landing]), DomainsModule],
+  imports: [TypeOrmModule.forFeature([Flow, Team, Landing]), DomainsModule, RedisModule],
   controllers: [FlowsController],
   providers: [
     FlowsService,
