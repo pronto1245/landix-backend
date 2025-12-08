@@ -111,4 +111,14 @@ export class SplitTestService {
 
     return variants[variants.length - 1]?.landingId ?? null;
   }
+
+  async clearCacheForFlow(flowId: string) {
+    const pattern = `split:${flowId}:*`;
+    const keys = await this.redis.keys(pattern);
+
+    if (keys.length) {
+      await this.redis.del(...keys);
+      this.logger.log(`🧽 Cleared split-test cache for flow ${flowId} (${keys.length} keys)`);
+    }
+  }
 }

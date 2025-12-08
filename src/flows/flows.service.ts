@@ -187,6 +187,8 @@ export class FlowsService {
     }
 
     if (dto.splitTest) {
+      await this.splitTestService.clearCacheForFlow(flowId);
+
       const total = dto.splitTest.variants?.reduce((s, v) => s + Number(v.weight || 0), 0) ?? 0;
 
       if (total > 100) {
