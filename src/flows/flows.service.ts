@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DomainsService } from 'src/domains/domains.service';
 import { Landing } from 'src/landing/entities/landing.entity';
 import { PreviewService } from 'src/landing/preview.service';
+import { WhitePageService } from 'src/landing/white-page.service';
 import { RedisService } from 'src/redis/redis.service';
 import { Team } from 'src/team/entities/team.entity';
 import { User } from 'src/users/entities/user.entity';
@@ -32,7 +33,8 @@ export class FlowsService {
     private readonly previewService: PreviewService,
     private readonly redisService: RedisService,
     private readonly cloak: CloakService,
-    private readonly splitTestService: SplitTestService
+    private readonly splitTestService: SplitTestService,
+    private readonly whitePageService: WhitePageService
   ) {
     this.redis = this.redisService.getClient();
   }
@@ -127,19 +129,7 @@ export class FlowsService {
     const cloakResult = await this.cloak.check(req, flow.cloak);
 
     if (!cloakResult.passed) {
-      return (
-        flow.cloak?.whitePageHtml ||
-        `
-      <!DOCTYPE html>
-      <html>
-        <head><meta charset="UTF-8"><title>Access Denied</title></head>
-        <body>
-          <h2>Access Denied</h2>
-          <p>${cloakResult.reason}</p>
-        </body>
-      </html>
-    `
-      );
+      return this.whitePageService.render(req);
     }
 
     let finalLanding = landing;

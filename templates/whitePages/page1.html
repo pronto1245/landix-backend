@@ -1,0 +1,882 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>Казино Mystic Fortune</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="icon" href="https://imagesmyclo.com/favicons/255.png" />
+	<meta name="description"
+		content=" Добро пожаловать в казино Mystic Fortune!  Вас ждет непревзойденный опыт мобильных игр с целой сокровищницей игр и захватывающими бонусами! Приготовьтесь вращать барабаны, играть в любимые настольные игры и выигрывать по-крупному!  Наше приложение сочетает в себе азарт настоящего казино с удобством мобильных игр. Вот чего вы можете ожидать: 
+-  **Разнообразный выбор игр:** Наслаждайтесь сотнями слотов, классических настольных игр и возможностями живых дилеров! 
+-  **Ежедневные бонусы:** Заходите в игру каждый день, чтобы получить потрясающие награды и бесплатные вращения! 
+-  **Турнир и испытания:** Соревнуйтесь с игроками по всему миру за эксклюзивные призы! 
+-  **Безопасность и надежность:** Ваша информация защищена первоклассными мерами безопасности. 
+-  **Награды за лояльность:** Зарабатывайте очки за каждую сыгранную игру и открывайте особые привилегии! 
+Присоединяйтесь к нашему яркому сообществу игроков уже сегодня! Загрузите Mystic Fortune Casino и отправляйтесь в путешествие к богатству!  Не забудьте пригласить друзей, чтобы получить еще больше удовольствия!  Удачи и пусть удача всегда будет на вашей стороне! " />
+	<meta property="og:title" content="Казино Mystic Fortune" />
+	<meta property="og:url" content="https://{DOMAIN}/" />
+	<meta property="og:image"
+		content="https://imagesmyclo.com/images/gambling/Slot_machine_with_mystical_symbols_ar_32_00367_02.png?" />
+
+
+	<style>
+		/* =========================
+       THEME TOKENS (Dark + Gradients)
+       ========================= */
+		:root {
+			--clr-main: rgba(51, 68, 173, 0.2);
+			--clr-second: rgba(189, 232, 209, 0.4);
+			--clr-third: rgba(148, 198, 81, 0.6);
+			--bg-0: #0b0c0f;
+			--bg-1: #0e1014;
+			--text-0: #eef0f3;
+			--text-1: #b8bec7;
+			--muted: #8a93a3;
+
+			--radius-xl: 16px;
+			--shadow-md: 0 10px 24px rgba(0, 0, 0, .35), 0 2px 6px rgba(0, 0, 0, .25);
+
+			--space-1: .5rem;
+			--space-2: 1rem;
+			--space-3: 1.5rem;
+			--space-4: 2rem;
+			--space-5: 3rem;
+
+			--container: 1200px;
+			--border: 1px;
+		}
+
+		/* =========================
+       TYPOGRAPHY (Montserrat / Inter)
+       ========================= */
+		@font-face {
+			font-family: "Montserrat";
+			src: local("Montserrat");
+			font-display: swap
+		}
+
+		@font-face {
+			font-family: "Inter";
+			src: local("Inter");
+			font-display: swap
+		}
+
+		html {
+			box-sizing: border-box;
+			scroll-behavior: smooth
+		}
+
+		*,
+		*::before,
+		*::after {
+			box-sizing: inherit
+		}
+
+		body {
+			margin: 0;
+			background: radial-gradient(1200px 800px at 10% -10%, color-mix(in oklab, var(--clr-main) 35%, black) 0%, transparent 60%),
+				radial-gradient(1200px 800px at 110% 10%, color-mix(in oklab, var(--clr-third) 35%, black) 0%, transparent 60%),
+				var(--bg-0);
+			color: var(--text-0);
+			font: 500 16px/1.6 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+		}
+
+		h1,
+		h2,
+		h3,
+		h4 {
+			font-family: "Montserrat";
+			margin: 0 0 var(--space-2)
+		}
+
+		h1 {
+			font-size: clamp(2.1rem, 4vw, 3.2rem);
+			letter-spacing: .2px;
+			margin-top: 10px;
+		}
+
+		h2 {
+			font-size: clamp(1.6rem, 3vw, 2.2rem)
+		}
+
+		h3 {
+			font-size: clamp(1.25rem, 2vw, 1.5rem)
+		}
+
+		p {
+			margin: 0 0 var(--space-2);
+			color: var(--text-0)
+		}
+
+		small,
+		.muted {
+			color: var(--text-1)
+		}
+
+		a {
+			color: var(--clr-third);
+			text-decoration: none
+		}
+
+		a:hover {
+			filter: saturate(1.2);
+			text-decoration: underline
+		}
+
+		/* =========================
+       LAYOUT
+       ========================= */
+		.container {
+			width: 100%;
+			max-width: var(--container);
+			margin-inline: auto;
+			padding: 0 var(--space-3)
+		}
+
+		.section {
+			padding: var(--space-5) 0
+		}
+
+		.stack>*+* {
+			margin-top: var(--space-2)
+		}
+
+		.cluster {
+			display: flex;
+			flex-wrap: wrap;
+			gap: var(--space-2);
+			align-items: center;
+			margin-top: 16px;
+		}
+
+		.grid {
+			display: grid;
+			gap: var(--space-3)
+		}
+
+		.grid.cols-2 {
+			grid-template-columns: repeat(2, minmax(0, 1fr))
+		}
+
+		.grid.cols-3 {
+			grid-template-columns: repeat(3, minmax(0, 1fr))
+		}
+
+		.grid.cols-4 {
+			grid-template-columns: repeat(4, minmax(0, 1fr))
+		}
+
+		/* =========================
+       HEADER (sticky-leftLogo)
+       ========================= */
+		.header {
+			position: sticky;
+			top: 0;
+			z-index: 40;
+			backdrop-filter: saturate(1.2) blur(6px);
+			background: linear-gradient(180deg, rgba(10, 12, 16, .9), rgba(10, 12, 16, .65));
+			border-bottom: 1px solid rgba(255, 255, 255, .06);
+		}
+
+		.header .cluster {
+			margin-top: 0;
+		}
+
+		.brand {
+			display: flex;
+			align-items: center;
+			gap: .75rem
+		}
+
+		.brand img {
+			width: 40px;
+			height: 40px;
+			border-radius: 12px;
+			object-fit: cover;
+			box-shadow: var(--shadow-md)
+		}
+
+		.brand strong {
+			text-transform: uppercase;
+			letter-spacing: .6px
+		}
+
+		.nav {
+			margin-left: auto;
+			display: flex;
+			gap: .5rem
+		}
+
+		.nav a {
+			padding: .55rem .8rem;
+			border-radius: 12px;
+			border: 1px solid rgba(255, 255, 255, .08);
+			background: linear-gradient(180deg, rgba(255, 255, 255, .04), rgba(255, 255, 255, 0));
+			transition: transform .2s ease, background .2s ease, border-color .2s ease;
+		}
+
+		.nav a:hover {
+			transform: translateY(-1px);
+			background: rgba(255, 255, 255, .06);
+			border-color: rgba(255, 255, 255, .16)
+		}
+
+		/* =========================
+       BUTTONS (rounded, solid)
+       ========================= */
+		.btn {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			gap: .5rem;
+			padding: .85rem 1.1rem;
+			border-radius: var(--radius-xl);
+			border: var(--border) solid transparent;
+			font-weight: 700;
+			transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+			box-shadow: var(--shadow-md);
+			text-decoration: none !important;
+		}
+
+		.btn:focus-visible {
+			outline: 3px solid color-mix(in oklab, var(--clr-third) 65%, white)
+		}
+
+		.btn--main {
+			background: var(--clr-third);
+			color: #0a0a0a
+		}
+
+		.btn--second {
+			background: var(--clr-second);
+			color: #0a0a0a
+		}
+
+		.btn--ghost {
+			color: var(--text-0);
+			background: linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .01));
+			border-color: rgba(255, 255, 255, .12)
+		}
+
+		.btn:hover {
+			transform: translateY(-1px);
+			filter: saturate(1.1)
+		}
+
+		/* =========================
+       CARDS (elevated)
+       ========================= */
+		.card {
+			background: linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .02));
+			border: 1px solid rgba(255, 255, 255, .08);
+			border-radius: var(--radius-xl);
+			box-shadow: var(--shadow-md);
+			padding: var(--space-3)
+		}
+
+		/* =========================
+       HERO (gradient-bg)
+       ========================= */
+		.hero {
+			display: grid;
+			align-items: center;
+			gap: var(--space-4);
+			grid-template-columns: 1.1fr .9fr;
+		}
+
+		.hero__wrap {
+			background: radial-gradient(1000px 600px at 0% 0%, color-mix(in oklab, var(--clr-main) 30%, transparent) 0%, transparent 60%),
+				radial-gradient(1000px 600px at 100% 0%, color-mix(in oklab, var(--clr-third) 30%, transparent) 0%, transparent 60%),
+				linear-gradient(180deg, rgba(255, 255, 255, .04), rgba(255, 255, 255, .01));
+			border: 1px solid rgba(255, 255, 255, .06);
+			border-radius: calc(var(--radius-xl) + 4px);
+			padding: var(--space-4)
+		}
+
+		.hero__media {
+			border-radius: calc(var(--radius-xl) + 6px);
+			overflow: hidden;
+			box-shadow: var(--shadow-md)
+		}
+
+		.hero__media img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			display: block
+		}
+
+		/* =========================
+       FEATURES (3-col)
+       ========================= */
+		.features {
+			display: grid;
+			gap: var(--space-3);
+			grid-template-columns: repeat(3, minmax(0, 1fr))
+		}
+
+		.feature {
+			padding: var(--space-3)
+		}
+
+		.feature h3 {
+			margin-bottom: .25rem
+		}
+
+		/* =========================
+       REVIEWS (grid)
+       ========================= */
+		#clients h2 {
+			margin-bottom: 0;
+			line-height: 1;
+		}
+
+		.reviews {
+			display: grid;
+			gap: var(--space-3);
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			margin-top: 24px;
+		}
+
+		.review {
+			display: grid;
+			gap: .75rem;
+		}
+
+		.review .who {
+			display: flex;
+			gap: .75rem;
+			align-items: center
+		}
+
+		.avatar {
+			width: 44px;
+			height: 44px;
+			border-radius: 12px;
+			object-fit: cover;
+			box-shadow: var(--shadow-md)
+		}
+
+		.badge {
+			display: inline-flex;
+			align-items: center;
+			gap: .35rem;
+			padding: .35rem .6rem;
+			border-radius: 12px;
+			border: 1px solid rgba(255, 255, 255, .14);
+			background: rgba(255, 255, 255, .06);
+			font-weight: 700
+		}
+
+		/* =========================
+       MEDIA / GALLERY
+       ========================= */
+		.thumb,
+		.wide {
+			width: 100%;
+			object-fit: cover;
+			border-radius: var(--radius-xl);
+			box-shadow: var(--shadow-md);
+			display: block
+		}
+
+		.thumb {
+			aspect-ratio: 1/1
+		}
+
+		.wide {
+			aspect-ratio: 16/9
+		}
+
+		.readmore {
+			display: -webkit-box;
+			-webkit-line-clamp: 5;
+			/* показати 10 рядків */
+			-webkit-box-orient: vertical;
+			overflow: hidden;
+			position: relative;
+		}
+
+		.readmore-btns {
+			display: flex;
+			justify-content: flex-end;
+			margin-top: 5px;
+		}
+
+		.rm-text {
+			margin-bottom: 0;
+		}
+
+		/* коли відкрито — показуємо повний текст і прибираємо “…” */
+		.readmore.open {
+			display: block;
+			-webkit-line-clamp: unset;
+		}
+
+		.readmore.open::after {
+			content: "";
+		}
+
+
+		/* курсор */
+		.rm-show,
+		.rm-hide {
+			cursor: pointer;
+		}
+
+
+		/* =========================
+       STATS
+       ========================= */
+		.stats {
+			display: grid;
+			gap: var(--space-3);
+			grid-template-columns: repeat(4, minmax(0, 1fr))
+		}
+
+		.stat {
+			text-align: center;
+			padding: var(--space-3);
+			border-radius: var(--radius-xl);
+			background: linear-gradient(180deg, rgba(255, 255, 255, .04), rgba(255, 255, 255, .01));
+			border: 1px solid rgba(255, 255, 255, .08);
+			box-shadow: var(--shadow-md)
+		}
+
+		.stat .num {
+			line-height: 1;
+			font-family: "Montserrat";
+			font-size: clamp(1.8rem, 3vw, 2.4rem);
+			color: var(--clr-third)
+		}
+
+		.stat .lbl {
+			text-transform: uppercase;
+			letter-spacing: .6px;
+			color: var(--text-1);
+			font-weight: 800;
+			margin-top: 10px;
+		}
+
+		/* =========================
+       CTA (image-bg style via utility)
+       ========================= */
+		.cta {
+			position: relative;
+			overflow: hidden;
+			border-radius: calc(var(--radius-xl) + 6px);
+			padding: var(--space-5) var(--space-4);
+			background: linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .01));
+			border: 1px solid rgba(255, 255, 255, .08);
+		}
+
+		.cta::before {
+			content: "";
+			position: absolute;
+			inset: 0;
+			z-index: -1;
+			background-size: cover;
+			background-position: center;
+			opacity: .25;
+			filter: brightness(.7) saturate(1.1);
+		}
+
+		/* =========================
+       FOOTER
+       ========================= */
+		footer {
+			border-top: 1px solid rgba(255, 255, 255, .06);
+			padding: var(--space-5) 0
+		}
+
+		.muted {
+			margin-bottom: 0;
+		}
+
+		.section__desc {
+			margin-bottom: 0;
+		}
+
+		/* =========================
+       RESPONSIVE
+       ========================= */
+		@media (max-width: 1080px) {
+			.header {
+				padding: 0 16px;
+			}
+
+			.hero {
+				grid-template-columns: 1fr
+			}
+
+			.features {
+				grid-template-columns: repeat(2, minmax(0, 1fr))
+			}
+
+			.reviews {
+				grid-template-columns: repeat(2, minmax(0, 1fr))
+			}
+
+			.stats {
+				grid-template-columns: repeat(2, minmax(0, 1fr))
+			}
+		}
+
+		@media (max-width: 640px) {
+			.nav {
+				display: none
+			}
+
+			.features,
+			.reviews,
+			.stats,
+			.grid.cols-2,
+			.grid.cols-3,
+			.grid.cols-4 {
+				grid-template-columns: 1fr
+			}
+
+			.section {
+				padding: var(--space-4) 0
+			}
+
+			.container.cta {
+				border: none;
+				border-radius: 0;
+			}
+		}
+	</style>
+
+</head>
+
+<body class="true">
+	<!-- Header (sticky-leftLogo) -->
+	<header class="header">
+		<div class="container cluster" style="justify-content:space-between;padding:.85rem 0">
+			<div class="brand">
+				<img src="https://imagesmyclo.com/images/gambling/Slot_machine_with_mystical_symbols_ar_32_00367_02.png?"
+					alt="Казино Mystic Fortune" />
+				<strong>Казино Mystic Fortune</strong>
+			</div>
+			<nav class="nav">
+				<a href="#home">Дом</a>
+				<a href="#screenshot">Скриншот</a>
+				<a href="#clients">Клиенты</a>
+				<a href="#contact">Контакт</a>
+				<a href="privacy.html">политика конфиденциальности</a>
+				<a href="terms.html">Условия использования</a>
+			</nav>
+		</div>
+	</header>
+
+	<!-- HERO (gradient-bg) -->
+	<main id="home" class="section">
+		<div class="container hero">
+			<div class="hero__wrap">
+				<div class="badge">Gambling</div>
+				<h1>Казино Mystic Fortune</h1>
+
+				<div class="readmore" id="rm">
+					<div class="rm-text" id="content-md"></div>
+				</div>
+
+				<script>
+					function mdToHtml(md) {
+						return md
+							.replace(/^### (.*$)/gim, '<h3>$1</h3>')
+							.replace(/^## (.*$)/gim, '<h2>$1</h2>')
+							.replace(/^# (.*$)/gim, '<h1>$1</h1>')
+							.replace(/^- (.*$)/gim, '<li>$1</li>')
+							.replace(/<li>([\s\S]*?)<\/li>/gim, '<ul><li>$1</li></ul>')
+							.replace(/\*\*(.*?)\*\*/gim, '<b>$1</b>')
+							.replace(/\*(.*?)\*/gim, '<i>$1</i>')
+							.replace(/\[(.*?)\]\((.*?)\)/gim, '<a href="$2" target="_blank">$1</a>')
+							.replace(/\n/gim, '<br>')
+					}
+
+					document.getElementById('content-md').innerHTML = mdToHtml(` Добро пожаловать в казино Mystic Fortune!  Вас ждет непревзойденный опыт мобильных игр с целой сокровищницей игр и захватывающими бонусами! Приготовьтесь вращать барабаны, играть в любимые настольные игры и выигрывать по-крупному!  Наше приложение сочетает в себе азарт настоящего казино с удобством мобильных игр. Вот чего вы можете ожидать: 
+-  **Разнообразный выбор игр:** Наслаждайтесь сотнями слотов, классических настольных игр и возможностями живых дилеров! 
+-  **Ежедневные бонусы:** Заходите в игру каждый день, чтобы получить потрясающие награды и бесплатные вращения! 
+-  **Турнир и испытания:** Соревнуйтесь с игроками по всему миру за эксклюзивные призы! 
+-  **Безопасность и надежность:** Ваша информация защищена первоклассными мерами безопасности. 
+-  **Награды за лояльность:** Зарабатывайте очки за каждую сыгранную игру и открывайте особые привилегии! 
+Присоединяйтесь к нашему яркому сообществу игроков уже сегодня! Загрузите Mystic Fortune Casino и отправляйтесь в путешествие к богатству!  Не забудьте пригласить друзей, чтобы получить еще больше удовольствия!  Удачи и пусть удача всегда будет на вашей стороне! `)
+					function toggleRM() {
+						document.getElementById('rm').classList.toggle('open')
+					}
+				</script>
+
+				<div class="cluster readmore-btns">
+					<small class="muted rm-show" id="rm-show" onclick="toggleRM()">Более ></small>
+					<small class="muted rm-hide" id="rm-hide" onclick="toggleRM()">
+						< Скрывать</small>
+				</div>
+
+				<script>
+					const rmElement = document.getElementById('rm')
+					const rmShowBtn = document.getElementById('rm-show')
+					const rmShowHide = document.getElementById('rm-hide')
+
+					function toggleRM() {
+						rmElement.classList.toggle('open')
+						showBtn()
+					}
+
+					function showBtn() {
+						if (rmElement.classList.contains('open')) {
+							rmShowBtn.style.display = 'none'
+							rmShowHide.style.display = 'block'
+						}
+
+						if (!rmElement.classList.contains('open')) {
+							rmShowBtn.style.display = 'block'
+							rmShowHide.style.display = 'none'
+						}
+					}
+
+					showBtn()
+				</script>
+
+				<div class="cluster">
+					<a class="btn btn--main" href="Установить сейчас">Скачать</a>
+					<a class="btn btn--ghost" href="#demo">Посмотреть видео-демонстрацию</a>
+				</div>
+
+			</div>
+			<div class="hero__media">
+				<img src="https://imagesmyclo.com/images/gambling/Slot_machine_with_mystical_symbols_ar_32_00367_02.png?"
+					alt="Казино Mystic Fortune hero" />
+			</div>
+		</div>
+	</main>
+
+	<!-- STATISTICS -->
+	<section class="section">
+		<div class="container stats">
+			<div class="stat">
+				<div class="num">4145</div>
+				<div class="lbl">Загрузки</div>
+			</div>
+			<div class="stat">
+				<div class="num">5.0/5</div>
+				<div class="lbl">Статистика</div>
+			</div>
+			<div class="stat">
+				<div class="num">167</div>
+				<div class="lbl">Счастливые клиенты</div>
+			</div>
+			<div class="stat">
+				<div class="num">128</div>
+				<div class="lbl">Чашки кофе</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ABOUT / FEATURES (3-col) -->
+	<section class="section">
+		<div class="container stack">
+			<h2>О приложении</h2>
+
+			<div style="flex:1;">
+
+				<div class="grid cols-2 features" style="margin-top:16px;">
+
+					<article class="card feature">
+						<h3>Возраст</h3>
+						<p class="section__desc">18+</p>
+					</article>
+
+					<article class="card feature">
+						<h3>Версия</h3>
+						<p class="section__desc">5.8.6</p>
+					</article>
+
+					<article class="card feature">
+						<h3>Обновлено</h3>
+						<p class="section__desc">2023-03-04</p>
+					</article>
+
+					<article class="card feature">
+						<h3>Установлено</h3>
+						<p class="section__desc">19,597,761+</p>
+					</article>
+
+				</div>
+
+			</div>
+		</div>
+	</section>
+
+	<!-- GALLERY -->
+	<section id="screenshot" class="section">
+		<div class="container">
+			<h2>Скриншот</h2>
+			<div class="grid cols-3">
+
+				<img class="thumb"
+					src="https://imagesmyclo.com/images/gambling/Slot_machine_with_mystical_symbols_ar_32_00367_02.png?"
+					alt="screenshot" />
+
+				<img class="thumb"
+					src="https://imagesmyclo.com/images/gambling/Slot_machine_with_mystical_symbols_ar_32_00367_03.png?"
+					alt="screenshot" />
+
+				<img class="thumb"
+					src="https://imagesmyclo.com/images/gambling/Slot_machine_with_mythology_theme_ar_32_00424_00.png?"
+					alt="screenshot" />
+
+				<img class="thumb"
+					src="https://imagesmyclo.com/images/gambling/Slot_machine_with_mythology_theme_ar_32_00424_01.png?"
+					alt="screenshot" />
+
+			</div>
+		</div>
+	</section>
+
+	<!-- CLIENTS & REVIEWS (grid) -->
+	<section id="clients" class="section">
+		<div class="container stack">
+			<h2>Клиент говорит</h2>
+			<small class="muted">Отзывы пользователей: 5</small>
+			<div class="reviews">
+
+				<article class="card review">
+					<div class="who">
+						<img class="avatar" src="https://imagesmyclo.com/avatars/female/364.png?" alt="Эмма Джонсон" />
+						<div>
+							<strong>Эмма Джонсон</strong><br />
+							<small class="muted">2025-01-13T13:49:19.854Z</small>
+						</div>
+						<span class="badge" style="margin-left:auto">5/5</span>
+					</div>
+					<p>Мне нравится это приложение! Графика потрясающая, а в игры очень весело играть! Определенно мое любимое
+						приложение казино! </p>
+				</article>
+
+				<article class="card review">
+					<div class="who">
+						<img class="avatar" src="https://imagesmyclo.com/avatars/male/308.png?" alt="Лиам Браун" />
+						<div>
+							<strong>Лиам Браун</strong><br />
+							<small class="muted">2025-06-23T00:39:30.706Z</small>
+						</div>
+						<span class="badge" style="margin-left:auto">5/5</span>
+					</div>
+					<p>Казино Mystic Fortune — это просто бомба! Я уже выиграл несколько джекпотов! Ежедневные бонусы заставляют
+						меня возвращаться снова и снова. Мне также нравится аспект сообщества! </p>
+				</article>
+
+				<article class="card review">
+					<div class="who">
+						<img class="avatar" src="https://imagesmyclo.com/avatars/female/241.png?" alt="Майкл Стивенс" />
+						<div>
+							<strong>Майкл Стивенс</strong><br />
+							<small class="muted">2025-10-02T18:53:17.464Z</small>
+						</div>
+						<span class="badge" style="margin-left:auto">4/5</span>
+					</div>
+					<p>Казино Mystic Fortune предлагает фантастический выбор игр. Мне особенно нравятся варианты с живым дилером.
+						Бонусы тоже щедрые! Очень рекомендую. </p>
+				</article>
+
+				<article class="card review">
+					<div class="who">
+						<img class="avatar" src="https://imagesmyclo.com/avatars/male/698.png?" alt="София Ли" />
+						<div>
+							<strong>София Ли</strong><br />
+							<small class="muted">2025-09-22T00:50:10.663Z</small>
+						</div>
+						<span class="badge" style="margin-left:auto">4/5</span>
+					</div>
+					<p>У меня были некоторые проблемы с приложением, которое вылетало на моем устройстве, но команда поддержки
+						была невероятно любезна и быстро решила проблему. В целом, отличный опыт! </p>
+				</article>
+
+				<article class="card review">
+					<div class="who">
+						<img class="avatar" src="https://imagesmyclo.com/avatars/male/578.png?" alt="Джеймс Паркер" />
+						<div>
+							<strong>Джеймс Паркер</strong><br />
+							<small class="muted">2025-09-17T08:10:47.088Z</small>
+						</div>
+						<span class="badge" style="margin-left:auto">3/5</span>
+					</div>
+					<p>Хотелось бы больше вариаций блэкджека. Слоты отличные, но мне кажется, что настольным играм не хватает
+						дополнительных опций. Тем не менее, это забавное приложение! </p>
+				</article>
+
+			</div>
+		</div>
+	</section>
+
+	<section id="clients" class="section">
+		<div class="container stack">
+			<div class="grid cols-3">
+				<article class="card">
+					<h3>Клиенты</h3>
+					<p>167 Счастливые клиенты</p>
+				</article>
+				<article class="card">
+					<h3>Получение наград</h3>
+					<p>25</p>
+				</article>
+				<article class="card">
+					<h3>Статистика</h3>
+					<p>5.0/5 — 4145 Загрузки</p>
+				</article>
+			</div>
+		</div>
+	</section>
+
+	<!-- CALL TO ACTION (image-bg with bgImage1) -->
+	<section class="section">
+		<div class="container cta"
+			style="--cta-url:url('https://imagesmyclo.com/images/gambling/Slot_machine_with_mystical_symbols_ar_32_00367_02.png?')">
+			<script>
+				// inline set pseudo-element background without altering data API
+				document.currentScript.parentElement.style.setProperty('--cta-url', "url('https://imagesmyclo.com/images/gambling/Slot_machine_with_mystical_symbols_ar_32_00367_02.png?')");
+			</script>
+			<style>
+				/* attach background to ::before via CSS var set above */
+				.cta::before {
+					background-image: var(--cta-url);
+				}
+			</style>
+			<div class="cluster" style="justify-content:space-between;align-items:center">
+				<div class="stack" style="max-width:720px">
+					<h2>Скачать</h2>
+					<p>Посмотреть видео-демонстрацию • Более</p>
+				</div>
+				<div class="cluster">
+					<a class="btn btn--ghost" href="Установить сейчас">Скачать</a>
+					<a class="btn btn--ghost" href="#home">Дом</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- FOOTER -->
+	<footer id="contact">
+		<div class="container grid cols-3">
+			<div class="stack">
+				<strong>Контакт</strong>
+				<a href="https://{DOMAIN}/terms.html">https://{DOMAIN}</a>
+				<span>Адрес офиса: House 32/A, Road 4, Дханмонди, Дакка 1209, Бангладеш</span>
+			</div>
+			<div class="stack">
+				<span>Связаться с нами:</span>
+				<a href="mailto:support@{DOMAIN}">support@{DOMAIN}</a>
+				<span>contact@{DOMAIN}</span>
+				<a href="https://{DOMAIN}/">https://{DOMAIN}/</a>
+			</div>
+			<div class="stack">
+				<span>Технологические инновации Inc.</span>
+				<span class="muted"></span>
+				<span class="muted">политика конфиденциальности • Условия использования</span>
+			</div>
+		</div>
+	</footer>
+</body>
+
+</html>

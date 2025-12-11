@@ -6,11 +6,12 @@ import { Landing } from './entities/landing.entity';
 import { LandingController } from './landing.controller';
 import { LandingService } from './landing.service';
 import { PreviewService } from './preview.service';
+import { WhitePageService } from './white-page.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Landing, User])],
   controllers: [LandingController],
-  providers: [LandingService, PreviewService],
-  exports: [LandingService]
+  providers: [LandingService, PreviewService, WhitePageService],
+  exports: [LandingService, WhitePageService, PreviewService]
 })
 export class LandingModule {}
