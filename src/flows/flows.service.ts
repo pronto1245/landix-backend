@@ -129,7 +129,7 @@ export class FlowsService {
     const cloakResult = await this.cloak.check(req, flow.cloak);
 
     if (!cloakResult.passed) {
-      return this.whitePageService.render(req);
+      return this.whitePageService.render(domain);
     }
 
     let finalLanding = landing;
