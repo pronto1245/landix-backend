@@ -12,12 +12,18 @@ import { CloakService } from './cloak';
 import { GeoService } from './cloak/geo.service';
 import { FlowDomainCheckCron } from './cron/flow-domain-check.cron';
 import { Flow } from './entities/flow.entity';
+import { FlowFacebookModule } from './facebook/flow-facebook.module';
 import { FlowsController } from './flows.controller';
 import { FlowsService } from './flows.service';
 import { SplitTestService } from './split-test/split-test.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Flow, Team, Landing]), DomainsModule, RedisModule],
+  imports: [
+    TypeOrmModule.forFeature([Flow, Team, Landing]),
+    DomainsModule,
+    RedisModule,
+    FlowFacebookModule
+  ],
   controllers: [FlowsController],
   providers: [
     FlowsService,

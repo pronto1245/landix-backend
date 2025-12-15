@@ -2,7 +2,16 @@ import { Domain } from 'src/domains/entities/domain.entity';
 import { Landing } from 'src/landing/entities/landing.entity';
 import { Team } from 'src/team/entities/team.entity';
 import { User } from 'src/users/entities/user.entity';
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn
+} from 'typeorm';
+
+import { FlowFacebookPixel } from '../facebook/entities/flow-facebook-pixel.entity';
 
 @Entity('flows')
 export class Flow {
@@ -30,6 +39,9 @@ export class Flow {
 
   @ManyToOne(() => User, { eager: true, onDelete: 'SET NULL', nullable: true })
   creator: User | null;
+
+  @OneToMany(() => FlowFacebookPixel, (pixel) => pixel.flow)
+  facebookPixels: FlowFacebookPixel[];
 
   @Column({ type: 'jsonb', default: null, nullable: true })
   cloak: {

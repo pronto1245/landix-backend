@@ -58,6 +58,10 @@ export class UpdateFlowDto {
   landingId?: string;
 
   @IsOptional()
+  @IsString()
+  redirect_url?: string;
+
+  @IsOptional()
   @ValidateNested()
   @Type(() => CloakDto)
   cloak?: CloakDto;

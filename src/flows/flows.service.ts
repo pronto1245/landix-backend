@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as cheerio from 'cheerio';
 import { DomainsService } from 'src/domains/domains.service';
 import { Landing } from 'src/landing/entities/landing.entity';
 import { PreviewService } from 'src/landing/preview.service';
@@ -13,6 +14,7 @@ import { CloakService } from './cloak';
 import { CreateFlowWithDomainDto } from './dto/create-flow-with-domain.dto';
 import { UpdateFlowDto } from './dto/update-flow.dto';
 import { Flow } from './entities/flow.entity';
+import { FlowFacebookPixel } from './facebook/entities/flow-facebook-pixel.entity';
 import { SplitTestService } from './split-test/split-test.service';
 
 @Injectable()
@@ -104,6 +106,9 @@ export class FlowsService {
         domain: {
           name: domain
         }
+      },
+      relations: {
+        facebookPixels: true
       }
     });
 
@@ -144,7 +149,12 @@ export class FlowsService {
       }
     }
 
-    const html = this.previewService.render(finalLanding as any);
+    let html = await this.previewService.render(finalLanding as any);
+
+    if (flow.facebookPixels?.length) {
+      html = this.injectFacebookPixel(html, flow.facebookPixels);
+    }
+
     return html;
   }
 
@@ -156,6 +166,8 @@ export class FlowsService {
 
     if (!flow) throw new NotFoundException('Flow not found');
 
+    const landing = await this.landingRepo.findOne({ where: { id: flow.landing?.id } });
+
     if (dto.landingId) {
       const landing = await this.landingRepo.findOne({
         where: { id: dto.landingId }
@@ -163,6 +175,12 @@ export class FlowsService {
 
       if (!landing) throw new NotFoundException('Landing not found');
       flow.landing = landing;
+    }
+
+    if (dto.redirect_url && landing) {
+      landing.redirect = dto.redirect_url;
+
+      await this.landingRepo.save(landing);
     }
 
     if (dto.cloak) {
@@ -220,5 +238,36 @@ export class FlowsService {
 
   async delete(flowId: string) {
     return await this.flowRepo.delete(flowId);
+  }
+
+  private injectFacebookPixel(html: string, pixels: FlowFacebookPixel[]): string {
+    const $ = cheerio.load(html);
+
+    $('head').prepend(`
+      <script>
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+
+      ${pixels.map((p) => `fbq('init', '${p.pixelId}');`).join('\n')}
+      fbq('track', 'PageView');
+      </script>
+      <noscript>
+        ${pixels
+          .map(
+            (p) => `
+          <img height="1" width="1" style="display:none"
+          src="https://www.facebook.com/tr?id=${p.pixelId}&ev=PageView&noscript=1"/>
+        `
+          )
+          .join('')}
+      </noscript>
+    `);
+
+    return $.html();
   }
 }

@@ -1,9 +1,17 @@
 import { Controller, Get, NotFoundException, Param, Post, Query, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+  ApiTags
+} from '@nestjs/swagger';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { User } from 'src/users/entities/user.entity';
 
+import { CloudflareService } from './cloudflare/cloudflare.service';
 import { DomainsService } from './domains.service';
 
 @ApiTags('Domains')
@@ -11,7 +19,10 @@ import { DomainsService } from './domains.service';
 @UseGuards(JwtAuthGuard)
 @Controller('domains')
 export class DomainsController {
-  constructor(private readonly service: DomainsService) {}
+  constructor(
+    private readonly service: DomainsService,
+    private readonly cloudflareService: CloudflareService
+  ) {}
 
   @Get('suggestions')
   @ApiOperation({
@@ -132,6 +143,27 @@ export class DomainsController {
   })
   async getInfo(@Param('name') name: string) {
     return this.service.getInfo(name);
+  }
+
+  @Post(':domain/cloudflare/ns')
+  @ApiOperation({ summary: 'Получить NS Cloudflare' })
+  @ApiResponse({
+    status: 200,
+    schema: {
+      example: {
+        domain: 'mybrand.shop',
+        zoneId: 'uuid',
+        status: 'pending',
+        nameservers: ['ns1.cloudflare.com', 'ns2.cloudflare.com']
+      }
+    }
+  })
+  @ApiParam({
+    name: 'domain',
+    example: 'mybrand.shop'
+  })
+  async getCloudflareNs(@Param('domain') domain: string) {
+    return this.cloudflareService.getOrCreateNameservers(domain);
   }
 
   @Post('sync-system')

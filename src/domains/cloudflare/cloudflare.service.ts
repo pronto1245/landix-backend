@@ -152,4 +152,38 @@ export class CloudflareService {
       throw new HttpException(`Ошибка при upsert DNS: ${err.message}`, 502);
     }
   }
+
+  async getOrCreateNameservers(domain: string, apiToken?: string, accountId?: string) {
+    const cleanDomain = domain.trim().replace(/^www\./, '');
+
+    const zoneId = await this.getZoneId(cleanDomain, apiToken);
+
+    if (!zoneId) {
+      const created = await this.createZone(cleanDomain, apiToken, accountId);
+
+      return {
+        domain: cleanDomain,
+        zoneId: created.id,
+        status: 'pending',
+        nameservers: created.name_servers
+      };
+    }
+
+    const zoneInfo: {
+      id: string;
+      status: string;
+      name_servers: string[];
+    } = await this.getZoneInfo(zoneId, apiToken);
+
+    if (!zoneInfo?.name_servers?.length) {
+      throw new BadRequestException('Cloudflare did not return nameservers');
+    }
+
+    return {
+      domain: cleanDomain,
+      zoneId,
+      status: zoneInfo.status,
+      nameservers: zoneInfo.name_servers
+    };
+  }
 }
