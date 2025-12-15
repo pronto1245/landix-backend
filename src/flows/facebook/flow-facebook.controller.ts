@@ -1,13 +1,5 @@
 import { Body, Controller, Get, Param, Put } from '@nestjs/common';
-import {
-  ApiBadRequestResponse,
-  ApiBody,
-  ApiNotFoundResponse,
-  ApiOkResponse,
-  ApiOperation,
-  ApiParam,
-  ApiTags
-} from '@nestjs/swagger';
+import { ApiBody, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 
 import { UpdateFlowFacebookDto } from './dto/update-flow-facebook.dto';
 import { FlowFacebookService } from './flow-facebook.service';
@@ -20,8 +12,7 @@ export class FlowFacebookController {
 
   @Put()
   @ApiOperation({
-    summary: 'Update Facebook Pixels for flow',
-    description: 'Replaces all Facebook Pixels for the specified flow with the provided list'
+    summary: 'Обновить список Facebook Pixels'
   })
   @ApiParam({
     name: 'flowId',
@@ -30,16 +21,10 @@ export class FlowFacebookController {
   })
   @ApiBody({ type: UpdateFlowFacebookDto })
   @ApiOkResponse({
-    description: 'Facebook pixels updated successfully',
+    description: 'Facebook Pixels обновлены',
     schema: {
       example: { success: true }
     }
-  })
-  @ApiNotFoundResponse({
-    description: 'Flow not found'
-  })
-  @ApiBadRequestResponse({
-    description: 'Validation error'
   })
   update(@Param('flowId') flowId: string, @Body() dto: UpdateFlowFacebookDto) {
     return this.service.update(flowId, dto);
@@ -47,8 +32,7 @@ export class FlowFacebookController {
 
   @Get()
   @ApiOperation({
-    summary: 'Get Facebook Pixels for flow',
-    description: 'Returns all Facebook Pixels for the specified flow with masked tokens'
+    summary: 'Получить список Facebook Pixels'
   })
   @ApiParam({
     name: 'flowId',
@@ -56,11 +40,8 @@ export class FlowFacebookController {
     example: '2f6b6b2e-9c54-4c6a-b8b2-3c4b4b7b4c3a'
   })
   @ApiOkResponse({
-    description: 'Facebook pixels list',
+    description: 'Список Facebook Pixels',
     type: [FacebookPixelResponse]
-  })
-  @ApiNotFoundResponse({
-    description: 'Flow not found'
   })
   get(@Param('flowId') flowId: string) {
     return this.service.get(flowId);
