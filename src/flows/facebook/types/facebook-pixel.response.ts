@@ -7,10 +7,10 @@ export class FacebookPixelResponse {
   pixelId: string;
 
   @ApiProperty({
-    example: 'EAAU********ZDZD',
+    example: 'EAAUYh7jeTWwBQLZDZD',
     description: 'Masked token'
   })
-  tokenMasked: string;
+  token: string;
 
   @ApiProperty({
     example: true
